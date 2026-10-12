@@ -1,0 +1,82 @@
+{
+ "label": "SYNTHETIC SUBSTITUTE for the unavailable assignment test pack",
+ "items": {
+  "A1": {
+   "file": "A1.wav",
+   "description": "house 124 BPM constant, 186 bars, drumless pad breakdown bars 81-96",
+   "sr": 44100,
+   "subtype": "PCM_16",
+   "beats_per_bar": 4,
+   "n_ref_beats": 744,
+   "has_downbeats": true,
+   "reference_starts_at": null,
+   "duration_s": 361.496
+  },
+  "A2": {
+   "file": "A2.wav",
+   "description": "half-time hip-hop 86 BPM, 16th hats",
+   "sr": 48000,
+   "subtype": "PCM_24",
+   "beats_per_bar": 4,
+   "n_ref_beats": 224,
+   "has_downbeats": true,
+   "reference_starts_at": null,
+   "duration_s": 157.381
+  },
+  "A3": {
+   "file": "A3.flac",
+   "description": "rock 'live' 106-118 BPM drift, 12 ms jitter, no click",
+   "sr": 44100,
+   "subtype": "PCM_24",
+   "beats_per_bar": 4,
+   "n_ref_beats": 360,
+   "has_downbeats": false,
+   "reference_starts_at": null,
+   "duration_s": 185.171
+  },
+  "A4": {
+   "file": "A4.wav",
+   "description": "ambient pad intro 47.3 s, then house 118 BPM",
+   "sr": 44100,
+   "subtype": "PCM_16",
+   "beats_per_bar": 4,
+   "n_ref_beats": 192,
+   "has_downbeats": true,
+   "reference_starts_at": 47.279661016949156,
+   "duration_s": 145.898
+  },
+  "A5": {
+   "file": "A5.mp3",
+   "description": "electronic, 120 BPM bars 1-32 then 128 BPM from bar 33",
+   "sr": 44100,
+   "subtype": "MPEG_LAYER_III",
+   "beats_per_bar": 4,
+   "n_ref_beats": 288,
+   "has_downbeats": true,
+   "reference_starts_at": null,
+   "duration_s": 140.531
+  },
+  "A6": {
+   "file": "A6.wav",
+   "description": "6/8 at 68 dotted-quarter BPM; reference beats = dotted quarters",
+   "sr": 44100,
+   "subtype": "PCM_16",
+   "beats_per_bar": 2,
+   "n_ref_beats": 128,
+   "has_downbeats": true,
+   "reference_starts_at": null,
+   "duration_s": 113.959
+  },
+  "A7": {
+   "file": "A7.wav",
+   "description": "house 128 BPM (sync partner for A1)",
+   "sr": 44100,
+   "subtype": "PCM_16",
+   "beats_per_bar": 4,
+   "n_ref_beats": 388,
+   "has_downbeats": true,
+   "reference_starts_at": null,
+   "duration_s": 183.256
+  }
+ }
+}

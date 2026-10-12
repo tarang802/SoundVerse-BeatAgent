@@ -1,0 +1,20 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+# Python 3.11 (madmom does not support 3.12+, and basic-pitch pins older TF)
+numpy==1.26.4
+scipy>=1.11
+soundfile>=0.12          # libsndfile >= 1.1 decodes WAV, FLAC and MP3 (no ffmpeg needed)
+soxr>=0.3
+librosa>=0.10.2          # baseline tracker only
+mir_eval>=0.7
+pretty_midi>=0.2.10
+torch==2.14.1+cpu
+beat_this @ https://github.com/CPJKU/beat_this/archive/refs/heads/main.zip
+pylibrb>=0.1.2           # Rubber Band library bundled in the wheel (pitch-preserving stretch)
+google-genai>=1.0
+pydantic>=2.6
+python-dotenv>=1.0
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+playwright>=1.44         # Part 3 offline render (browser download: `playwright install chromium`)
+# Part 3 transcription, not yet installed: basic-pitch[onnx]>=0.4

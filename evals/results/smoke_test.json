@@ -1,0 +1,114 @@
+{
+ "label": "SYNTHETIC SMOKE TEST - not an assignment benchmark",
+ "dependencies": {
+  "numpy": "ok 1.26.4",
+  "scipy": "ok 1.17.1",
+  "soundfile": "ok 0.14.0",
+  "soxr": "ok 1.1.0",
+  "mir_eval": "ok 0.8.2",
+  "torch": "ok 2.14.1+cpu",
+  "beat_this": "ok",
+  "pylibrb": "ok 0.1.2",
+  "librosa": "ok 0.11.0",
+  "basic_pitch": "MISSING (ModuleNotFoundError)",
+  "playwright": "ok",
+  "google.genai": "ok 2.29.0",
+  "ffmpeg_binary": "MISSING"
+ },
+ "fixture": {
+  "bpm": 120,
+  "duration_s": 30.0,
+  "first_beat_s": 0.5,
+  "n_beats": 58,
+  "note": "synthetic house groove, exact beat times"
+ },
+ "decode": {
+  "wav": {
+   "ok": true,
+   "sr": 44100,
+   "subtype": "PCM_16",
+   "len_diff_samples": 0,
+   "decoder_offset_samples": 0,
+   "decoder_offset_ms": 0.0,
+   "residual_db": -78.0
+  },
+  "flac": {
+   "ok": true,
+   "sr": 44100,
+   "subtype": "PCM_24",
+   "len_diff_samples": 0,
+   "decoder_offset_samples": 0,
+   "decoder_offset_ms": 0.0,
+   "residual_db": -132.1
+  },
+  "mp3": {
+   "ok": true,
+   "sr": 44100,
+   "subtype": "MPEG_LAYER_III",
+   "len_diff_samples": 0,
+   "decoder_offset_samples": 0,
+   "decoder_offset_ms": 0.0,
+   "residual_db": -15.0,
+   "kick_timing_vs_wav_ms": {
+    "median": 0.0,
+    "max_abs": 0.726
+   }
+  }
+ },
+ "mir_eval_check": {
+  "expected_f": 0.5,
+  "got_f": 0.5,
+  "pass": true,
+  "note": "mir_eval.beat.evaluate() trims beats before 5 s by default; our harness calls trim_beats explicitly and reports it"
+ },
+ "rubberband": {
+  "pitch_check": {
+   "in_hz": 440,
+   "out_hz": 440.0,
+   "len_ratio": 1.25,
+   "expected_len_ratio": 1.25
+  },
+  "timing_check": {
+   "time_ratio": 0.967742,
+   "kicks_matched": 34,
+   "kicks_in": 47,
+   "median_ms": 7.47,
+   "max_abs_ms": 12.08
+  },
+  "elapsed_s": 2.56,
+  "ok": false
+ },
+ "beat_this": {
+  "ok": true,
+  "checkpoint": "small0.ckpt",
+  "load_s": 0.08,
+  "infer_s": 0.82,
+  "n_beats": 60,
+  "n_downbeats": 15,
+  "beat_F": 0.9831,
+  "downbeat_F": 1.0,
+  "beat_offset_ms_median": 40.0,
+  "beat_offset_ms_max_abs": 40.0,
+  "first_beats": [
+   0.04,
+   0.54,
+   1.04,
+   1.54,
+   2.04,
+   2.54
+  ],
+  "torch_threads": 10
+ },
+ "librosa": {
+  "ok": true,
+  "elapsed_s": 67.67,
+  "tempo": 120.18531976744185,
+  "beat_F": 0.0,
+  "beat_offset_ms_median": null
+ },
+ "assignment_test_pack": {
+  "path": "C:\\Users\\Gupt Ah\\Desktop\\beat-agent\\data\\testpack",
+  "found": [],
+  "status": "UNAVAILABLE - not provided with the brief; all assignment benchmarks marked unavailable"
+ }
+}

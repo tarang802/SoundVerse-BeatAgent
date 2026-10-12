@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+models/*.ckpt
+tools/
+work/
+evals/results/smoke/
+data/testpack/
+*.7z
+# generated audio is reproducible (python run.py testpack / eval); keep JSON results
+data/substitute/*.wav
+data/substitute/*.flac
+data/substitute/*.mp3
+evals/results/**/*.wav
+evals/results/smoke_log.txt
