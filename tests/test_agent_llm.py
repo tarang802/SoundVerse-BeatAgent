@@ -139,6 +139,17 @@ def test_agent():
     r = a.handle("turn bars 1-2 down 3 dB")
     check("direction from LLM, magnitude from user", r.changed and "-3.0 dB" in r.text, r.text.splitlines()[0])
 
+    # near-total deletion needs a "yes" (seen live: "remove everything" -> bars 1-186 applied)
+    s0 = session()
+    n_all = s0.grid.n_bars
+    a, s = agent(edit(POp(op="remove", range=bars(1, n_all))), Plan(action="confirm"))
+    d0 = s.grid.duration
+    r = a.handle("remove everything")
+    check("whole-track removal is proposed, not applied", not r.changed and a.pending is not None
+          and abs(s.grid.duration - d0) < 1e-9 and "haven't applied" in r.text, r.text.splitlines()[0])
+    r = a.handle("yes")
+    check("...and applied after 'yes'", r.changed and s.grid.duration < 2.0, f"{s.grid.duration:.2f} s left")
+
     # undo / redo / confirm with nothing pending / sync without partner
     a, s = agent(edit(POp(op="remove", range=bars(2))), Plan(action="undo"), Plan(action="redo"))
     d0 = s.grid.duration
