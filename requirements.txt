@@ -16,5 +16,9 @@ python-dotenv>=1.0
 fastapi>=0.110
 uvicorn>=0.29
 python-multipart>=0.0.9
-playwright>=1.44         # Part 3 offline render (browser download: `playwright install chromium`)
-# Part 3 transcription, not yet installed: basic-pitch[onnx]>=0.4
+playwright>=1.44         # Part 3 offline render; uses the installed Edge/Chrome (or `playwright install chromium`)
+onnxruntime>=1.17        # Part 3: runs Basic Pitch's bundled ONNX model (no TensorFlow)
+resampy>=0.4             # Basic Pitch dependency
+# basic-pitch==0.4.0 is installed separately with --no-deps: its default dependencies
+# pull TensorFlow 2.15 (~400 MB), which the ONNX model does not need:
+#     pip install --no-deps basic-pitch==0.4.0
