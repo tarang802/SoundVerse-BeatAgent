@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -30,11 +31,69 @@ from beatagent.audio_io import load, save, to_mono  # noqa: E402
 from beatagent.click import audition  # noqa: E402
 
 
-def load_ref(path: Path):
-    rows = np.loadtxt(path, ndmin=2)
-    beats = rows[:, 0]
-    pos = rows[:, 1].astype(int)
-    downs = beats[pos == 1] if np.any(pos > 0) else None
+REF_EXTS = (".beats", ".txt", ".csv", ".tsv", ".lab")
+AUDIO_EXTS = (".wav", ".flac", ".mp3")
+
+
+def _rows(path: Path) -> list[list[float]]:
+    """Numeric rows of a text annotation: any of tab/space/comma/semicolon separators;
+    header, comment ('#', '//') and non-numeric lines are skipped."""
+    out = []
+    for line in Path(path).read_text(encoding="utf-8-sig", errors="replace").splitlines():
+        line = line.strip()
+        if not line or line.startswith(("#", "//")):
+            continue
+        parts = [x for x in re.split(r"[\s,;]+", line) if x]
+        try:
+            out.append([float(x) for x in parts])
+        except ValueError:
+            continue                       # header such as "time,position"
+    return out
+
+
+def load_ref(path: Path, downbeat_path: Path | None = None):
+    """Reference beats (+ downbeats when the annotation has them).
+
+    Layouts accepted (one beat per row):
+      time                      beats only (no downbeat reference)
+      time  position            position 1 = downbeat (Beat This!, madmom, GTZAN/Ballroom .beats)
+      time  bar  beat           3rd column 1 = downbeat
+    A separate downbeat file (one time per row) overrides the columns."""
+    rows = _rows(path)
+    if not rows:
+        raise ValueError(f"No numeric beat rows in {Path(path).name}")
+    width = min(len(r) for r in rows)
+    beats = np.array([r[0] for r in rows], dtype=float)
+    downs = None
+    if width >= 2:
+        col = 2 if width >= 3 else 1
+        pos = np.array([r[col] for r in rows])
+        whole = np.all(np.abs(pos - np.round(pos)) < 1e-6)
+        if whole and np.any(np.round(pos) == 1):
+            downs = beats[np.round(pos) == 1]
+        elif not whole:                    # "1.1, 1.2, 2.1" bar.beat style
+            frac = np.round((pos - np.floor(pos)) * 10)
+            downs = beats[frac == 1] if np.any(frac == 1) else None
+    if downbeat_path is not None:
+        downs = np.array([r[0] for r in _rows(downbeat_path)], dtype=float)
+    order = np.argsort(beats)
+    return beats[order], (np.sort(downs) if downs is not None else None)
+
+
+def find_reference(audio_path: Path) -> tuple[Path | None, Path | None]:
+    """(beats file, separate downbeats file) next to an audio file, by stem:
+    A1.beats, A1.txt, A1_beats.txt, A1.beats.txt ... and A1.downbeats / A1_downbeats.txt."""
+    d, stem = audio_path.parent, audio_path.stem
+    beats = downs = None
+    for f in sorted(d.iterdir()):
+        n = f.name.lower()
+        if not f.is_file() or not n.startswith(stem.lower()) or f.suffix.lower() not in REF_EXTS + (".downbeats",):
+            continue
+        rest = n[len(stem):].lstrip("._- ")
+        if "downbeat" in rest:
+            downs = downs or f
+        elif rest.split(".")[0] in ("", "beats", "beat", "txt", "csv", "tsv", "lab"):
+            beats = beats or f
     return beats, downs
 
 
@@ -60,13 +119,16 @@ def main():
     out = ROOT / "evals" / "results" / f"part1_{args.pack}_{args.tracker}"
     out.mkdir(parents=True, exist_ok=True)
     rows = []
-    for ref_path in sorted(pack.glob("*.beats")):
-        name = ref_path.stem
+    for audio_path in sorted(p for p in pack.iterdir() if p.suffix.lower() in AUDIO_EXTS):
+        name = audio_path.stem
         if args.only and name not in args.only:
             continue
-        audio_path = next(p for p in pack.glob(f"{name}.*") if p.suffix in (".wav", ".flac", ".mp3"))
+        ref_path, down_path = find_reference(audio_path)
+        if ref_path is None:
+            print(f"  {name}: no reference annotation next to it -- skipped (not scored)")
+            continue
         audio, fmt = load(audio_path)
-        ref_b, ref_d = load_ref(ref_path)
+        ref_b, ref_d = load_ref(ref_path, down_path)
         t0 = time.time()
         grid = analyze(audio, fmt.sr, tracker=args.tracker)
         el = time.time() - t0
