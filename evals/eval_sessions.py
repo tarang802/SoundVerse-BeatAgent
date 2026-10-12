@@ -67,7 +67,8 @@ def grid_truth(y: np.ndarray, sr: int, beats: np.ndarray) -> dict:
 def check_turn(s: Session, paths: dict, baseline: dict) -> dict:
     y = s.render()
     info = sf.info(paths["audio"])
-    clicks = [qc.splice_click_db(y, s.audio, s.sr, t, src) for t, src in qc.splice_points(s.state, s.sr)]
+    clicks = [qc.splice_click_db(y, s.audio, s.sr, t, src, src_gains=g)
+              for t, src, g in qc.splice_points_gains(s.state, s.sr)]
     g = s.grid
     return {
         "format": {"sr": info.samplerate, "subtype": info.subtype, "expected_sr": s.sr,

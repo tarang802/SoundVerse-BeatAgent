@@ -111,9 +111,15 @@ def check(s: Session, base_flux_ok: float) -> dict:
             out["grid_measurable"] = True
     else:
         out["grid_ok"] = True
-    clicks = [qc.splice_click_db(y, s.audio, s.sr, t, src) for t, src in qc.splice_points(s.state, s.sr)]
+    pts = qc.splice_points_gains(s.state, s.sr)
+    clicks = [qc.splice_click_db(y, s.audio, s.sr, t, src, src_gains=g) for t, src, g in pts]
     out["max_click_db"] = float(max(clicks)) if clicks else None
     out["clicks_ok"] = all(c <= 3.0 for c in clicks)
+    if not out["clicks_ok"]:          # where, and which window: transition (crossfade) or junction
+        out["click_detail"] = [{"out_t": round(t, 4), "src": [round(x, 4) for x in src], "db": round(c, 2),
+                                "transition_db": round(qc._window_db(y, s.audio, s.sr, t, src, 0.012, -0.001, _g), 2),
+                                "junction_db": round(qc._window_db(y, s.audio, s.sr, t, src, 0.001, 0.001, _g), 2)}
+                               for (t, src, _g), c in zip(pts, clicks) if c > 3.0]
     return out
 
 
@@ -158,7 +164,7 @@ def main():
             c = check(s, base)
             bad = [n for n in ("length_ok", "order_ok", "grid_ok", "clicks_ok") if not c[n]]
             for n in bad:
-                stats[n.replace("_ok", "_fail")] += 1
+                stats[{"clicks_ok": "click_fail"}.get(n, n.replace("_ok", "_fail"))] += 1
             if bad:
                 bk["failed_checks"] += 1
                 failures.append({"seq": q, "step": k, "op": op.model_dump(), "failed": bad, "check": c})
