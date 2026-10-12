@@ -1,0 +1,225 @@
+{
+ "version": 1,
+ "tempo_bpm": 96.0,
+ "time_signature": "4/4",
+ "beats_per_bar": 4,
+ "bars": 2,
+ "loop_beats": 8.0,
+ "source": {
+  "name": "P1",
+  "duration_s": 5.0,
+  "sr": 44100,
+  "loop_start_s": 0.0
+ },
+ "analysis": {
+  "tracker_tempo_bpm": 96.004,
+  "analysed_copies": 4,
+  "clip_is_whole_bars": true,
+  "tempo_from": "clip length",
+  "time_signature": "4/4",
+  "first_downbeat_s": 0.0,
+  "drums": "HPSS percussive part, per-band onsets (kick 30-120 Hz, snare 1-5 kHz, hats 7-16 kHz), relative thresholds",
+  "pitched": "Basic Pitch 0.4 (ONNX) on the HPSS harmonic part, overtone ghosts dropped",
+  "llm_used": false,
+  "seconds": 6.31
+ },
+ "tracks": [
+  {
+   "name": "drums",
+   "kind": "drums",
+   "gain_db": 0.0,
+   "mute": false,
+   "patch": {
+    "wave": "sine",
+    "cutoff_hz": 8000.0,
+    "resonance": 1.0,
+    "attack_s": 0.005,
+    "decay_s": 0.2,
+    "sustain": 0.0,
+    "release_s": 0.08
+   },
+   "notes": [
+    {
+     "start": 0.0012,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 127
+    },
+    {
+     "start": 0.0012,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 76
+    },
+    {
+     "start": 0.5016,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 71
+    },
+    {
+     "start": 0.9996,
+     "duration": 0.25,
+     "pitch": 38,
+     "velocity": 104
+    },
+    {
+     "start": 1.0008,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 109
+    },
+    {
+     "start": 1.5,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 73
+    },
+    {
+     "start": 1.7438,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 92
+    },
+    {
+     "start": 1.9992,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 81
+    },
+    {
+     "start": 2.4938,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 109
+    },
+    {
+     "start": 2.5008,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 71
+    },
+    {
+     "start": 3.0,
+     "duration": 0.25,
+     "pitch": 38,
+     "velocity": 115
+    },
+    {
+     "start": 3.0,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 127
+    },
+    {
+     "start": 3.0952,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 67
+    },
+    {
+     "start": 3.5004,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 71
+    },
+    {
+     "start": 3.9938,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 124
+    },
+    {
+     "start": 3.9996,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 82
+    },
+    {
+     "start": 4.5,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 78
+    },
+    {
+     "start": 4.9993,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 116
+    },
+    {
+     "start": 5.0062,
+     "duration": 0.25,
+     "pitch": 38,
+     "velocity": 127
+    },
+    {
+     "start": 5.0945,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 71
+    },
+    {
+     "start": 5.5008,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 70
+    },
+    {
+     "start": 5.7435,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 93
+    },
+    {
+     "start": 6.0,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 81
+    },
+    {
+     "start": 6.4946,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 108
+    },
+    {
+     "start": 6.5016,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 76
+    },
+    {
+     "start": 6.9997,
+     "duration": 0.25,
+     "pitch": 38,
+     "velocity": 115
+    },
+    {
+     "start": 7.0008,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 121
+    },
+    {
+     "start": 7.1111,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 65
+    },
+    {
+     "start": 7.5012,
+     "duration": 0.25,
+     "pitch": 42,
+     "velocity": 71
+    },
+    {
+     "start": 7.9981,
+     "duration": 0.25,
+     "pitch": 36,
+     "velocity": 76
+    }
+   ]
+  }
+ ]
+}
