@@ -141,6 +141,25 @@ for each way it misbehaved in testing (see `DECISIONS.md` §6).
   for "yes"; nothing changes until then. So do edits that would leave < 2 s of audio.
 * Tempo is reported in the 80–160 BPM range; ½× / 2× buttons override it per deck.
 
+## How things are measured
+
+* **Beats / downbeats:** `mir_eval` F-measure at ±70 ms on the whole track (no 5 s trim),
+  plus AMLt; drift = |grid − reference| for every reference beat. Only where a reference
+  annotation exists (synthetic pack: exact by construction).
+* **Sync:** ground truth from the render itself — every pasted kick is a verbatim copy of
+  B placed at a known position and both tracks' true kick times are known, so the B−A
+  offset is arithmetic, not a detector reading. Detector measures are reported as
+  secondary (they would be circular after onset snapping).
+* **Clicks:** >6 kHz energy at each splice vs the same windows in the source, scaled by
+  the edit's own gain; the metric itself is validated against hard cuts of known
+  quality (`tests/test_click_metric.py`).
+* **Chat:** each case checks the resulting edit state against the intended edit (or, for
+  refusals and questions, that nothing changed and the reply states the measured fact) —
+  request handling, meaning and audio are checked separately, not just an `ok` flag.
+* **Part 3:** `mir_eval.transcription` onset-only note F (±50 ms, pitch ±50 cents) vs the
+  reference MIDI, drums and pitched parts separately; render timing = onsets of the
+  offline render vs the original over two loop passes (2.9 ms frames).
+
 ## Results (synthetic substitutes; regenerate with the commands above)
 
 **Part 1** — A1–A7 (`evals/results/part1_substitute_beat_this/results.md`)
