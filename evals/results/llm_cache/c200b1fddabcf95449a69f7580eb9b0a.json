@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "message": "pitch it up a semitone", "text": "{\"action\":\"answer\",\"ops\":[],\"sync\":null,\"interpretation\":\"The user is asking to pitch shift the track up a semitone, which is an operation this audio editor cannot perform.\",\"message\":\"I cannot change the pitch of tracks.\"}"}
