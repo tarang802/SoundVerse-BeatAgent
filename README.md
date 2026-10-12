@@ -18,7 +18,9 @@ Basic Pitch), never from the LLM.
 > brief-target number below is measured on **synthetic substitutes** built to the
 > brief's descriptions, with exact answer keys. They are labelled as such everywhere and
 > are never presented as the official pack. Drop the real pack into `data/testpack/`
-> and `python run.py eval --pack testpack` scores it (common annotation layouts accepted).
+> and `python run.py eval --pack testpack` scores it (common annotation layouts accepted);
+> for Part 3, `python -m evals.eval_part3 --pack <folder>` takes clips with optional
+> `<clip>.mid` references (no `pack.json` needed; clips without MIDI get render-only results).
 
 ## Status
 
