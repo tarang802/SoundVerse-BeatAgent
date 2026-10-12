@@ -21,7 +21,7 @@
 | Part 3 note F (mir_eval onset-only, +-50 ms) | drums / pitched per clip | P1: drums 0.9286, pitched —; P2: drums 0.7071, pitched 0.9048; P3: drums —, pitched 0.9577; P4: drums 0.5093, pitched 0.6838 |
 | Part 3 on real music (8-bar excerpts, no reference MIDI) | pipeline + render rhythm vs original | 3 tracks; pages clean 3/3; render onset F 0.60-0.78 |
 | Part 2 engine fuzz (no LLM) | 421 random edits, invariants after each | 414 applied, 7 refused cleanly, 0 crashes, 0 invariant failures |
-| Unit tests `tests.test_imports` | | 37/37 pass (exit 0) |
+| Unit tests `tests.test_imports` | | 39/39 pass (exit 0) |
 | Unit tests `tests.test_edl` | | 26/26 pass (exit 0) |
 | Unit tests `tests.test_score` | | 7/7 pass (exit 0) |
 | Unit tests `tests.test_ref_formats` | | 15/15 pass (exit 0) |
