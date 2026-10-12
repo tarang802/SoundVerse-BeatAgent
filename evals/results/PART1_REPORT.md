@@ -12,21 +12,21 @@ Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-mea
 | Downbeat F-measure (±70 ms) | ≥ 0.80 | 5/6 clips pass; fails: A6 0.67 | ❌ |
 | Grid drift, 6-min constant clip | every beat within 10 ms | A1 (362 s): max 1.92 ms, 100% within 10 ms | ✅ |
 | Sync kick offsets | median ≤ 5 ms, max ≤ 15 ms | A7→A1 @ bar 33: median 0.15 ms, max 0.28 ms, 122/123 beats measured | ✅ |
-| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 49.01 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
+| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 55.5 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
 
 ## Beat grid per clip
 
-| clip | duration_s | analysis_s | grid_type | tempo_bpm | time_signature | beat_F | downbeat_F | drift_max_ms | within_10ms | raw_beat_F | raw_drift_max_ms | confidence | librosa beat_F |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| A1 | 361.5 | 49.01 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
-| A2 | 157.4 | 6.63 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
-| A3 | 185.2 | 15.8 | piecewise_constant | 117.997 | 4/4 | 0.9917 | n/a | 108.55 | 0.8639 | 0.9959 | 52.37 | 0.981 | 0.9903 |
-| A4 | 145.9 | 11.49 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
-| A5 | 140.5 | 9.29 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
-| A6 | 114.0 | 7.43 | constant | 68.0 | 12/8 | 1.0 | 0.6667 | 1.83 | 1.0 | 0.9961 | 22.35 | 0.857 | 0.9961 |
-| A7 | 183.3 | 12.14 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
+| clip | duration_s | analysis_s | grid_type | tempo_bpm | time_signature | beat_F | beat_AMLt | downbeat_F | drift_max_ms | within_10ms | raw_beat_F | raw_drift_max_ms | confidence | librosa beat_F |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A1 | 361.5 | 55.5 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
+| A2 | 157.4 | 24.86 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
+| A3 | 185.2 | 27.14 | piecewise_constant | 117.997 | 4/4 | 0.9917 | 0.9972 | n/a | 108.55 | 0.8639 | 0.9959 | 52.37 | 0.981 | 0.9903 |
+| A4 | 145.9 | 12.9 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
+| A5 | 140.5 | 19.39 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
+| A6 | 114.0 | 20.61 | constant | 68.0 | 12/8 | 1.0 | 1.0 | 0.6667 | 1.83 | 1.0 | 0.9961 | 22.35 | 0.857 | 0.9961 |
+| A7 | 183.3 | 29.75 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
 
-`raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.
+`beat_AMLt` = mir_eval continuity score that also accepts double/half-tempo and off-beat counting (F low + AMLt high = right beats, different counting convention; both low = wrong grid). `raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.
 
 ## Failure analysis by clip
 

@@ -70,12 +70,14 @@ def main():
 
     # ---- per clip
     L.append("## Beat grid per clip\n")
-    cols = ["clip", "duration_s", "analysis_s", "grid_type", "tempo_bpm", "time_signature", "beat_F", "downbeat_F",
+    cols = ["clip", "duration_s", "analysis_s", "grid_type", "tempo_bpm", "time_signature", "beat_F", "beat_AMLt", "downbeat_F",
             "drift_max_ms", "within_10ms", "raw_beat_F", "raw_drift_max_ms", "confidence"]
     L.append("| " + " | ".join(cols) + " | librosa beat_F |\n|" + "---|" * (len(cols) + 1))
     for r in bt:
         L.append("| " + " | ".join(str(r.get(c, "n/a")) for c in cols) + f" | {lb.get(r['clip'], {}).get('beat_F', 'n/a')} |")
-    L.append("\n`raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. "
+    L.append("\n`beat_AMLt` = mir_eval continuity score that also accepts double/half-tempo and off-beat counting "
+             "(F low + AMLt high = right beats, different counting convention; both low = wrong grid). "
+             "`raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. "
              "A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.\n")
 
     # ---- failure analysis

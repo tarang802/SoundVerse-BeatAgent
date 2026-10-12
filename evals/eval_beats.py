@@ -4,7 +4,8 @@
 
 Metrics (mir_eval, +-70 ms, computed on the FULL track: we do not apply
 mir_eval's default 5-second trim, so early beats count too):
-  beat_F, downbeat_F            fitted grid vs reference
+  beat_F, downbeat_F            fitted grid vs reference (strict)
+  beat_AMLt                     mir_eval continuity: accepts double/half/off-beat counting
   raw_beat_F                    the tracker's own beats before grid fitting
   drift_max_ms / within_10ms    constant-tempo clips: |grid - reference| for every reference beat
   analysis_s                    wall-clock analysis time on this machine's CPU
@@ -77,6 +78,9 @@ def main():
              "tempo_bpm": round(grid.tempo_bpm, 3), "time_signature": grid.time_signature,
              "confidence": grid.confidence.get("overall"),
              "beat_F": round(mir_eval.beat.f_measure(ref_b, grid.beats, 0.07), 4),
+             # AMLt: also accepts double/half tempo and off-beat counting. Reported next to
+             # the strict F so "right beats, different counting convention" is visible.
+             "beat_AMLt": round(mir_eval.beat.continuity(ref_b, grid.beats)[3], 4),
              "raw_beat_F": round(mir_eval.beat.f_measure(ref_b, raw_b, 0.07), 4)}
         if ref_d is not None:
             r["downbeat_F"] = round(mir_eval.beat.f_measure(ref_d, grid.downbeats, 0.07), 4)
@@ -89,7 +93,7 @@ def main():
     with open(out / "results.json", "w") as f:
         json.dump({"pack": args.pack, "label": ("SYNTHETIC SUBSTITUTE - not the assignment benchmark"
                                                 if args.pack == "substitute" else args.pack), "rows": rows}, f, indent=1)
-    cols = ["clip", "duration_s", "analysis_s", "grid_type", "tempo_bpm", "time_signature", "beat_F", "raw_beat_F",
+    cols = ["clip", "duration_s", "analysis_s", "grid_type", "tempo_bpm", "time_signature", "beat_F", "beat_AMLt", "raw_beat_F",
             "downbeat_F", "drift_max_ms", "within_10ms", "raw_drift_max_ms", "confidence"]
     md = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     md += ["| " + " | ".join(str(r.get(c, "n/a")) for c in cols) + " |" for r in rows]
