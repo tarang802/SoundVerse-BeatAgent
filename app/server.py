@@ -42,7 +42,7 @@ load_dotenv(ROOT / ".env")
 
 from beatagent import sync as syncmod  # noqa: E402
 from beatagent.agent import BeatAgent  # noqa: E402
-from beatagent.audio_io import save  # noqa: E402
+from beatagent.audio_io import load, save  # noqa: E402
 from beatagent.click import audition  # noqa: E402
 from beatagent.llm import make_interpreter  # noqa: E402
 from beatagent.edl import EditError  # noqa: E402
@@ -303,6 +303,71 @@ def sync_file(sync_id: str, which: str):
     if d is None or which not in ("a.wav", "b.wav", "mix.wav", "report.json"):
         raise HTTPException(404, "Unknown sync render.")
     return FileResponse(d / which, filename=f"sync_{sync_id}_{which}")
+
+
+# ------------------------------------------------------------------ Part 3: audio -> Web Audio page
+RECREATES: dict[str, Path] = {}
+MAX_RECREATE_S = 40.0          # the brief's clips are 2-16 bars
+
+
+@app.get("/api/p3/library")
+def p3_library():
+    d = ROOT / "data" / "p3"
+    meta = json.loads((d / "pack.json").read_text(encoding="utf-8")) if (d / "pack.json").exists() else {}
+    return [{"name": p.stem, "path": str(p.relative_to(ROOT)).replace("\\", "/"), "synthetic": True,
+             "description": meta.get(p.stem, {}).get("description", "")}
+            for p in sorted(d.glob("*.wav"))] if d.exists() else []
+
+
+class RecreateReq(BaseModel):
+    path: str | None = None     # a clip file (library / data/p3)
+    sid: str | None = None      # or a deck's CURRENT (possibly edited) version
+
+
+@app.post("/api/recreate")
+def recreate(req: RecreateReq):
+    from beatagent.transcribe import transcribe
+    from beatagent.webaudio import write_page
+    if req.sid:
+        s = _agent(req.sid).s
+        audio, sr, name = s.render(), s.sr, f"{s.path.stem} (deck v{s.pos})"
+    elif req.path:
+        p = (ROOT / req.path).resolve()
+        if ROOT not in p.parents or not p.exists() or p.suffix.lower() not in (".wav", ".mp3", ".flac"):
+            raise HTTPException(404, f"No WAV/MP3/FLAC clip at {req.path}")
+        try:
+            audio, fmt = load(p)
+        except ValueError as e:
+            raise HTTPException(400, str(e)) from e
+        sr, name = fmt.sr, p.stem
+    else:
+        raise HTTPException(400, "Give a clip path or a deck id.")
+    dur = len(audio) / sr
+    if dur > MAX_RECREATE_S:
+        raise HTTPException(400, f"That clip is {dur:.0f} s; recreation takes a short loop (2-16 bars, up to "
+                                 f"{MAX_RECREATE_S:.0f} s). Trim the deck first, e.g. chat 'keep only bars 1-8'.")
+    try:
+        score = transcribe(audio, sr, name)
+    except ValueError as e:                       # no pulse / too short
+        raise HTTPException(400, f"Couldn't analyse that clip: {e}") from e
+    rid = uuid.uuid4().hex[:8]
+    d = WORK / "recreate" / rid
+    d.mkdir(parents=True)
+    score.save(d / "score.json")
+    write_page(score, d / "page.html", name)
+    save(d / "original.wav", audio, sr, "PCM_16", "WAV")
+    RECREATES[rid] = d
+    return {"id": rid, "name": name, "tempo_bpm": score.tempo_bpm, "time_signature": score.time_signature,
+            "bars": score.bars, "loop_s": round(score.loop_seconds, 3), "analysis": score.analysis,
+            "tracks": [{"name": t.name, "kind": t.kind, "notes": len(t.notes)} for t in score.tracks]}
+
+
+@app.get("/api/recreate/{rid}/{which}")
+def recreate_file(rid: str, which: str):
+    d = RECREATES.get(rid)
+    if d is None or which not in ("page.html", "score.json", "original.wav"):
+        raise HTTPException(404, "Unknown recreation.")
+    return FileResponse(d / which, filename=f"recreate_{rid}_{which}" if which != "page.html" else None)
 
 
 # ------------------------------------------------------------------ frontend
