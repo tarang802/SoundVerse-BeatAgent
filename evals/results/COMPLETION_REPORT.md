@@ -16,10 +16,12 @@
 | Self-sync control, identical (perfect by construction) | detector floor on real hip-hop | 02. Seedhe Maut - Toh : median 0.07 / max 38.85 ms; 01. Seedhe Maut - Nanc: median 0.01 / max 0.61 ms |
 | Self-sync control, different bars (perfect by construction) | detector floor on real hip-hop | 02. Seedhe Maut - Toh : median 11.65 / max 38.76 ms; 01. Seedhe Maut - Nanc: median 16.88 / max 69.22 ms |
 | Part 2 brief sessions (6, in order, LLM) | the brief's chat script | 6 sessions, 10 turns; audio checks clean on 6/6 (100%) edited turns |
-| Part 2 chat suite (producer phrasing, LLM) | all 7 ops, paraphrase, multi-op, grid-follow, undo/redo, bad input, subjective, questions, tempo-change, sync, real song | 58/58 (100%) (answered by the LLM: 58) |
+| Part 2 chat suite (producer phrasing, LLM) | all 7 ops, paraphrase, multi-op, grid-follow, undo/redo, bad input, subjective, questions, tempo-change, sync, real song | 58/58 (100%) (answered by the LLM: 58) — full run on the prompt *before* the 13 Oct fix (free-tier quota prevented a second full run) |
+| Part 2 live LLM re-check on the FINAL prompt | 13 cases most exposed to the 13 Oct prompt change (see `part2_chat_suite/LLM_LIVE_CHECK.md`) | 13/13 (100%), answered by the LLM: 13 |
 | Part 2 engine fuzz (no LLM) | 421 random edits, invariants after each | 414 applied, 7 refused cleanly, 0 crashes, 0 invariant failures |
 | Unit tests `tests.test_edl` | | 26/26 pass (exit 0) |
 | Unit tests `tests.test_imports` | | 26/26 pass (exit 0) |
+| Unit tests `tests.test_agent_llm` | | 29/29 pass (exit 0) |
 
 ## Part 1 — beat alignment and sync
 
@@ -239,6 +241,8 @@
 | chat suite (`b5`) | LLM rewrote "60 dB louder" as +24 dB (the engine's limit) and it was applied silently | code keeps the user's stated dB magnitude, LLM only picks direction; engine then refuses 60 dB with a reason | fixed |
 | chat suite (`b11`) | LLM turned "remove bar -2" into bar 1 and applied it | deterministic negative/fractional bar-beat validator before the LLM | fixed |
 | code audit | Offline sync rule regex contained literal backspace characters (shell-escaping), so it could never match | regex fixed; `tests/test_imports.py` now fails on control characters in source | fixed |
+| real app session (13 Oct) | "cut beat 16-32 repeat it twice" refused by flash-lite as "fractions" (2 of 3 tries) | prompt rule reworded (any whole-number range is valid, singular or plural) + code repair round when the LLM claims fractions the code found none of | fixed (3/3 live; `p5` regression case) |
+| real app session (13 Oct) | quota fallback note showed a raw API error dump | plain-words note: "X is unavailable (out of free-tier quota); answered by Y" | fixed |
 | A3 investigation | 112→118 BPM ramp in the first 15 s: piecewise line misses up to 108 ms there | tried splicing tracked beats into ramps: worse overall (tracker unreliable there) — reverted | **open** |
 
 ## Known limitations (honest)

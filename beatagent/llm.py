@@ -77,7 +77,8 @@ CONVENTIONS (fixed; always follow them and mention any you relied on in `interpr
   "bar 7" -> start 7, end 7. "the first 3 bars" -> bars 1-3.
 - "the last N beats/bars" -> use {"unit":..., "last": N}.
 - start/end null = start/end of the audio.
-- Only whole beats and bars can be addressed. Fractions ("beat 3.5", "half a bar") -> "clarify".
+- Any WHOLE-number beat or bar range is valid, singular or plural: "beat 16-32", "beats 16 to 32",
+  "bar 5-8" are all fine. Only FRACTIONS ("beat 3.5", "half a bar") -> "clarify".
 - repeat: `total_plays` counts the original. "repeat it twice" / "loop it two times" / "double it"
   = 2 plays in total (original + 1 copy). "loop it 3 times" = 3. "repeat bar 7" with no count = 2.
   The repeated block is inserted in place and the rest of the track follows (state this reading).
@@ -93,6 +94,7 @@ CONVENTIONS (fixed; always follow them and mention any you relied on in `interpr
 
 EXAMPLES (message -> ops):
 - "drop bars 9 to 12" -> [{"op":"remove","range":{"unit":"bars","start":9,"end":12}}]
+- "grab beat 40-48 loop it twice" -> [{"op":"repeat","range":{"unit":"beats","start":40,"end":48},"total_plays":2}]
 - "loop beats 8-16 three times" -> [{"op":"repeat","range":{"unit":"beats","start":8,"end":16},"total_plays":3}]
 - "fade the last 2 bars out" -> [{"op":"fade","direction":"out","range":{"unit":"bars","last":2}}]
 - "move bar 3 to the start of bar 10" -> [{"op":"move","range":{"unit":"bars","start":3,"end":3},"to":{"unit":"bars","index":10}}]
@@ -169,7 +171,10 @@ class GeminiInterpreter:
                 try:
                     resp = self.client.models.generate_content(model=m, contents=contents, config=config)
                     if m != self.model:
-                        self.notes.append(f"model {self.model} unavailable ({str(last)[:80]}); using {m}")
+                        t = str(last)
+                        why = ("out of free-tier quota" if "429" in t or "RESOURCE_EXHAUSTED" in t else
+                               "not found / retired" if "404" in t else "busy" if "503" in t else type(last).__name__)
+                        self.notes.append(f"{self.model} is unavailable ({why}); answered by {m} instead.")
                         self.model = m             # remember what works for later turns
                     return resp
                 except Exception as e:  # noqa: BLE001

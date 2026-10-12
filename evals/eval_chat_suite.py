@@ -67,6 +67,8 @@ CASES = [
     ("p1", "repeat", "A1", [], "loop bars 9-12 three times", {"ops": [[Repeat(range=bars(9, 12), total_plays=3)]]}),
     ("p2", "repeat", "A1", [], "repeat bar 7", {"ops": [[Repeat(range=bars(7), total_plays=2)]]}),
     ("p3", "repeat", "A1", [], "double bars 33 to 40", {"ops": [[Repeat(range=bars(33, 40), total_plays=2)]]}),
+    # from a real app session: singular "beat" + range, no "and" -> once refused as "fractions"
+    ("p5", "repeat", "A2", [], "cut beat 16-32 repeat it twice", {"ops": [[Repeat(range=beats(16, 32), total_plays=2)]]}),
     ("p4", "repeat", "A1", [], "play the first 8 beats 4 times", {"ops": [[Repeat(range=beats(0, 8), total_plays=4)], [Repeat(range=Range(unit="beats", end=8), total_plays=4)]]}),
     ("m1", "move", "A1", [], "move bar 10 to the start", {"ops": [[Move(range=bars(10), to=Position(unit="bars", index=1))], [Move(range=bars(10), to=Position(unit="beats", index=0))]]}),
     ("m2", "move", "A1", [], "move bars 3-4 after bar 8", {"ops": [[Move(range=bars(3, 4), to=Position(unit="bars", index=9))]]}),
@@ -165,6 +167,7 @@ def expected_pieces(track: str, wd: Path, setup, ops) -> tuple:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--out", default="results.json", help="results file name (subset runs: use another name)")
     ap.add_argument("--llm", default="gemini", choices=["gemini", "rules"])
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -252,7 +255,7 @@ def main():
         flag = "PASS" if row["pass"] else "FAIL"
         print(f"  {cid:4s} {cat:13s} {flag}{' (offline)' if offline else ''}  '{say}' -> [{r.action}] "
               f"{r.text.splitlines()[0][:95]}" + ("" if row["pass"] else f"   checks={checks}"))
-    (OUT / "results.json").write_text(json.dumps(rows, indent=1, default=str), encoding="utf-8")
+    (OUT / args.out).write_text(json.dumps(rows, indent=1, default=str), encoding="utf-8")
     done = [r for r in rows if "pass" in r]
     llm = [r for r in done if not r["offline_fallback"]]
     print(f"\npassed {sum(r['pass'] for r in done)}/{len(done)}  (answered by LLM: {len(llm)}, "

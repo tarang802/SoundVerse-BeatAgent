@@ -49,6 +49,8 @@ LEDGER = ["## Bugs found in the final debugging pass\n",
           "| chat suite (`b5`) | LLM rewrote \"60 dB louder\" as +24 dB (the engine's limit) and it was applied silently | code keeps the user's stated dB magnitude, LLM only picks direction; engine then refuses 60 dB with a reason | fixed |",
           "| chat suite (`b11`) | LLM turned \"remove bar -2\" into bar 1 and applied it | deterministic negative/fractional bar-beat validator before the LLM | fixed |",
           "| code audit | Offline sync rule regex contained literal backspace characters (shell-escaping), so it could never match | regex fixed; `tests/test_imports.py` now fails on control characters in source | fixed |",
+          "| real app session (13 Oct) | \"cut beat 16-32 repeat it twice\" refused by flash-lite as \"fractions\" (2 of 3 tries) | prompt rule reworded (any whole-number range is valid, singular or plural) + code repair round when the LLM claims fractions the code found none of | fixed (3/3 live; `p5` regression case) |",
+          "| real app session (13 Oct) | quota fallback note showed a raw API error dump | plain-words note: \"X is unavailable (out of free-tier quota); answered by Y\" | fixed |",
           "| A3 investigation | 112→118 BPM ramp in the first 15 s: piecewise line misses up to 108 ms there | tried splicing tracked beats into ramps: worse overall (tracker unreliable there) — reverted | **open** |",
           "",
           "## Known limitations (honest)\n",
@@ -87,7 +89,7 @@ def by_cat(rows, key="category"):
 
 def unit_tests():
     out = {}
-    for mod in ("tests.test_edl", "tests.test_imports"):
+    for mod in ("tests.test_edl", "tests.test_imports", "tests.test_agent_llm"):
         p = subprocess.run([sys.executable, "-m", mod], cwd=ROOT, capture_output=True, text=True)
         txt = p.stdout + p.stderr
         out[mod] = (txt.count("[PASS]"), txt.count("[PASS]") + txt.count("[FAIL]"), p.returncode)
@@ -166,6 +168,12 @@ def main():
     L.append(f"| Part 2 chat suite (producer phrasing, LLM) | all 7 ops, paraphrase, multi-op, grid-follow, undo/redo, "
              f"bad input, subjective, questions, tempo-change, sync, real song | {pct(sum(r['pass'] for r in chat_done), len(chat_done))}"
              f" (answered by the LLM: {len(chat_llm)}) |")
+    live = [r for r in (jload("part2_chat_suite/results_live_check.json") or []) if "pass" in r]
+    if live:
+        L[-1] = L[-1].rstrip(" |") + " — full run on the prompt *before* the 13 Oct fix (free-tier quota prevented a second full run) |"
+        L.append(f"| Part 2 live LLM re-check on the FINAL prompt | 13 cases most exposed to the 13 Oct prompt change "
+                 f"(see `part2_chat_suite/LLM_LIVE_CHECK.md`) | {pct(sum(r['pass'] for r in live), len(live))}, "
+                 f"answered by the LLM: {sum(not r.get('offline_fallback') for r in live)} |")
     if fuzz:
         s = fuzz["stats"]
         fails = s["length_fail"] + s["order_fail"] + s["grid_fail"] + s["click_fail"] + s["undo_fail"] + s["redo_fail"]

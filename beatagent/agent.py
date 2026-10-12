@@ -25,6 +25,7 @@ class Reply:
         return self.__dict__.copy()
 
 
+_CLAIMS_FRACTION = re.compile(r"fraction|whole (?:beat|bar|number)s?|individual beats", re.IGNORECASE)
 _PROPOSES = re.compile(r"\b(bars?|beats?)\s+\d+", re.IGNORECASE)   # a clarify message naming a range
 _NUM_REF = re.compile(r"\b(bars?|beats?)\s+(?:number\s+)?(-\s?\d+(?:\.\d+)?|\d+\.\d+)", re.IGNORECASE)
 
@@ -118,6 +119,18 @@ class BeatAgent:
                                          "needs a `range` (whole track: start and end null). Return a corrected plan.]",
                                          self.s.grid.summary(), sections, self.pending_raw, self.log,
                                          partner=partner)
+            elif plan.action in ("answer", "clarify") and not plan.ops and _CLAIMS_FRACTION.search(plan.message or ""):
+                # Seen (flash-lite, 2 of 3 tries): "cut beat 16-32 repeat it twice" refused as
+                # "fractions or individual beats cannot be addressed". _bad_numbers already
+                # passed, so the message has only whole numbers: the refusal is wrong.
+                self.retried = "false fraction claim"
+                fixed = self.llm.plan(f"{text}\n\n[SYSTEM: code checked this message: every bar/beat number in it "
+                                      "is a whole number, so it is addressable (\"beat 16-32\" = beats 16 to 32). "
+                                      "Do not refuse for fractions; return the edit it asks for.]",
+                                      self.s.grid.summary(), sections, self.pending_raw, self.log,
+                                      partner=partner)
+                if not _CLAIMS_FRACTION.search(fixed.message or "") or fixed.ops:
+                    plan = fixed
             elif plan.action == "clarify" and not plan.ops and _PROPOSES.search(plan.message or ""):
                 # Seen: "Did you mean bars 81 to 96?" with no ops. Only ops can be confirmed,
                 # so the user's "yes" would do nothing. One round to attach the edit.
