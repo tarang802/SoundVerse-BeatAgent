@@ -1,0 +1,78 @@
+{
+ "P1": {
+  "bpm": 96.0,
+  "bars": 2,
+  "time_signature": "4/4",
+  "length_s": 5.0,
+  "description": "2-bar boom-bap drum loop, 96 BPM, syncopated kick",
+  "tracks": {
+   "drums": {
+    "drum": true,
+    "n_notes": 26
+   }
+  },
+  "reference": "MIDI",
+  "synthetic": true
+ },
+ "P2": {
+  "bpm": 122.0,
+  "bars": 4,
+  "time_signature": "4/4",
+  "length_s": 7.868852,
+  "description": "4-bar house drums + syncopated bass in A minor, 122 BPM",
+  "tracks": {
+   "drums": {
+    "drum": true,
+    "n_notes": 44
+   },
+   "bass": {
+    "drum": false,
+    "n_notes": 20
+   }
+  },
+  "reference": "MIDI",
+  "synthetic": true
+ },
+ "P3": {
+  "bpm": 84.0,
+  "bars": 8,
+  "time_signature": "4/4",
+  "length_s": 22.857143,
+  "description": "8-bar piano: block chords (C-Am-F-G x2) + melody, 84 BPM",
+  "tracks": {
+   "piano": {
+    "drum": false,
+    "n_notes": 68
+   }
+  },
+  "reference": "MIDI",
+  "synthetic": true
+ },
+ "P4": {
+  "bpm": 128.0,
+  "bars": 8,
+  "time_signature": "4/4",
+  "length_s": 15.0,
+  "description": "8-bar dense mix: drums, bass, saw chords, lead, delay smear, 128 BPM",
+  "tracks": {
+   "drums": {
+    "drum": true,
+    "n_notes": 144
+   },
+   "bass": {
+    "drum": false,
+    "n_notes": 64
+   },
+   "chords": {
+    "drum": false,
+    "n_notes": 24
+   },
+   "lead": {
+    "drum": false,
+    "n_notes": 40
+   }
+  },
+  "reference": "none in the brief (synthetic MIDI kept)",
+  "synthetic": true
+ }
+}
