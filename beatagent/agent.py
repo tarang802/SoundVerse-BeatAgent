@@ -25,8 +25,9 @@ class Reply:
         return self.__dict__.copy()
 
 
-MIN_KEEP_S = 2.0            # an edit leaving less than this (or MIN_KEEP_FRACTION) needs a "yes"
-MIN_KEEP_FRACTION = 0.05
+# An edit leaving less than this needs a "yes". Absolute, not a fraction: a 5 % rule also
+# caught "trim it down to just bars 1-8" (15.5 s of a 6-minute track) -- a deliberate trim.
+MIN_KEEP_S = 2.0
 _CLAIMS_FRACTION = re.compile(r"fraction|whole (?:beat|bar|number)s?|individual beats", re.IGNORECASE)
 _PROPOSES = re.compile(r"\b(bars?|beats?)\s+\d+", re.IGNORECASE)   # a clarify message naming a range
 _NUM_REF = re.compile(r"\b(bars?|beats?)\s+(?:number\s+)?(-\s?\d+(?:\.\d+)?|\d+\.\d+)", re.IGNORECASE)
@@ -224,7 +225,7 @@ class BeatAgent:
             after = self._dry_duration(ops)
         except EditError:
             after = None                       # _apply reports the real error
-        if after is not None and (after < MIN_KEEP_S or after < MIN_KEEP_FRACTION * before):
+        if after is not None and after < MIN_KEEP_S:
             echo = self._dry_run(ops)
             self.pending, self.pending_raw = ops, raw
             return Reply(f"That would leave only {after:.1f} s of the {before:.1f} s track. I haven't applied it.\n"
