@@ -94,6 +94,10 @@ def transcribe_drums(perc: np.ndarray, sr: int, peak: float) -> list[tuple[float
         for t, s in ons:
             p = 46 if name == "hat" and _hat_is_open(perc, sr, t) else pitch
             hits.append((t, p, int(np.clip(40 + 87 * (s / top), 1, 127))))
+    # a hat ON a snare hit rings on in the hat band because of the SNARE's noise tail,
+    # which the decay test reads as an open hat (P1: all 4 "open hats" sat on snares)
+    snares = [t for t, p, _ in hits if p == 38]
+    hits = [(t, 42 if p == 46 and any(abs(t - u) < 0.01 for u in snares) else p, v) for t, p, v in hits]
     return sorted(hits)
 
 
