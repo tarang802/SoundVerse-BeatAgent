@@ -104,6 +104,17 @@ def test_upload(x):
         check(f"upload '{fname}'", r.status_code == 200 and ok_file,
               f"HTTP {r.status_code} saved as {[f.name for f in new]} "
               f"{[f.stat().st_size for f in new]}B {r.text[:80] if r.status_code != 200 else ''}")
+    import tempfile
+    outside = Path(tempfile.gettempdir()) / "beat_agent_outside_test.wav"   # real audio OUTSIDE the project
+    try:
+        sf.write(str(outside), x, SR, subtype="PCM_16")
+        for path in (str(outside), "../" + outside.name, "..\\" + outside.name):
+            r = c.post("/api/open", json={"path": path})
+            check(f"open outside the project refused ({path[:40]})", r.status_code == 404, f"HTTP {r.status_code}")
+    finally:
+        outside.unlink(missing_ok=True)
+    r = c.post("/api/open", json={"path": "data/substitute/A2.wav"})
+    check("open a library file still works", r.status_code == 200, f"HTTP {r.status_code}")
     r = c.post("/api/upload", files={"file": ("notes.txt", b"hello", "text/plain")})
     check("unsupported extension refused with 400", r.status_code == 400, r.text[:80])
     bad = WORK / "corrupt.flac"

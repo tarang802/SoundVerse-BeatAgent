@@ -137,8 +137,10 @@ class OpenReq(BaseModel):
 
 @app.post("/api/open")
 def open_path(req: OpenReq):
-    p = (ROOT / req.path).resolve() if not Path(req.path).is_absolute() else Path(req.path)
-    if not p.exists() or p.suffix.lower() not in (".wav", ".mp3", ".flac"):
+    # library files only (inside the project); other music comes in through /api/upload.
+    # An absolute path used to be accepted, letting any client read audio anywhere on disk.
+    p = (ROOT / req.path).resolve()
+    if ROOT not in p.parents or not p.exists() or p.suffix.lower() not in (".wav", ".mp3", ".flac"):
         raise HTTPException(404, f"No WAV/MP3/FLAC file at {req.path}")
     return _open(p)
 
