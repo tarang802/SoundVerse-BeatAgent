@@ -3,7 +3,7 @@
  "a": "A1",
  "b": "A7",
  "method": "beat_anchored",
- "render_s": 4.19,
+ "render_s": 4.22,
  "plan": {
   "a_bar": 33,
   "b_bar": 1,
@@ -145,9 +145,9 @@
  },
  "join_clicks": {
   "n_joins": 123,
-  "median_db": -3.4,
-  "max_db": -2.4,
-  "joins_over_3db": 0
+  "median_db": 19.7,
+  "max_db": 22.8,
+  "joins_over_3db": 62
  },
  "pitch_check": {
   "in_hz": 110.0,
