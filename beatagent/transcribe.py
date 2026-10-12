@@ -42,6 +42,10 @@ DRUM_BANDS = {                    # name: (lo, hi, relative threshold, GM pitch,
 # (piano 0.10 > snares 0.01-0.03), but a snare is NOISE: spectral flatness 1-8 kHz of
 # real snares 0.32-0.40, piano attacks 0.00 -> SNARE_MIN_FLATNESS.
 SNARE_MIN_FLATNESS = 0.2
+# A weak "hat" within 12 ms of a kick is usually the kick's own click; dropped when its
+# strength is below HAT_ON_KICK_Q x the strongest hat (0 = rule off). Chosen on the dev
+# set (evals/tune_p3_drums.py), never on P1-P4.
+HAT_ON_KICK_Q = 0.0
 
 
 def band_onsets(x: np.ndarray, sr: int, lo: float, hi: float, rel: float,
@@ -61,8 +65,8 @@ def band_onsets(x: np.ndarray, sr: int, lo: float, hi: float, rel: float,
     return [(t, s) for t, s in out if s >= rel * top]
 
 
-def _hat_is_open(x: np.ndarray, sr: int, t: float) -> bool:
-    env, esr = band_envelope(x, sr, 7000.0, 16000.0, hop=32)
+def _hat_is_open(env: np.ndarray, esr: float, t: float) -> bool:
+    """Open hat = the 7-16 kHz envelope still rings 60-120 ms after the hit."""
     i = int(t * esr)
     head = env[i:i + int(0.03 * esr)].mean() if i < len(env) else 0.0
     tail = env[i + int(0.06 * esr): i + int(0.12 * esr)].mean() if i < len(env) else 0.0
@@ -81,23 +85,45 @@ def flatness(x: np.ndarray, sr: int, t: float, lo=1000.0, hi=8000.0, win=0.03) -
     return float(np.exp(np.mean(np.log(S))) / np.mean(S))
 
 
-def transcribe_drums(perc: np.ndarray, sr: int, peak: float) -> list[tuple[float, int, int]]:
+def drum_candidates(perc: np.ndarray, sr: int) -> dict:
+    """Every onset per drum band with its strength (no thresholds yet), the snare
+    candidates' flatness and the hats' open flag: computed ONCE per clip, so thresholds
+    can be applied (or tuned) without re-filtering the audio."""
+    env_hat, esr_hat = band_envelope(perc, sr, 7000.0, 16000.0, hop=32)
+    out = {}
+    for name, (lo, hi, *_rest) in DRUM_BANDS.items():
+        ons = band_onsets(perc, sr, lo, hi, 0.0)
+        extra = [flatness(perc, sr, t) if name == "snare" else
+                 _hat_is_open(env_hat, esr_hat, t) if name == "hat" else None for t, _ in ons]
+        out[name] = [(t, s, e) for (t, s), e in zip(ons, extra)]
+    return out
+
+
+def transcribe_drums(perc: np.ndarray, sr: int, peak: float, cands: dict | None = None) -> list[tuple[float, int, int]]:
     """-> [(time_s, GM pitch, velocity)]. peak: the clip's peak |amplitude|."""
+    cands = cands if cands is not None else drum_candidates(perc, sr)
     hits = []
     for name, (lo, hi, rel, pitch, floor) in DRUM_BANDS.items():
-        ons = [(t, s) for t, s in band_onsets(perc, sr, lo, hi, rel) if s >= floor * peak]
+        allc = cands.get(name, [])
+        top_all = max((s for _, s, _ in allc), default=0.0)
+        ons = [(t, s, e) for t, s, e in allc if s >= rel * top_all and s >= floor * peak]
         if name == "snare":
-            ons = [(t, s) for t, s in ons if flatness(perc, sr, t) >= SNARE_MIN_FLATNESS]
+            ons = [(t, s, e) for t, s, e in ons if e >= SNARE_MIN_FLATNESS]
         if not ons:
             continue
-        top = max(s for _, s in ons)
-        for t, s in ons:
-            p = 46 if name == "hat" and _hat_is_open(perc, sr, t) else pitch
+        top = max(s for _, s, _ in ons)
+        for t, s, e in ons:
+            p = 46 if name == "hat" and e else pitch
             hits.append((t, p, int(np.clip(40 + 87 * (s / top), 1, 127))))
     # a hat ON a snare hit rings on in the hat band because of the SNARE's noise tail,
     # which the decay test reads as an open hat (P1: all 4 "open hats" sat on snares)
     snares = [t for t, p, _ in hits if p == 38]
     hits = [(t, 42 if p == 46 and any(abs(t - u) < 0.01 for u in snares) else p, v) for t, p, v in hits]
+    if HAT_ON_KICK_Q > 0:
+        kicks = [t for t, p, _ in hits if p == 36]
+        weak = 40 + 87 * HAT_ON_KICK_Q            # velocity scale: 40 + 87 x (strength / strongest)
+        hits = [(t, p, v) for t, p, v in hits
+                if not (p == 42 and v < weak and any(abs(t - u) < 0.012 for u in kicks))]
     return sorted(hits)
 
 
