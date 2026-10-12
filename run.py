@@ -3,6 +3,7 @@
     python run.py models      # download Beat This! checkpoints (resumable)
     python run.py smoke       # environment + pipeline smoke test (synthetic)
     python run.py test        # every deterministic test suite (no API key needed), summarised
+    python run.py e2e         # the real app in headless Edge/Chrome: the demo path end to end (~3 min)
     python run.py fuzz        # Part 2: 421 random edits, invariants after each (~5 min)
     python run.py testpack    # build the synthetic substitute test pack (A1-A7)
     python run.py p3pack      # build the synthetic Part 3 clips (P1-P4 + reference MIDI)
@@ -83,6 +84,8 @@ def main():
         mod("evals.smoke_test")
     elif cmd == "test":
         sys.exit(0 if run_tests() else 1)
+    elif cmd == "e2e":
+        mod("tests.test_ui_e2e")
     elif cmd == "fuzz":
         mod("tests.test_fuzz_edits", "--seqs", "60", "--ops", "8", "--seed", "1")
     elif cmd == "testpack":
