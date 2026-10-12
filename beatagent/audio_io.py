@@ -4,6 +4,7 @@ Audio is always held as float32 arrays shaped (n_samples, n_channels).
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -52,7 +53,10 @@ def load(path: str | Path) -> tuple[np.ndarray, AudioFormat]:
                         f"{dur:.0f} s track (an interrupted download?).")
         except Exception:  # noqa: BLE001
             pass
-        raise ValueError(f"Can't decode {Path(path).name}: {str(e).rstrip('.')}.{hint}") from e
+        # libsndfile quotes the full path ("Error opening 'C:\\Users\\...'"): keep only the
+        # file name, so an upload's error does not reveal the server's folders.
+        why = re.sub(r"Error opening '[^']*'", "Error opening the file", str(e)).rstrip(".")
+        raise ValueError(f"Can't decode {Path(path).name}: {why}.{hint}") from e
     fmt = AudioFormat(sr=sr, subtype=info.subtype, container=info.format, channels=audio.shape[1])
     return audio, fmt
 

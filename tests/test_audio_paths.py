@@ -111,6 +111,9 @@ def test_upload(x):
     r = c.post("/api/upload", files={"file": ("corrupt.flac", bad.read_bytes(), "audio/flac")})
     check("corrupt file refused with a readable 400", r.status_code == 400 and "decode" in r.text.lower(),
           r.text[:100])
+    leak = str(ROOT).replace("\\", "\\\\")
+    check("error does not reveal the server's folders", str(ROOT) not in r.text and leak not in r.text
+          and "Users" not in r.text, r.text[:100])
 
 
 def main():
