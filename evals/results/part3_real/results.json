@@ -1,0 +1,83 @@
+{
+ "label": "REAL MUSIC, NO REFERENCE MIDI: pipeline + render rhythm only; audio, scores and renders not published",
+ "rows": [
+  {
+   "file": "02. Seedhe Maut - Toh Kya [E].flac",
+   "excerpt_bars": "17-24",
+   "excerpt_s": 12.8,
+   "track_bpm_part1": 150.0,
+   "score_bpm": 150.0008,
+   "score_bars": 8,
+   "tracks": {
+    "drums": 85,
+    "bass": 10,
+    "keys": 28
+   },
+   "render": {
+    "static_ok": true,
+    "network_requests": [],
+    "page_errors": [],
+    "onset_F": 0.7781,
+    "onset_P": 0.7758,
+    "onset_R": 0.7805,
+    "median_abs_ms": 5.8,
+    "max_abs_ms": 49.34,
+    "onsets_ref": 164,
+    "onsets_render": 165
+   },
+   "play_stop_ok": true
+  },
+  {
+   "file": "04 - Kya Mai Yaha - Encore ABJ, DL91 ERA.flac",
+   "excerpt_bars": "17-24",
+   "excerpt_s": 14.769,
+   "track_bpm_part1": 130.0,
+   "score_bpm": 130.0008,
+   "score_bars": 8,
+   "tracks": {
+    "drums": 82,
+    "bass": 32,
+    "keys": 47
+   },
+   "render": {
+    "static_ok": true,
+    "network_requests": [],
+    "page_errors": [],
+    "onset_F": 0.7133,
+    "onset_P": 0.7612,
+    "onset_R": 0.6711,
+    "median_abs_ms": 5.8,
+    "max_abs_ms": 46.44,
+    "onsets_ref": 152,
+    "onsets_render": 134
+   },
+   "play_stop_ok": true
+  },
+  {
+   "file": "29. Seedhe Maut - Kavi [E].flac",
+   "excerpt_bars": "17-24",
+   "excerpt_s": 17.454,
+   "track_bpm_part1": 110.0,
+   "score_bpm": 110.0012,
+   "score_bars": 8,
+   "tracks": {
+    "drums": 55,
+    "bass": 15,
+    "keys": 54
+   },
+   "render": {
+    "static_ok": true,
+    "network_requests": [],
+    "page_errors": [],
+    "onset_F": 0.6007,
+    "onset_P": 0.6855,
+    "onset_R": 0.5346,
+    "median_abs_ms": 11.61,
+    "max_abs_ms": 49.34,
+    "onsets_ref": 159,
+    "onsets_render": 124
+   },
+   "play_stop_ok": true
+  }
+ ]
+}
