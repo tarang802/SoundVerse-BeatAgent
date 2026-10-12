@@ -73,6 +73,9 @@ def run_tests() -> bool:
 
 
 def main():
+    # line-buffered: when output goes to a log, the test summary must appear before the
+    # app starts serving (it was lost in a buffer when `demo` ran into a file)
+    sys.stdout.reconfigure(line_buffering=True)
     cmd = sys.argv[1] if len(sys.argv) > 1 else "demo"
     if cmd == "models":
         models()
