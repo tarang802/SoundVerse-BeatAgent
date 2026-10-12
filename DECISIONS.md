@@ -123,6 +123,9 @@ a drum hit starts is masked — to the ear as well.
   sample-exact loop scheduling; per-track mixer and tempo.
 * **Offline render** with Playwright driving the installed Edge/Chrome (no browser
   download), running the *same* scheduling code in an `OfflineAudioContext`.
+* **Chat changes** ("mute the drums", "play it at 140") follow the Part 2 rule: the LLM
+  returns typed score ops, code checks track names and ranges, applies them to a copy
+  (all-or-nothing), echoes what changed, and regenerates the page; undo is a score stack.
 
 **Trade-off.** No source separation (Demucs was not installed: large and slow on CPU);
 HPSS is weak on dense mixes (P4).
@@ -145,6 +148,7 @@ HPSS is weak on dense mixes (P4).
 
 * A public deployment (optional in the brief).
 * Source separation (Demucs) and MT3-style multi-instrument transcription.
-* Chat editing of the *recreation* by LLM ("make the bass brighter"): the page has a
-  mixer and tempo control, but no chat path to the score yet.
+* Chat edits of the recreation beyond mix / tone / tempo (no note-level editing such
+  as "change the bassline"); the chat covers tempo, mute, solo, level, brightness,
+  transpose and oscillator.
 * JAMS annotation input (plain-text layouts only).

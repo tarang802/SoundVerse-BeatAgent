@@ -9,7 +9,7 @@ AI **used to build it**.
 |---|---|---|
 | **Beat This!** (CPJKU, `small0` checkpoint, CPU) | neural beat + downbeat tracker | raw beat/downbeat times — then fitted, cleaned and checked by our code (`beatagent/analyze.py`) |
 | **Basic Pitch** (Spotify, 0.4, ONNX model) | neural note transcription | pitched notes for Part 3 — then filtered (overtone ghosts, drum body tones) by our code |
-| **Gemini** (`gemini-3.5-flash`, falling back to other Flash / Flash-Lite models on quota) | LLM, structured output | **interpreting one chat message into a plan** (action + typed edit ops). Nothing else. |
+| **Gemini** (`gemini-3.5-flash`, falling back to other Flash / Flash-Lite models on quota) | LLM, structured output | **interpreting one chat message into a plan**: typed edit ops for the track (Part 2), or typed score ops for a recreation (Part 3: tempo, mute, solo, level, brightness, transpose, oscillator). Nothing else. |
 
 **The LLM never:** measures audio, computes times or tempo, transcribes notes, writes
 code that runs, or applies an edit itself. Its output is data, validated against a
@@ -82,7 +82,7 @@ and deciding what ships.
 
 ## 3. Testing: automated vs manual
 
-**Automated** (re-runnable, see README): 8 deterministic test suites (`python run.py
+**Automated** (re-runnable, see README): 9 deterministic test suites (`python run.py
 test`), a 421-edit fuzz test, Part 1 evals on the synthetic pack plus 30 robustness and
 19 sync cases with exact answers, a 59-case chat suite and the brief's six sessions
 against the live LLM (answers recorded so they replay without quota), and the Part 3

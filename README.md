@@ -35,7 +35,7 @@ Basic Pitch), never from the LLM.
 | 3 | Score JSON from analysis; one-file page with play/stop/loop, synthesis only, no network | ✅ works |
 | 3 | Drums + a pitched part; offline render in a headless browser; note-F report vs MIDI | ✅ works (synthetic P1–P4) |
 | 3 | Per-track mixer | ✅ works |
-| 3 | Chat changes to the recreation ("mute the drums") | ❌ not built (the page has manual mixer/tempo controls) |
+| 3 | Chat changes to the recreation ("mute the drums", "make the bass brighter", "play it at 140") | ✅ works (typed score ops, validated by code; page regenerated) |
 | — | Public deployment | ❌ not built (optional) |
 
 Full, generated numbers: [`evals/results/COMPLETION_REPORT.md`](evals/results/COMPLETION_REPORT.md).
@@ -79,7 +79,7 @@ Individual steps:
 | Command | What it does |
 |---|---|
 | `python run.py app` | start the web app |
-| `python run.py test` | all 8 deterministic test suites (no API key needed), summarised |
+| `python run.py test` | all 9 deterministic test suites (no API key needed), summarised |
 | `python run.py fuzz` | 421 random edits with invariant checks after each (~5 min) |
 | `python run.py eval` / `syncval` | Part 1: mir_eval report on A1–A7 / sync comparison + `PART1_REPORT.md` |
 | `python run.py p3eval` | Part 3: transcribe P1–P4, render pages offline, score vs MIDI |
@@ -162,8 +162,8 @@ All four pages: 0 network requests, no page errors, play/stop working in headles
    a one-beat jump like 128 → 100 BPM is smoothed over by the tracker.
 2. **Real-music sync is not proven to ≤ 5 ms.** The kick detector cannot resolve it on
    hip-hop (it reads 12–17 ms even on a perfect self-sync). Listen to the renders.
-3. **Part 3 on dense mixes.** No source separation, so P4 is weak (drums 0.51). Chat
-   editing of the recreation is not built.
+3. **Part 3 on dense mixes.** No source separation, so P4 is weak (drums 0.51, pitched
+   0.68); drum classes come from band rules, not a trained classifier.
 
 Also: A6 6/8-vs-12/8 counting; the click metric cannot see a click hidden under a kick
 attack (proven clean on drumless material instead); only hip-hop real tracks were

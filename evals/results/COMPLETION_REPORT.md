@@ -20,14 +20,15 @@
 | Part 3 pipeline (synthetic P1-P4) | clip -> score -> page -> offline render in Edge | 4 clips; tempo exact on 4/4; pages: static check 4/4, network requests 0, play/stop 4/4 |
 | Part 3 note F (mir_eval onset-only, +-50 ms) | drums / pitched per clip | P1: drums 0.9286, pitched —; P2: drums 0.7071, pitched 0.9048; P3: drums —, pitched 0.9577; P4: drums 0.5093, pitched 0.6838 |
 | Part 2 engine fuzz (no LLM) | 421 random edits, invariants after each | 414 applied, 7 refused cleanly, 0 crashes, 0 invariant failures |
-| Unit tests `tests.test_imports` | | 34/34 pass (exit 0) |
+| Unit tests `tests.test_imports` | | 36/36 pass (exit 0) |
 | Unit tests `tests.test_edl` | | 26/26 pass (exit 0) |
 | Unit tests `tests.test_score` | | 7/7 pass (exit 0) |
 | Unit tests `tests.test_ref_formats` | | 15/15 pass (exit 0) |
 | Unit tests `tests.test_click_metric` | | 5/5 pass (exit 0) |
 | Unit tests `tests.test_agent_llm` | | 31/31 pass (exit 0) |
 | Unit tests `tests.test_audio_paths` | | 38/38 pass (exit 0) |
-| Unit tests `tests.test_recreate_api` | | 10/10 pass (exit 0) |
+| Unit tests `tests.test_recreate_api` | | 14/14 pass (exit 0) |
+| Unit tests `tests.test_score_chat` | | 20/20 pass (exit 0) |
 
 ## Part 1 — beat alignment and sync
 
@@ -48,36 +49,36 @@
 
 | Case | Result | BPM (octave) | meter | grid | beat F | AMLt | downbeats | drift ms | conf | s |
 |---|---|---|---|---|---|---|---|---|---|---|
-| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 11.39 |
-| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 6.77 |
-| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 6.93 |
-| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 4.84 |
-| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 6.58 |
-| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 4.89 |
-| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 6.57 |
-| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 6.71 |
-| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 4.41 |
-| live_drift_112 | pass | 110.91 (x1.0) | 4/4 | piecewise_constant | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 7.61 |
-| ramp_110-130 | pass | 119.93 (x1.0) | 4/4 | variable | 0.9875 | 1.0 | 0.975 |  | 0.994 | 3.48 |
-| steps_120-128-100 | FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type | 128.0 (x1.0) | 4/4 | variable | 0.7005 | 0.5766 | 0.6154 |  | 0.478 | 3.92 |
-| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 9.01 |
-| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 6.51 |
-| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 9.12 |
-| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 6.69 |
-| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 7.09 |
-| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 6.51 |
-| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 6.11 |
-| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 6.67 |
-| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 7.56 |
-| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 2.08 |
-| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 5.52 |
-| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 5.31 |
-| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 72.26 |
-| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 2.9 |
-| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 3.32 |
-| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 2.3 |
-| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.3 |
-| clip_0.5s | refused with message |  (x) |  |  |  |  |  |  |  | 0.11 |
+| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 4.39 |
+| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 2.12 |
+| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 2.2 |
+| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 1.43 |
+| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 1.9 |
+| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 1.55 |
+| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 2.3 |
+| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 3.57 |
+| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 1.88 |
+| live_drift_112 | pass | 110.91 (x1.0) | 4/4 | piecewise_constant | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 3.17 |
+| ramp_110-130 | pass | 119.93 (x1.0) | 4/4 | variable | 0.9875 | 1.0 | 0.975 |  | 0.994 | 3.05 |
+| steps_120-128-100 | FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type | 128.0 (x1.0) | 4/4 | variable | 0.7005 | 0.5766 | 0.6154 |  | 0.478 | 5.16 |
+| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 4.17 |
+| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 2.78 |
+| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 2.91 |
+| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 3.53 |
+| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 3.03 |
+| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 3.82 |
+| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 4.91 |
+| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 9.12 |
+| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 10.06 |
+| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 8.99 |
+| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 15.63 |
+| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 22.44 |
+| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 118.11 |
+| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 10.17 |
+| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 9.7 |
+| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 10.08 |
+| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.47 |
+| clip_0.5s | refused with message |  (x) |  |  |  |  |  |  |  | 0.3 |
 
 ### Sync robustness (ground-truth kick offsets)
 
@@ -254,7 +255,7 @@ SYNTHETIC substitute clips (the brief's P1-P4 were not provided); details in `ev
 | 3 | Offline render to WAV in a headless browser | done | `evals/part3_render.py` (Playwright + installed Edge/Chrome) |
 | 3 | Accuracy report: note F vs reference MIDI + onset timing of the render | done (synthetic MIDI) | `evals/eval_part3.py`, `part3/results.md` |
 | 3 | Per-track mixer on the page | done (should) | level + mute per track, tempo control |
-| 3 | Chat changes to the recreation ("mute the drums", "play it at 140") | **not built** | the page has the controls; no chat path to the score |
+| 3 | Chat changes to the recreation ("mute the drums", "make the bass brighter", "play it at 140") | done (should) | `beatagent/score_chat.py`: LLM -> typed score ops, validated + applied by code; page regenerated; offline parser fallback; verified in Edge |
 | 3 | In the app | done (extra) | RECREATE panel: original next to the generated page |
 
 ## Bugs found in the final debugging pass
@@ -287,7 +288,7 @@ SYNTHETIC substitute clips (the brief's P1-P4 were not provided); details in `ev
 - **Real-music sync is not proven ≤ 5 ms**: the downbeat-kick detector reports ~20 ms median on real pairs, but it reports 12–17 ms on a self-sync that is perfect by construction (different bars of the same song), so the detector cannot resolve this on hip-hop. Listen to `evals/results/real/sync_*_mix.wav` (generated locally).
 - **Click checks on drums are weak by nature**: a beat-aligned splice sits on a kick attack, which masks even a hard cut (to the ear too). The engine's crossfade is proven on drumless material; on drum-heavy splices the 0.0 dB readings mean "no click above the kick", nothing more.
 - **Part 3 transcription is approximate**: no source separation (HPSS only), so dense mixes suffer (P4 drums F 0.51, pitched 0.68); drum classes come from band rules, not a trained classifier; scores are only measured on synthetic clips.
-- **Part 3 chat edits** ("make the bass brighter") are not built; the page's mixer and tempo control are manual.
+- **Part 3 chat edits** cover mix, tone and tempo (mute, solo, level, brightness, transpose, oscillator, tempo); there is no note-level editing.
 - **The app's embedded preview browser** cannot run the generated page inside the RECREATE panel (sandboxed iframe); Chrome / Edge can (verified with Playwright). Use a normal browser for the demo.
 - **Only hip-hop real tracks** were available on the machine; no EDM/rock/jazz real recordings tested.
 - **Tempo octave is a convention** (80–160 BPM); the ½×/2× buttons exist because e.g. 70 vs 140 is a choice, not an error.
