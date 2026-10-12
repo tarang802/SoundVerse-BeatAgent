@@ -5,7 +5,7 @@
  "crashed": 0,
  "length_fail": 0,
  "order_fail": 0,
- "grid_fail": 2,
+ "grid_fail": 0,
  "click_fail": 0,
  "undo_fail": 0,
  "redo_fail": 0,
@@ -28,12 +28,12 @@
   "repeat": {
    "applied": 60,
    "refused": 0,
-   "failed_checks": 1
+   "failed_checks": 0
   },
   "fade": {
    "applied": 60,
    "refused": 0,
-   "failed_checks": 1
+   "failed_checks": 0
   },
   "copy": {
    "applied": 67,
@@ -46,8 +46,6 @@
    "failed_checks": 0
   }
  },
- "pass_rate_applied_ops": 0.9952
+ "pass_rate_applied_ops": 1.0
 }
-failures: 2
-   {"seq": 23, "step": 6, "op": {"op": "repeat", "range": {"unit": "bars", "start": 1, "end": 2, "last": null}, "total_plays": 4}, "failed": ["grid_ok"], "check": {"length_ok": true, "order_ok": true, "grid_found_share": 0.9142857142857143, "grid_median_ms": 2.320711134903619, "grid_ok": false, "grid_m
-   {"seq": 23, "step": 7, "op": {"op": "fade", "range": {"unit": "bars", "start": 6, "end": 6, "last": null}, "direction": "out"}, "failed": ["grid_ok"], "check": {"length_ok": true, "order_ok": true, "grid_found_share": 0.9142857142857143, "grid_median_ms": 2.3170224941155837, "grid_ok": false, "grid_
+failures: 0
