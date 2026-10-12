@@ -14,7 +14,9 @@ MODULES = ["beatagent.audio_io", "beatagent.grid", "beatagent.onsets", "beatagen
            "beatagent.agent", "beatagent.qc", "app.server", "evals.eval_beats", "evals.eval_sync",
            "evals.eval_real", "evals.part1_report", "evals.make_testpack", "evals.smoke_test_guard",
            "beatagent.sections", "evals.eval_sessions", "evals.eval_robustness", "evals.eval_sync_robust",
-           "evals.eval_chat_suite", "evals.completion_report"]
+           "evals.eval_chat_suite", "evals.completion_report", "beatagent.score", "beatagent.transcribe",
+           "beatagent.webaudio", "evals.make_p3pack", "evals.eval_part3", "evals.part3_render",
+           "evals.eval_real_selfsync", "evals.llm_check_report"]
 
 
 def control_chars():
