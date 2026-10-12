@@ -14,3 +14,6 @@ data/substitute/*.flac
 data/substitute/*.mp3
 evals/results/**/*.wav
 evals/results/smoke_log.txt
+frontend/node_modules/
+.claude/
+frontend/.claude/

@@ -223,6 +223,31 @@ def _drop_silent(grid: np.ndarray, mono: np.ndarray, sr: int, db: float = -50.0)
     return grid[lo:hi]
 
 
+WEAK_EVIDENCE = 0.3      # onset strength at a beat, relative to the track's median beat
+MIN_LEADING_RUN = 8      # only trim a weak intro if it lasts at least 2 bars of 4/4
+
+
+def _trim_unsupported(grid: np.ndarray, flux: np.ndarray, fsr: float) -> tuple[np.ndarray, dict]:
+    """Drop grid beats at the START and END that no onset supports.
+
+    The tracker keeps 'hearing' a pulse through drumless intros (A4: a 60 BPM
+    pulse invented over a pad) and adds a beat in the reverb tail at the end.
+    Measured on the substitute pack: real beats score 0.9-4.1 x the median,
+    invented ones 0.00-0.14, so 0.3 separates them with margin. Beats in the
+    MIDDLE are never trimmed: a breakdown must keep counting so bar numbers stay.
+    Assumption (DECISIONS.md): an unverifiable beat is worse than no beat."""
+    if len(grid) < 2 * MIN_LEADING_RUN:
+        return grid, {"leading": 0, "trailing": 0}
+    w = int(0.025 * fsr)
+    ev = np.array([flux[max(0, int(t * fsr) - w): int(t * fsr) + w + 1].max(initial=0.0) for t in grid])
+    strong = ev >= WEAK_EVIDENCE * (np.median(ev) + 1e-12)
+    lo = int(np.argmax(strong)) if strong.any() else 0
+    if lo < MIN_LEADING_RUN:
+        lo = 0
+    hi = len(grid) - int(np.argmax(strong[::-1])) if strong.any() else len(grid)
+    return grid[lo:hi], {"leading": lo, "trailing": len(grid) - hi}
+
+
 def _meter(grid: np.ndarray, downs: np.ndarray, flux, fsr) -> tuple[int, int, float, str]:
     """beats_per_bar, phase (index of first downbeat), agreement, time signature."""
     if len(downs) < 2 or len(grid) < 4:
@@ -314,8 +339,17 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
             filled.append(beats[i])
         grid = _snap(np.array(filled), flux, fsr)
         constant, change_idx, grid_kind = False, [], "variable"
+    # Tempo-change points are kept as TIMES while beats are trimmed: as indices
+    # they would point at the wrong beats once leading beats are removed.
+    change_t = [float(grid[i]) for i in change_idx]
     grid = grid[(grid >= 0) & (grid < duration)]
     grid = _drop_silent(grid, mono, sr)
+    grid, trimmed = _trim_unsupported(grid, flux, fsr)
+    change_idx = [int(np.searchsorted(grid, t - 1e-6)) for t in change_t if grid[0] < t <= grid[-1]]
+    if grid_kind == "piecewise_constant" and not change_idx:
+        # the only "tempo change" was into/out of a stretch we just trimmed
+        constant, grid_kind = True, "constant"
+    fit_info["trimmed_unsupported_beats"] = trimmed
 
     bpb, phase, down_agree, ts = _meter(grid, downs, flux, fsr)
     positions = ((np.arange(len(grid)) - phase) % bpb) + 1

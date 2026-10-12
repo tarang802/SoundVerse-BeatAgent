@@ -94,3 +94,4 @@ def onsets_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
                 k = k + (0.5 * (y0 - y2) / den if den else 0.0)
             out[i] = (a + k) / fsr
     return out
+

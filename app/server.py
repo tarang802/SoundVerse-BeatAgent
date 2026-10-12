@@ -1,10 +1,25 @@
-"""Minimal web app: load a track, see the waveform + grid, chat edits, play/export.
+"""Beat Agent API + the built React frontend (frontend/dist).
 
-    python -m app.server            # http://localhost:8000
+    python run.py app            # http://localhost:8000
+
+API (all JSON unless noted):
+  GET  /api/library                         test tracks available on disk
+  POST /api/open {path}                     load + analyse a track -> deck state
+  POST /api/upload (multipart file)         same, for an uploaded file
+  GET  /api/{sid}/state                     deck state (grid, waveform, history)
+  GET  /api/{sid}/audio/{state_id}.wav?click=0|1   preview audio (range requests OK)
+  GET  /api/{sid}/grid.json | click.wav     Part 1 deliverables for the current version
+  POST /api/{sid}/chat {text}               Part 2 chat edit
+  POST /api/{sid}/undo | redo
+  POST /api/{sid}/export                    write audio + grid + click + EDL to work/<sid>
+  POST /api/sync {a, b, a_bar, b_bar, duration}   Part 1 two-track sync
+  GET  /api/sync/{id}/{mix|a|b}.wav         sync render + stems
+  GET  /api/sync/{id}/report.json
 """
 from __future__ import annotations
 
-import io
+import base64
+import json
 import os
 import sys
 import threading
@@ -16,78 +31,68 @@ import numpy as np
 import soundfile as sf
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, Response
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 load_dotenv(ROOT / ".env")
 
+from beatagent import sync as syncmod  # noqa: E402
 from beatagent.agent import BeatAgent  # noqa: E402
+from beatagent.audio_io import save  # noqa: E402
 from beatagent.click import audition  # noqa: E402
 from beatagent.llm import make_interpreter  # noqa: E402
 from beatagent.session import Session  # noqa: E402
 
 WORK = ROOT / "work"
 WORK.mkdir(exist_ok=True)
+DIST = ROOT / "frontend" / "dist"
 app = FastAPI(title="Beat Agent")
 SESSIONS: dict[str, BeatAgent] = {}
+SYNCS: dict[str, Path] = {}
 LOCK = threading.Lock()
+PEAK_RATE = 100          # waveform min/max pairs per second sent to the UI
 
 
-def _peaks(y: np.ndarray, n: int = 1600) -> list:
+# ------------------------------------------------------------------ helpers
+def _peaks_b64(y: np.ndarray, sr: int, rate: int = PEAK_RATE) -> str:
+    """Interleaved int8 (min, max) per 1/rate s, base64. ~70 KB for 6 minutes."""
     m = y.mean(axis=1) if y.ndim == 2 else y
-    if len(m) < n:
-        n = max(1, len(m))
-    b = np.array_split(m, n)
-    return [[round(float(x.min()), 4), round(float(x.max()), 4)] for x in b]
+    hop = max(1, sr // rate)
+    n = len(m) // hop
+    blocks = m[: n * hop].reshape(n, hop)
+    mm = np.stack([blocks.min(axis=1), blocks.max(axis=1)], axis=1)
+    q = np.clip(np.round(mm * 127), -127, 127).astype(np.int8)
+    return base64.b64encode(q.tobytes()).decode("ascii")
 
 
 def _state(sid: str) -> dict:
     a = SESSIONS[sid]
-    s = a.s
-    g = s.grid
+    s, g = a.s, a.s.grid
     y = s.render()
     return {
-        "sid": sid, "version": s.pos, "state_id": s.state_id, "can_undo": s.pos > 0, "can_redo": s.pos < len(s.history) - 1,
-        "history": s.labels[: s.pos + 1], "file": s.path.name, "sr": s.sr, "subtype": s.fmt.subtype,
-        "interpreter": a.llm.name, "summary": g.summary(), "confidence": g.confidence,
-        "beats": [round(float(t), 4) for t in g.beats], "positions": [int(p) for p in g.positions],
-        "duration": g.duration, "peaks": _peaks(y), "meta": {k: v for k, v in g.meta.items() if k != "fit"},
+        "sid": sid, "version": s.pos, "state_id": s.state_id,
+        "can_undo": s.pos > 0, "can_redo": s.pos < len(s.history) - 1,
+        "history": s.labels[: s.pos + 1], "file": s.path.name, "sr": s.sr,
+        "subtype": s.fmt.subtype, "channels": s.fmt.channels, "interpreter": a.llm.name,
+        "summary": g.summary(), "confidence": g.confidence,
+        "beats": [round(float(t), 5) for t in g.beats], "positions": [int(p) for p in g.positions],
+        "duration": g.duration, "peaks": _peaks_b64(y, s.sr), "peak_rate": PEAK_RATE,
+        "meta": {k: v for k, v in g.meta.items() if k != "fit"},
     }
 
 
-@app.get("/", response_class=HTMLResponse)
-def index():
-    return (ROOT / "app" / "static" / "index.html").read_text(encoding="utf-8")
+def _agent(sid: str) -> BeatAgent:
+    a = SESSIONS.get(sid)
+    if a is None:
+        raise HTTPException(404, "Unknown track session (the server may have restarted). Load the track again.")
+    return a
 
 
-@app.post("/api/upload")
-async def upload(file: UploadFile = File(...)):
+def _open(p: Path) -> dict:
     sid = uuid.uuid4().hex[:8]
-    d = WORK / sid
-    d.mkdir(parents=True)
-    p = d / Path(file.filename).name
-    p.write_bytes(await file.read())
-    return _open(sid, p)
-
-
-class OpenReq(BaseModel):
-    path: str
-
-
-@app.post("/api/open")
-def open_path(req: OpenReq):
-    p = Path(req.path)
-    if not p.is_absolute():
-        p = ROOT / p
-    if not p.exists():
-        raise HTTPException(404, f"No such file: {req.path}")
-    sid = uuid.uuid4().hex[:8]
-    return _open(sid, p)
-
-
-def _open(sid: str, p: Path) -> dict:
     t0 = time.time()
     try:
         s = Session(p, WORK / sid)
@@ -100,14 +105,96 @@ def _open(sid: str, p: Path) -> dict:
     return st
 
 
+# ------------------------------------------------------------------ library / loading
+@app.get("/api/library")
+def library():
+    items = []
+    for pack in ("testpack", "substitute"):
+        d = ROOT / "data" / pack
+        if not d.exists():
+            continue
+        desc = {}
+        idx = d / "index.json"
+        if idx.exists():
+            desc = {k: v.get("description", "") for k, v in json.loads(idx.read_text()).get("items", {}).items()}
+        for p in sorted(d.iterdir()):
+            if p.suffix.lower() in (".wav", ".mp3", ".flac"):
+                items.append({"name": p.stem, "path": str(p.relative_to(ROOT)).replace("\\", "/"),
+                              "pack": pack, "synthetic": pack == "substitute",
+                              "description": desc.get(p.stem, "")})
+    return items
+
+
+class OpenReq(BaseModel):
+    path: str
+
+
+@app.post("/api/open")
+def open_path(req: OpenReq):
+    p = (ROOT / req.path).resolve() if not Path(req.path).is_absolute() else Path(req.path)
+    if not p.exists() or p.suffix.lower() not in (".wav", ".mp3", ".flac"):
+        raise HTTPException(404, f"No WAV/MP3/FLAC file at {req.path}")
+    return _open(p)
+
+
+@app.post("/api/upload")
+async def upload(file: UploadFile = File(...)):
+    name = Path(file.filename or "upload.wav").name
+    if Path(name).suffix.lower() not in (".wav", ".mp3", ".flac"):
+        raise HTTPException(400, "Only WAV, MP3 or FLAC files are supported.")
+    d = WORK / "uploads"
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / f"{uuid.uuid4().hex[:6]}_{name}"
+    p.write_bytes(await file.read())
+    return _open(p)
+
+
+@app.get("/api/{sid}/state")
+def state(sid: str):
+    _agent(sid)
+    return _state(sid)
+
+
+# ------------------------------------------------------------------ audio + deliverables
+@app.get("/api/{sid}/audio/{state_id}.wav")
+def audio(sid: str, state_id: int, click: int = 0):
+    """Preview audio for the CURRENT version, cached as a file so the browser
+    gets HTTP range support (seeking). Keyed by the state's unique id, not the
+    version number, which is reused after undo + a new edit."""
+    s = _agent(sid).s
+    p = WORK / sid / f"_preview_s{s.state_id}_{'click' if click else 'plain'}.wav"
+    if not p.exists():
+        y = s.render()
+        if click:
+            y = audition(y, s.sr, s.grid)
+        sf.write(p, np.clip(y, -1, 1), s.sr, subtype="PCM_16")
+    return FileResponse(p, media_type="audio/wav")
+
+
+@app.get("/api/{sid}/grid.json")
+def grid_json(sid: str):
+    s = _agent(sid).s
+    p = WORK / sid / f"{s.path.stem}_v{s.pos}.grid.json"
+    s.grid.save(p)
+    return FileResponse(p, media_type="application/json", filename=p.name)
+
+
+@app.get("/api/{sid}/click.wav")
+def click_wav(sid: str):
+    s = _agent(sid).s
+    p = WORK / sid / f"{s.path.stem}_v{s.pos}.click.wav"
+    save(p, audition(s.render(), s.sr, s.grid), s.sr, "PCM_16", "WAV")
+    return FileResponse(p, media_type="audio/wav", filename=p.name)
+
+
+# ------------------------------------------------------------------ Part 2: chat edits
 class ChatReq(BaseModel):
     text: str
 
 
 @app.post("/api/{sid}/chat")
 def chat(sid: str, req: ChatReq):
-    a = SESSIONS.get(sid) or _404()
-    r = a.handle(req.text)
+    r = _agent(sid).handle(req.text)
     return {"reply": r.to_dict(), "state": _state(sid)}
 
 
@@ -121,51 +208,64 @@ def redo(sid: str):
     return chat(sid, ChatReq(text="redo"))
 
 
-@app.get("/api/{sid}/state")
-def state(sid: str):
-    SESSIONS.get(sid) or _404()
-    return _state(sid)
-
-
-def _wav(y: np.ndarray, sr: int) -> Response:
-    buf = io.BytesIO()
-    sf.write(buf, np.clip(y, -1, 1), sr, format="WAV", subtype="PCM_16")
-    return Response(buf.getvalue(), media_type="audio/wav")
-
-
-@app.get("/api/{sid}/audio/{version}.wav")
-def audio(sid: str, version: int, click: int = 0):
-    """Preview audio for the CURRENT version, cached as a file so the browser
-    gets HTTP range support (seeking). Keyed by the state's unique id, not
-    the version number, which is reused after undo + a new edit."""
-    a = SESSIONS.get(sid) or _404()
-    s = a.s
-    p = WORK / sid / f"_preview_s{s.state_id}_{'click' if click else 'plain'}.wav"
-    if not p.exists():
-        y = s.render()
-        if click:
-            y = audition(y, s.sr, s.grid)
-        sf.write(p, np.clip(y, -1, 1), s.sr, subtype="PCM_16")
-    return FileResponse(p, media_type="audio/wav")
-
-
 @app.post("/api/{sid}/export")
 def export(sid: str):
-    a = SESSIONS.get(sid) or _404()
-    paths = a.s.export()
+    paths = _agent(sid).s.export()
     return {k: (str(Path(v).relative_to(ROOT)) if isinstance(v, str) else v) for k, v in paths.items()}
 
 
-@app.get("/api/{sid}/file")
-def file(sid: str, path: str):
-    p = (ROOT / path).resolve()
-    if not str(p).startswith(str((WORK / sid).resolve())):
-        raise HTTPException(403, "outside session dir")
-    return FileResponse(p, filename=p.name)
+# ------------------------------------------------------------------ Part 1: sync
+class SyncReq(BaseModel):
+    a: str                    # deck A session id (master)
+    b: str                    # deck B session id
+    a_bar: int = 33
+    b_bar: int = 1
+    duration: float = 60.0
 
 
-def _404():
-    raise HTTPException(404, "Unknown session (the server may have restarted). Load the track again.")
+@app.post("/api/sync")
+def do_sync(req: SyncReq):
+    sa, sb = _agent(req.a).s, _agent(req.b).s
+    try:
+        plan = syncmod.plan_sync(sa.grid, sb.grid, req.a_bar, req.b_bar, req.duration)
+    except syncmod.SyncError as e:
+        raise HTTPException(400, str(e)) from e
+    t0 = time.time()
+    ya, yb = sa.render(), sb.render()        # current (possibly edited) versions of each deck
+    r = syncmod.render(ya, sa.sr, yb, sb.sr, plan, sa.grid, sb.grid)
+    m = syncmod.measure_alignment(r["a"], r["b"], r["sr"], sa.grid, plan)
+    sync_id = uuid.uuid4().hex[:8]
+    d = WORK / "sync" / sync_id
+    d.mkdir(parents=True)
+    for k in ("a", "b", "mix"):
+        save(d / f"{k}.wav", r[k], r["sr"], "PCM_16", "WAV")
+    a_beats = sa.grid.beats[(sa.grid.beats >= plan.a_start - 1e-6) & (sa.grid.beats < plan.a_start + plan.duration)]
+    a_pos = sa.grid.positions[(sa.grid.beats >= plan.a_start - 1e-6) & (sa.grid.beats < plan.a_start + plan.duration)]
+    report = {"a": sa.path.name, "b": sb.path.name, "method": r["method"],
+              "render_s": round(time.time() - t0, 2), "plan": plan.to_dict(), "alignment": m}
+    (d / "report.json").write_text(json.dumps(report, indent=1))
+    SYNCS[sync_id] = d
+    return {"id": sync_id, **report,
+            "beats": [round(float(t - plan.a_start), 5) for t in a_beats],
+            "positions": [int(p) for p in a_pos],
+            "peaks": {k: _peaks_b64(r[k], r["sr"]) for k in ("a", "b", "mix")}, "peak_rate": PEAK_RATE}
+
+
+@app.get("/api/sync/{sync_id}/{which}")
+def sync_file(sync_id: str, which: str):
+    d = SYNCS.get(sync_id)
+    if d is None or which not in ("a.wav", "b.wav", "mix.wav", "report.json"):
+        raise HTTPException(404, "Unknown sync render.")
+    return FileResponse(d / which, filename=f"sync_{sync_id}_{which}")
+
+
+# ------------------------------------------------------------------ frontend
+if DIST.exists():
+    app.mount("/", StaticFiles(directory=DIST, html=True), name="ui")
+else:
+    @app.get("/")
+    def no_ui():
+        return {"error": "frontend not built", "fix": "cd frontend && npm install && npm run build"}
 
 
 if __name__ == "__main__":

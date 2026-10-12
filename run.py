@@ -5,7 +5,9 @@
     python run.py test        # edit-engine unit tests
     python run.py testpack    # build the synthetic substitute test pack
     python run.py eval        # Part 1 evals on the substitute pack
-    python run.py app         # web app on http://localhost:8000
+    python run.py app         # web app on http://localhost:8000 (serves the committed frontend/dist)
+    python run.py ui          # rebuild the React frontend (needs Node 18+): npm install + npm run build
+    python run.py syncval     # Part 1 sync comparison (A7 -> A1 @ bar 33) + PART1_REPORT.md
     python run.py demo        # models + testpack + test + eval, then the app
 """
 from __future__ import annotations
@@ -56,11 +58,20 @@ def main():
         mod("evals.eval_beats", *sys.argv[2:])
     elif cmd == "app":
         mod("app.server")
+    elif cmd == "ui":
+        npm = "npm.cmd" if sys.platform == "win32" else "npm"
+        subprocess.run([npm, "install", "--no-audit", "--no-fund"], cwd=ROOT / "frontend", check=True)
+        subprocess.run([npm, "run", "build"], cwd=ROOT / "frontend", check=True)
+    elif cmd == "syncval":
+        mod("evals.eval_sync")
+        mod("evals.part1_report")
     elif cmd == "demo":
         models()
         mod("evals.make_testpack")
         mod("tests.test_edl")
         mod("evals.eval_beats")
+        mod("evals.eval_sync")
+        mod("evals.part1_report")
         mod("app.server")
     else:
         print(__doc__)

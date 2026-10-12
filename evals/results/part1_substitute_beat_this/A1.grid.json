@@ -14,22 +14,22 @@
  "tempo_segments": [
   {
    "start_beat": 0,
-   "end_beat": 744,
+   "end_beat": 743,
    "start_bar": 1,
-   "end_bar": 187,
+   "end_bar": 186,
    "start_time": 0.4781,
    "bpm": 124.0
   }
  ],
  "confidence": {
   "beat_agreement": 0.965,
-  "downbeat_agreement": 0.639,
-  "overall": 0.616,
+  "downbeat_agreement": 0.637,
+  "overall": 0.615,
   "note": "heuristic: share of grid beats confirmed by the tracker x share of tracker downbeats that agree with the chosen bar phase; not a calibrated probability"
  },
  "duration": 361.496122,
- "n_beats": 745,
- "n_bars": 187,
+ "n_beats": 744,
+ "n_bars": 186,
  "downbeats": [
   0.478098,
   2.413582,
@@ -216,8 +216,7 @@
   352.736145,
   354.671629,
   356.607113,
-  358.542597,
-  360.478081
+  358.542597
  ],
  "beats": [
   {
@@ -4683,12 +4682,6 @@
    "time": 359.99421,
    "bar": 186,
    "position": 4
-  },
-  {
-   "index": 744,
-   "time": 360.478081,
-   "bar": 187,
-   "position": 1
   }
  ],
  "meta": {
@@ -4703,11 +4696,15 @@
     "bpm": 124.0,
     "phase_shift_ms": -28.84,
     "n_beats_fitted": 747
+   },
+   "trimmed_unsupported_beats": {
+    "leading": 0,
+    "trailing": 1
    }
   },
   "n_tracked_beats": 747,
   "n_tracked_downbeats": 293,
-  "tracking_s": 30.53,
-  "total_s": 36.24
+  "tracking_s": 37.03,
+  "total_s": 40.64
  }
 }

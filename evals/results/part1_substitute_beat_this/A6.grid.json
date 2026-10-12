@@ -846,11 +846,15 @@
     "bpm": 68.0001,
     "phase_shift_ms": -3.82,
     "n_beats_fitted": 129
+   },
+   "trimmed_unsupported_beats": {
+    "leading": 0,
+    "trailing": 0
    }
   },
   "n_tracked_beats": 129,
   "n_tracked_downbeats": 14,
-  "tracking_s": 7.01,
-  "total_s": 8.37
+  "tracking_s": 1.74,
+  "total_s": 2.78
  }
 }

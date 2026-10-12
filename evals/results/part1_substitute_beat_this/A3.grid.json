@@ -2300,10 +2300,15 @@
  "meta": {
   "tracker": "beat_this:small0",
   "grid_kind": "variable",
-  "fit": {},
+  "fit": {
+   "trimmed_unsupported_beats": {
+    "leading": 0,
+    "trailing": 0
+   }
+  },
   "n_tracked_beats": 363,
   "n_tracked_downbeats": 91,
-  "tracking_s": 12.33,
-  "total_s": 14.98
+  "tracking_s": 3.52,
+  "total_s": 5.11
  }
 }

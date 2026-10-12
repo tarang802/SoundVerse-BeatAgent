@@ -5,15 +5,15 @@
   {
    "clip": "A1",
    "duration_s": 361.5,
-   "analysis_s": 36.25,
+   "analysis_s": 40.64,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 124.0,
    "time_signature": "4/4",
-   "confidence": 0.616,
-   "beat_F": 0.9993,
+   "confidence": 0.615,
+   "beat_F": 1.0,
    "raw_beat_F": 0.9738,
-   "downbeat_F": 0.9973,
+   "downbeat_F": 1.0,
    "raw_downbeat_F": 0.7599,
    "drift_max_ms": 1.92,
    "drift_median_ms": -1.91,
@@ -31,7 +31,7 @@
   {
    "clip": "A2",
    "duration_s": 157.4,
-   "analysis_s": 12.71,
+   "analysis_s": 4.15,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 86.0,
@@ -57,7 +57,7 @@
   {
    "clip": "A3",
    "duration_s": 185.2,
-   "analysis_s": 14.98,
+   "analysis_s": 5.11,
    "tracker": "beat_this:small0",
    "grid_type": "variable",
    "tempo_bpm": 117.788,
@@ -81,15 +81,15 @@
   {
    "clip": "A4",
    "duration_s": 145.9,
-   "analysis_s": 10.8,
+   "analysis_s": 3.62,
    "tracker": "beat_this:small0",
-   "grid_type": "piecewise_constant",
+   "grid_type": "constant",
    "tempo_bpm": 118.0,
    "time_signature": "4/4",
-   "confidence": 0.702,
-   "beat_F": 0.8767,
+   "confidence": 0.938,
+   "beat_F": 1.0,
    "raw_beat_F": 0.8571,
-   "downbeat_F": 0.8727,
+   "downbeat_F": 1.0,
    "raw_downbeat_F": 0.8205,
    "drift_max_ms": 1.63,
    "drift_median_ms": -1.61,
@@ -99,15 +99,7 @@
    "raw_drift_max_ms": 56.95,
    "segments": [
     [
-     0,
-     58.989
-    ],
-    [
-     10,
-     118.126
-    ],
-    [
-     12,
+     1,
      118.0
     ]
    ]
@@ -115,15 +107,15 @@
   {
    "clip": "A5",
    "duration_s": 140.5,
-   "analysis_s": 10.67,
+   "analysis_s": 3.67,
    "tracker": "beat_this:small0",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 128.0,
    "time_signature": "4/4",
    "confidence": 0.969,
-   "beat_F": 0.9983,
+   "beat_F": 1.0,
    "raw_beat_F": 0.9725,
-   "downbeat_F": 0.9931,
+   "downbeat_F": 1.0,
    "raw_downbeat_F": 0.9655,
    "drift_max_ms": 1.96,
    "drift_median_ms": -1.91,
@@ -145,7 +137,7 @@
   {
    "clip": "A6",
    "duration_s": 114.0,
-   "analysis_s": 8.37,
+   "analysis_s": 2.78,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 68.0,
@@ -171,15 +163,15 @@
   {
    "clip": "A7",
    "duration_s": 183.3,
-   "analysis_s": 14.6,
+   "analysis_s": 4.76,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 128.0,
    "time_signature": "4/4",
    "confidence": 0.995,
-   "beat_F": 0.9987,
+   "beat_F": 1.0,
    "raw_beat_F": 0.9961,
-   "downbeat_F": 0.9949,
+   "downbeat_F": 1.0,
    "raw_downbeat_F": 0.9949,
    "drift_max_ms": 1.88,
    "drift_median_ms": -1.85,

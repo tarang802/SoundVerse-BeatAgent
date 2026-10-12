@@ -1830,11 +1830,15 @@
    "change_0": {
     "tracker_split_s": 64.755,
     "refined_s": 64.25
+   },
+   "trimmed_unsupported_beats": {
+    "leading": 0,
+    "trailing": 0
    }
   },
   "n_tracked_beats": 282,
   "n_tracked_downbeats": 71,
-  "tracking_s": 10.53,
-  "total_s": 13.07
+  "tracking_s": 50.89,
+  "total_s": 52.57
  }
 }
