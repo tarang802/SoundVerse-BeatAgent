@@ -87,6 +87,25 @@ Individual steps:
 | `python run.py report` | regenerate `evals/results/COMPLETION_REPORT.md` from the result files |
 | `python run.py testpack` / `p3pack` | rebuild the synthetic A1–A7 / P1–P4 packs |
 
+## Demo workflow (what the Loom shows)
+
+Start with `python run.py app`, open http://localhost:8000 in Chrome or Edge.
+
+1. **Grid + click audition** — deck A: load `A1`; the waveform shows the grid and BPM;
+   turn on CLICK and play (accented downbeats); download `grid.json`.
+2. **Sync** — deck B: load `A7`; SYNC panel: A bar 33, B bar 1, 60 s → SYNC; play the
+   mix, then A and B alone; the measured onset offsets are shown.
+3. **Chat edits** on deck A: "cut beat 16-32 and repeat it twice" (exact echo), "fade
+   out the last 8 beats", "undo". **Pushback:** "remove bar -2" (refused by code),
+   "remove everything" (asks for a yes), "chop out the boring part" (measured proposal,
+   then "yes").
+4. **Recreation** — RECREATE panel: `P2` → RECREATE; play the original, then Play in the
+   generated page next to it; chat "mute the drums", "play it at 140".
+5. **Code tour** — `beatagent/analyze.py` (grid), `edl.py` (edits), `agent.py` + `llm.py`
+   (the LLM boundary and its guards), `transcribe.py` → `score.py` → `webaudio.py`;
+   `tests/` and `evals/`.
+6. **Top three known problems** — see Known issues below.
+
 ## Architecture
 
 ```
