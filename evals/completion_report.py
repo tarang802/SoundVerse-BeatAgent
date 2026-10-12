@@ -76,6 +76,7 @@ LEDGER = ["## Bugs found in the final debugging pass\n",
           "- **Real-music sync is not proven ≤ 5 ms**: the downbeat-kick detector reports ~20 ms median on real pairs, but it reports 12–17 ms on a self-sync that is perfect by construction (different bars of the same song), so the detector cannot resolve this on hip-hop. Listen to `evals/results/real/sync_*_mix.wav` (generated locally).",
           "- **Click checks on drums are weak by nature**: a beat-aligned splice sits on a kick attack, which masks even a hard cut (to the ear too). The engine's crossfade is proven on drumless material; on drum-heavy splices the 0.0 dB readings mean \"no click above the kick\", nothing more.",
           "- **Part 3 transcription is approximate**: no source separation (HPSS only), so dense mixes suffer (P4 drums F 0.51, pitched 0.68); drum classes come from band rules, not a trained classifier; scores are only measured on synthetic clips.",
+          "- **Part 3 drum errors** (P2): kicks under a loud bass line are missed or their click is heard as a hi-hat; hats next to snares get labelled snares. On real music the vocals land in the \"keys\" track (no source separation).",
           "- **Part 3 chat edits** cover mix, tone and tempo (mute, solo, level, brightness, transpose, oscillator, tempo); there is no note-level editing.",
           "- **The app's embedded preview browser** cannot run the generated page inside the RECREATE panel (sandboxed iframe); Chrome / Edge can (verified with Playwright). Use a normal browser for the demo.",
           "- **Only hip-hop real tracks** were available on the machine; no EDM/rock/jazz real recordings tested.",
@@ -199,6 +200,11 @@ def main():
         L.append("| Part 3 note F (mir_eval onset-only, +-50 ms) | drums / pitched per clip | "
                  + "; ".join(f"{r['clip']}: drums {r['drums_F']['f'] if r['drums_F']['f'] is not None else '—'}, "
                              f"pitched {r['pitched_F']['f'] if r['pitched_F']['f'] is not None else '—'}" for r in p3) + " |")
+    p3r = [r for r in (jload("part3_real/results.json") or {}).get("rows", []) if "render" in r]
+    if p3r:
+        L.append(f"| Part 3 on real music (8-bar excerpts, no reference MIDI) | pipeline + render rhythm vs original | "
+                 f"{len(p3r)} tracks; pages clean {sum(r['render']['static_ok'] and not r['render']['network_requests'] for r in p3r)}/{len(p3r)}; "
+                 f"render onset F {min(r['render']['onset_F'] for r in p3r):.2f}-{max(r['render']['onset_F'] for r in p3r):.2f} |")
     if fuzz:
         s = fuzz["stats"]
         fails = s["length_fail"] + s["order_fail"] + s["grid_fail"] + s["click_fail"] + s["undo_fail"] + s["redo_fail"]

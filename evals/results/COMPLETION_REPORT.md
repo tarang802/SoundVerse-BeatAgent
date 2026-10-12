@@ -6,7 +6,7 @@
 
 | Suite | What it covers | Result |
 |---|---|---|
-| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 5/6 (A6 0.6667 misses); A1 (6 min) drift 1.92 ms, analysed in 11.09 s; A3 ramp worst beat 108.55 ms |
+| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 5/6 (A6 0.6667 misses); A1 (6 min) drift 1.92 ms, analysed in 34.29 s; A3 ramp worst beat 108.55 ms |
 | Part 1 robustness (generated, known answers) | tempo 60–200, grooves, meters, tempo changes, arrangement, levels, formats, non-music | 29/30 (97%) |
 | Part 1 sync robustness (ground truth) | ±20 % stretch, octaves, formats, drift, tempo change, refusals, lengths | 19/19 (100%) |
 | Part 1 brief sync (A7→A1 @ bar 33) | kick offset target | median 0.05 ms, max 0.23 ms, pass True |
@@ -19,8 +19,9 @@
 | Part 2 chat suite (producer phrasing, LLM) | all 7 ops, paraphrase, multi-op, grid-follow, undo/redo, bad input, subjective, questions, tempo-change, sync, real song | 59/59 (100%) (answered by the LLM: 59) |
 | Part 3 pipeline (synthetic P1-P4) | clip -> score -> page -> offline render in Edge | 4 clips; tempo exact on 4/4; pages: static check 4/4, network requests 0, play/stop 4/4 |
 | Part 3 note F (mir_eval onset-only, +-50 ms) | drums / pitched per clip | P1: drums 0.9286, pitched —; P2: drums 0.7071, pitched 0.9048; P3: drums —, pitched 0.9577; P4: drums 0.5093, pitched 0.6838 |
+| Part 3 on real music (8-bar excerpts, no reference MIDI) | pipeline + render rhythm vs original | 3 tracks; pages clean 3/3; render onset F 0.60-0.78 |
 | Part 2 engine fuzz (no LLM) | 421 random edits, invariants after each | 414 applied, 7 refused cleanly, 0 crashes, 0 invariant failures |
-| Unit tests `tests.test_imports` | | 36/36 pass (exit 0) |
+| Unit tests `tests.test_imports` | | 37/37 pass (exit 0) |
 | Unit tests `tests.test_edl` | | 26/26 pass (exit 0) |
 | Unit tests `tests.test_score` | | 7/7 pass (exit 0) |
 | Unit tests `tests.test_ref_formats` | | 15/15 pass (exit 0) |
@@ -29,6 +30,7 @@
 | Unit tests `tests.test_audio_paths` | | 38/38 pass (exit 0) |
 | Unit tests `tests.test_recreate_api` | | 14/14 pass (exit 0) |
 | Unit tests `tests.test_score_chat` | | 20/20 pass (exit 0) |
+| Unit tests `tests.test_webaudio_page` | | 8/8 pass (exit 0) |
 
 ## Part 1 — beat alignment and sync
 
@@ -288,6 +290,7 @@ SYNTHETIC substitute clips (the brief's P1-P4 were not provided); details in `ev
 - **Real-music sync is not proven ≤ 5 ms**: the downbeat-kick detector reports ~20 ms median on real pairs, but it reports 12–17 ms on a self-sync that is perfect by construction (different bars of the same song), so the detector cannot resolve this on hip-hop. Listen to `evals/results/real/sync_*_mix.wav` (generated locally).
 - **Click checks on drums are weak by nature**: a beat-aligned splice sits on a kick attack, which masks even a hard cut (to the ear too). The engine's crossfade is proven on drumless material; on drum-heavy splices the 0.0 dB readings mean "no click above the kick", nothing more.
 - **Part 3 transcription is approximate**: no source separation (HPSS only), so dense mixes suffer (P4 drums F 0.51, pitched 0.68); drum classes come from band rules, not a trained classifier; scores are only measured on synthetic clips.
+- **Part 3 drum errors** (P2): kicks under a loud bass line are missed or their click is heard as a hi-hat; hats next to snares get labelled snares. On real music the vocals land in the "keys" track (no source separation).
 - **Part 3 chat edits** cover mix, tone and tempo (mute, solo, level, brightness, transpose, oscillator, tempo); there is no note-level editing.
 - **The app's embedded preview browser** cannot run the generated page inside the RECREATE panel (sandboxed iframe); Chrome / Edge can (verified with Playwright). Use a normal browser for the demo.
 - **Only hip-hop real tracks** were available on the machine; no EDM/rock/jazz real recordings tested.

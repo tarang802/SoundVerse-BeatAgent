@@ -79,7 +79,7 @@ Individual steps:
 | Command | What it does |
 |---|---|
 | `python run.py app` | start the web app |
-| `python run.py test` | all 9 deterministic test suites (no API key needed), summarised |
+| `python run.py test` | all 10 deterministic test suites (no API key needed), summarised |
 | `python run.py fuzz` | 421 random edits with invariant checks after each (~5 min) |
 | `python run.py eval` / `syncval` | Part 1: mir_eval report on A1–A7 / sync comparison + `PART1_REPORT.md` |
 | `python run.py p3eval` | Part 3: transcribe P1–P4, render pages offline, score vs MIDI |
@@ -192,6 +192,14 @@ order, grid, clicks, undo or redo.
 | P4 dense mix | exact | 0.51 | 0.68 | 0.88 |
 
 All four pages: 0 network requests, no page errors, play/stop working in headless Edge.
+
+**Part 3 on real music** (8-bar excerpts of three real hip-hop tracks, no reference MIDI,
+like the brief's P4; `evals/results/part3_real/results.json`, numbers only): pipeline
+clean on all three, tempo matches Part 1, render rhythm vs the original onset F
+**0.60–0.78**. Without source separation the vocals are transcribed into the "keys" track.
+
+Where the drum transcription goes wrong (P2): kicks under a loud bass line are missed
+or their click is heard as a hi-hat; some hats next to snares are labelled snares.
 
 ## Known issues (the top ones)
 
