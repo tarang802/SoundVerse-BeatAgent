@@ -118,6 +118,27 @@ def _drop_ghosts(notes: list[tuple[float, float, int, float]]) -> list[tuple[flo
     return keep
 
 
+def _drop_drum_tones(notes, drums):
+    """Drop quiet, short pitched notes that are a drum's own tone: a kick's body
+    (<= MIDI 43, ~98 Hz) or a snare's (MIDI 50-58, ~150-230 Hz) starting from 60 ms
+    before to 250 ms after a kick / snare hit. Seen on the drum-only P1 loop: 7 such
+    "notes" (MIDI 30, 40, 54) at velocity 43-59."""
+    kicks = np.array([t for t, p, _ in drums if p == 36])
+    snares = np.array([t for t, p, _ in drums if p == 38])
+
+    def near(ts, t):
+        return len(ts) > 0 and bool(np.any((t - ts >= -0.06) & (t - ts <= 0.25)))
+
+    keep = []
+    for s, e, p, a in notes:
+        quiet_short = a < 0.5 and (e - s) < 0.5
+        kick_tone = p <= 43 and near(kicks, s)
+        snare_tone = 50 <= p <= 58 and near(snares, s)
+        if not (quiet_short and (kick_tone or snare_tone)):
+            keep.append((s, e, p, a))
+    return keep
+
+
 def transcribe_pitched(harm: np.ndarray, sr: int) -> list[tuple[float, float, int, float]]:
     """Basic Pitch -> [(start_s, end_s, MIDI pitch, amplitude 0..1)]"""
     import logging
@@ -171,7 +192,7 @@ def transcribe(audio: np.ndarray, sr: int, name: str = "clip") -> Score:
     if drums:
         tracks.append(Track(name="drums", kind="drums", patch=default_patch("drums"),
                             notes=[Note(start=beat_of(t), duration=0.25, pitch=p, velocity=v) for t, p, v in drums]))
-    pitched = transcribe_pitched(harm, sr)
+    pitched = _drop_drum_tones(transcribe_pitched(harm, sr), drums)
     low = [n for n in pitched if n[2] < BASS_SPLIT]
     high = [n for n in pitched if n[2] >= BASS_SPLIT]
     groups = [("bass", "bass", low), ("keys", "keys", high)] if low and high else \
