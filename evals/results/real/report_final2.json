@@ -6,7 +6,7 @@
    "slug": "03___Elevator_Music___Encore_ABJ__DL91_E",
    "duration_s": 201.2,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 7.3,
+   "analysis_s": 19.7,
    "tempo_bpm": 105.01,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -149,7 +149,7 @@
    "slug": "04___Kya_Mai_Yaha___Encore_ABJ__DL91_ERA",
    "duration_s": 225.2,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 7.1,
+   "analysis_s": 17.9,
    "tempo_bpm": 130.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -300,31 +300,31 @@
    "slug": "01___ALL_CAPS___Encore_ABJ__DL91_ERA",
    "duration_s": 118.1,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 10.0,
-   "tempo_bpm": 97.86,
+   "analysis_s": 6.1,
+   "tempo_bpm": 98.44,
    "time_signature": "4/4",
    "grid_type": "variable",
-   "n_bars": 48,
-   "confidence": 0.273,
+   "n_bars": 49,
+   "confidence": 0.213,
    "trimmed": {
     "leading": 0,
     "trailing": 0
    },
-   "first_beat_s": 0.0,
+   "first_beat_s": 0.28,
    "onset_support": {
-    "share_of_beats_with_onset": 0.552,
+    "share_of_beats_with_onset": 0.561,
     "by_position": {
-     "1": 0.479,
-     "2": 0.583,
-     "3": 0.625,
-     "4": 0.521
+     "1": 0.51,
+     "2": 0.551,
+     "3": 0.592,
+     "4": 0.592
     },
-    "median_offset_ms": 0.04,
-    "p95_abs_offset_ms": 38.05
+    "median_offset_ms": 0.14,
+    "p95_abs_offset_ms": 38.53
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 19.57,
-    "share_over_35ms": 0.406
+    "median": 19.64,
+    "share_over_35ms": 0.388
    },
    "librosa_tempo": 97.51,
    "tempo_check": "agree",
@@ -332,25 +332,25 @@
     "windows": [
      {
       "t": 0.0,
-      "grid_bpm": 97.74,
+      "grid_bpm": 98.36,
       "indep_bpm": 110.64,
-      "diff_pct": 13.19,
+      "diff_pct": 12.48,
       "periodicity": 0.077,
-      "onset_support": 0.97
+      "onset_support": 0.79
      },
      {
       "t": 20.0,
-      "grid_bpm": 97.74,
-      "indep_bpm": 94.84,
-      "diff_pct": -2.96,
-      "periodicity": 0.053,
-      "onset_support": 1.0
+      "grid_bpm": 112.81,
+      "indep_bpm": 98.2,
+      "diff_pct": -12.94,
+      "periodicity": 0.041,
+      "onset_support": 0.97
      },
      {
       "t": 40.0,
-      "grid_bpm": 97.28,
+      "grid_bpm": 97.62,
       "indep_bpm": 94.37,
-      "diff_pct": -2.99,
+      "diff_pct": -3.34,
       "periodicity": 0.078,
       "onset_support": 1.0
      },
@@ -364,9 +364,9 @@
      },
      {
       "t": 80.0,
-      "grid_bpm": 97.9,
+      "grid_bpm": 98.09,
       "indep_bpm": 94.45,
-      "diff_pct": -3.52,
+      "diff_pct": -3.71,
       "periodicity": 0.054,
       "onset_support": 1.0
      }
@@ -377,25 +377,25 @@
     "all_within_1_5pct": true
    },
    "downbeat_attack_vs_own_grid": {
-    "n": 23,
-    "median_ms": -0.09,
-    "p10_p90_spread_ms": 25.31
+    "n": 25,
+    "median_ms": 0.3,
+    "p10_p90_spread_ms": 61.68
    },
    "downbeat_lowkick_vs_own_grid": {
-    "n": 28,
-    "median_ms": 1.05,
-    "p10_p90_spread_ms": 54.31
+    "n": 31,
+    "median_ms": -13.39,
+    "p10_p90_spread_ms": 42.63
    },
    "n_tracked_beats": 234,
-   "n_consistent_beats": 222,
+   "n_consistent_beats": 215,
    "tempo_octave": {
-    "tracker_bpm": 196.88,
+    "tracker_bpm": 198.68,
     "factor": 0.5,
     "preferred_range": [
      80.0,
      160.0
     ],
-    "reported_bpm": 97.86
+    "reported_bpm": 98.44
    }
   },
   {
@@ -403,7 +403,7 @@
    "slug": "29__Seedhe_Maut___Kavi__E",
    "duration_s": 213.8,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 19.0,
+   "analysis_s": 6.3,
    "tempo_bpm": 110.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -426,7 +426,7 @@
     "p95_abs_offset_ms": 26.36
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 7.89,
+    "median": 7.91,
     "share_over_35ms": 0.143
    },
    "librosa_tempo": 110.29,
@@ -521,13 +521,13 @@
    },
    "downbeat_attack_vs_own_grid": {
     "n": 64,
-    "median_ms": 4.04,
-    "p10_p90_spread_ms": 12.64
+    "median_ms": 4.05,
+    "p10_p90_spread_ms": 12.65
    },
    "downbeat_lowkick_vs_own_grid": {
     "n": 74,
-    "median_ms": -3.33,
-    "p10_p90_spread_ms": 17.54
+    "median_ms": -3.32,
+    "p10_p90_spread_ms": 17.59
    },
    "n_tracked_beats": 386,
    "n_consistent_beats": 378,
@@ -546,7 +546,7 @@
    "slug": "24__Seedhe_Maut___Akatsuki__E",
    "duration_s": 155.8,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 14.2,
+   "analysis_s": 5.2,
    "tempo_bpm": 156.0,
    "time_signature": "4/4",
    "grid_type": "piecewise_constant",
@@ -558,19 +558,19 @@
    },
    "first_beat_s": 0.018,
    "onset_support": {
-    "share_of_beats_with_onset": 0.835,
+    "share_of_beats_with_onset": 0.836,
     "by_position": {
      "1": 0.889,
      "2": 0.818,
      "3": 0.879,
-     "4": 0.755
+     "4": 0.758
     },
-    "median_offset_ms": 1.44,
+    "median_offset_ms": 1.45,
     "p95_abs_offset_ms": 37.96
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 235.91,
-    "share_over_35ms": 0.57
+    "median": 217.9,
+    "share_over_35ms": 0.571
    },
    "librosa_tempo": 156.25,
    "tempo_check": "agree",
@@ -668,27 +668,27 @@
      "a_bar": 9,
      "b_bar": 1,
      "a_start": 17.140899352803324,
-     "b_start": 0.003573320297061991,
+     "b_start": 0.00295445502525892,
      "duration": 60.0,
      "a_period": 0.42857640633611993,
-     "b_period": 0.4285583227405958,
-     "time_ratio": 1.0000421963465986,
+     "b_period": 0.4285610402325979,
+     "time_ratio": 1.0000358551106598,
      "a_bpm": 139.99837394908704,
-     "b_bpm": 140.00428136899745,
-     "b_needed": 59.99746832603147,
+     "b_bpm": 140.0033936062772,
+     "b_needed": 59.99784877049298,
      "notes": [],
      "b_octave": 1.0,
-     "offset": 17.1373258817252,
-     "stretch_percent": 0.004219634659863303
+     "offset": 17.137944791845754,
+     "stretch_percent": 0.0035855110659843703
     },
     "alignment_any_onset": {
      "n_beats": 139,
      "n_measured": 83,
-     "median_ms": -2.97,
-     "median_abs_ms": 4.01,
-     "p95_abs_ms": 33.34,
-     "max_abs_ms": 57.92,
-     "worst_at_s": 20.143,
+     "median_ms": 0.01,
+     "median_abs_ms": 0.06,
+     "p95_abs_ms": 33.24,
+     "max_abs_ms": 37.72,
+     "worst_at_s": 26.572,
      "target": {
       "median_abs_ms": 5.0,
       "max_abs_ms": 15.0
@@ -697,66 +697,65 @@
     },
     "alignment_downbeat_kicks": {
      "n_downbeats": 34,
-     "n_measured": 23,
+     "n_measured": 22,
      "a_has_kick": 26,
-     "b_has_kick": 26,
-     "median_ms": -13.03,
-     "median_abs_ms": 20.43,
+     "b_has_kick": 25,
+     "median_ms": -13.93,
+     "median_abs_ms": 20.63,
      "max_abs_ms": 72.55,
      "offsets_ms": [
-      -21.05,
-      16.19,
-      5.69,
-      -0.29,
-      6.21,
-      -11.69,
-      -43.45,
-      -42.17,
-      0.31,
-      -22.55,
-      -13.03,
-      -14.87,
-      -10.49,
+      -36.28,
+      16.85,
+      -5.92,
+      -15.89,
+      7.6,
+      -8.42,
+      -42.22,
+      -38.65,
+      -24.38,
+      -19.47,
+      -11.98,
+      -26.56,
+      -7.77,
       -72.55,
-      -42.29,
-      30.35,
-      -3.46,
-      -46.99,
-      23.53,
-      -6.22,
-      -44.3,
-      -20.43,
-      -25.62
+      -39.24,
+      21.8,
+      -0.6,
+      24.24,
+      17.72,
+      -57.79,
+      -3.43,
+      -46.57
      ],
      "pass": false
     },
     "alignment_downbeat_attacks": {
      "n_downbeats": 34,
      "n_measured": 20,
-     "median_abs_ms": 7.42,
-     "max_abs_ms": 33.71,
-     "share_within_15ms": 0.65,
+     "median_abs_ms": 0.04,
+     "max_abs_ms": 36.48,
+     "share_within_15ms": 0.85,
      "offsets_ms": [
-      15.29,
-      11.28,
-      15.96,
-      -30.95,
-      -3.31,
-      -2.49,
-      -3.53,
-      -3.28,
-      -3.55,
-      -3.21,
-      11.43,
-      33.71,
-      26.02,
-      -3.0,
-      -2.55,
-      -2.81,
-      16.15,
-      13.49,
-      -1.28,
-      20.86
+      0.03,
+      -0.15,
+      -0.0,
+      -29.7,
+      -0.06,
+      0.0,
+      0.01,
+      -0.1,
+      -0.0,
+      -0.04,
+      -0.21,
+      36.48,
+      25.97,
+      0.01,
+      -0.06,
+      -0.02,
+      0.02,
+      -0.11,
+      0.02,
+      0.02
      ],
      "pass": false
     }

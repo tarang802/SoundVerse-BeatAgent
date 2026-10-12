@@ -1,0 +1,57 @@
+{
+ "label": "engine fuzz on a synthetic 120 BPM groove with known beats (no LLM, no tracker)",
+ "seed": 1,
+ "stats": {
+  "ops": 421,
+  "applied": 414,
+  "refused_cleanly": 7,
+  "crashed": 0,
+  "length_fail": 0,
+  "order_fail": 0,
+  "grid_fail": 0,
+  "click_fail": 0,
+  "undo_fail": 0,
+  "redo_fail": 0,
+  "by_kind": {
+   "keep_only": {
+    "applied": 68,
+    "refused": 0,
+    "failed_checks": 0
+   },
+   "move": {
+    "applied": 49,
+    "refused": 2,
+    "failed_checks": 0
+   },
+   "gain": {
+    "applied": 58,
+    "refused": 0,
+    "failed_checks": 0
+   },
+   "repeat": {
+    "applied": 60,
+    "refused": 0,
+    "failed_checks": 0
+   },
+   "fade": {
+    "applied": 60,
+    "refused": 0,
+    "failed_checks": 0
+   },
+   "copy": {
+    "applied": 67,
+    "refused": 0,
+    "failed_checks": 0
+   },
+   "remove": {
+    "applied": 52,
+    "refused": 5,
+    "failed_checks": 0
+   }
+  },
+  "pass_rate_applied_ops": 1.0
+ },
+ "failures": [],
+ "n_failures": 0,
+ "baseline_grid_median_ms": 2.168
+}

@@ -5,7 +5,7 @@
   {
    "clip": "A1",
    "duration_s": 361.5,
-   "analysis_s": 55.5,
+   "analysis_s": 12.11,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 124.0,
@@ -32,7 +32,7 @@
   {
    "clip": "A2",
    "duration_s": 157.4,
-   "analysis_s": 24.86,
+   "analysis_s": 6.34,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 86.0,
@@ -59,7 +59,7 @@
   {
    "clip": "A3",
    "duration_s": 185.2,
-   "analysis_s": 27.14,
+   "analysis_s": 6.89,
    "tracker": "beat_this:small0",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 117.997,
@@ -88,7 +88,7 @@
   {
    "clip": "A4",
    "duration_s": 145.9,
-   "analysis_s": 12.9,
+   "analysis_s": 4.96,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 118.0,
@@ -115,7 +115,7 @@
   {
    "clip": "A5",
    "duration_s": 140.5,
-   "analysis_s": 19.39,
+   "analysis_s": 4.86,
    "tracker": "beat_this:small0",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 128.001,
@@ -146,7 +146,7 @@
   {
    "clip": "A6",
    "duration_s": 114.0,
-   "analysis_s": 20.61,
+   "analysis_s": 3.7,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 68.0,
@@ -173,7 +173,7 @@
   {
    "clip": "A7",
    "duration_s": 183.3,
-   "analysis_s": 29.75,
+   "analysis_s": 6.63,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 128.0,

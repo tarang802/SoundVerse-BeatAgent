@@ -176,6 +176,7 @@ def _plan_once(a: BeatGrid, b: BeatGrid, a_bar: int, b_bar: int, duration: float
 # ============================================================ step 2: render
 PREROLL = 0.5     # seconds of B before its downbeat fed to the stretcher (warm-up), then cut away
 B_FADE_IN = 0.003 # tiny fade where B's audio starts at t=0, so the cut itself doesn't click
+SNAP_S = 0.025    # pasted kicks snap to the actual hit within +-25 ms in both tracks
 EDGE_SKIP = 0.05  # measurement ignores beats in the first 50 ms of the render (no audio before
                   # them -> detector edge artefact: the t=0 downbeat read 19.7 ms, all others <1 ms)
 
@@ -431,14 +432,26 @@ def render_constant_attack(a_audio: np.ndarray, a_sr: int, b_audio: np.ndarray, 
     k = xf + pre + att + xf                          # patch length incl. both crossfades
     w = np.ones(k, np.float32)
     w[:xf], w[-xf:] = _fade(xf, True), _fade(xf, False)
+    # Snap each pasted kick to the ACTUAL hit (within +-SNAP_S) in both tracks, so a
+    # grid that is a few ms off (drifting live takes, tempo changes) no longer
+    # carries the kick off time. No clear hit -> the grid time is kept.
+    a_beats = a_grid.beats[ia:] - plan.a_start
+    a_beats = a_beats[a_beats < n / sr]
+    a_snap = onsets_near(r["a"], sr, a_beats, win=SNAP_S)
+    b_beats = b_grid.beats[ib:ib + len(a_beats)]
+    b_snap = onsets_near(b, sr, b_beats, win=SNAP_S)
+    patches = []
     n_patched = 0
-    for j in range(0, 10_000):
-        if ia + j >= len(a_grid.beats) or ib + j >= len(b_grid.beats):
+    for j in range(0, len(a_beats)):
+        if j >= len(b_beats):
             break
-        d0 = int(round((a_grid.beats[ia + j] - plan.a_start) * sr))   # beat on the render timeline
+        ta = a_snap[j] if not np.isnan(a_snap[j]) else a_beats[j]
+        tb = b_snap[j] if not np.isnan(b_snap[j]) else b_beats[j]
+        d0 = int(round(ta * sr))                                      # beat on the render timeline
         if d0 >= n:
             break
-        s0 = int(round(b_grid.beats[ib + j] * sr))                   # same beat in original B
+        s0 = int(round(tb * sr))                                      # same beat in original B
+        patches.append((d0 / sr, s0 / sr))
         o0, v0 = d0 - pre - xf, s0 - pre - xf                         # patch start (output / source)
         lo = max(0, -o0, -v0)                                         # clip at t=0 / file start
         hi = min(k, n - o0, len(b) - v0)
@@ -453,8 +466,8 @@ def render_constant_attack(a_audio: np.ndarray, a_sr: int, b_audio: np.ndarray, 
     f = int(B_FADE_IN * sr)
     body[:f] *= np.linspace(0, 1, f, dtype=np.float32)[:, None]
     return {"a": r["a"], "b": body, "mix": 0.5 * r["a"] + 0.5 * body, "sr": sr,
-            "method": f"constant_r3+verbatim_{int(pre_ms)}ms_pre_{int(attack_ms)}ms_attack",
-            "n_patched": n_patched}
+            "method": f"constant_r3+verbatim_{int(pre_ms)}ms_pre_{int(attack_ms)}ms_attack+snap",
+            "n_patched": n_patched, "patches": patches}
 
 
 def render(a_audio, a_sr, b_audio, b_sr, plan: SyncPlan, a_grid: BeatGrid, b_grid: BeatGrid) -> dict:

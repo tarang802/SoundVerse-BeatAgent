@@ -100,6 +100,9 @@ class Session:
                     field = ".".join(str(x) for x in first.get("loc", [])[1:]) or "value"
                     why = "is missing" if first.get("type") == "missing" else f"is invalid ({first.get('msg')})"
                     detail = f"the '{o.get('op', '?')}' edit {why}: {field}"
+                    if field == "db" and first.get("type") in ("less_than_equal", "greater_than_equal"):
+                        detail = (f"a gain of {clean.get('db'):+g} dB is outside what I allow "
+                                  "(-60 to +24 dB; more than +24 dB would just clip)")
                 else:
                     detail = f"the '{o.get('op', '?')}' edit is invalid"
                 raise EditError(f"Couldn't turn that into a valid edit: {detail}.") from e

@@ -1,0 +1,77 @@
+{
+ "label": "self-sync control (perfect alignment by construction)",
+ "rows": [
+  {
+   "file": "02. Seedhe Maut - Toh Kya [E].flac",
+   "b_bar": 9,
+   "a_bar": 9,
+   "content": "identical",
+   "any_onset": {
+    "n_measured": 131,
+    "n_beats": 149,
+    "median_abs_ms": 0.08,
+    "max_abs_ms": 14.51
+   },
+   "downbeat_kicks": {
+    "n_measured": 29,
+    "n_downbeats": 37,
+    "median_abs_ms": 0.07,
+    "max_abs_ms": 38.85
+   }
+  },
+  {
+   "file": "02. Seedhe Maut - Toh Kya [E].flac",
+   "b_bar": 1,
+   "a_bar": 9,
+   "content": "different bars",
+   "any_onset": {
+    "n_measured": 119,
+    "n_beats": 149,
+    "median_abs_ms": 0.05,
+    "max_abs_ms": 31.2
+   },
+   "downbeat_kicks": {
+    "n_measured": 22,
+    "n_downbeats": 37,
+    "median_abs_ms": 11.65,
+    "max_abs_ms": 38.76
+   }
+  },
+  {
+   "file": "01. Seedhe Maut - Nanchaku [E].flac",
+   "b_bar": 9,
+   "a_bar": 9,
+   "content": "identical",
+   "any_onset": {
+    "n_measured": 113,
+    "n_beats": 139,
+    "median_abs_ms": 0.04,
+    "max_abs_ms": 33.42
+   },
+   "downbeat_kicks": {
+    "n_measured": 26,
+    "n_downbeats": 34,
+    "median_abs_ms": 0.01,
+    "max_abs_ms": 0.61
+   }
+  },
+  {
+   "file": "01. Seedhe Maut - Nanchaku [E].flac",
+   "b_bar": 1,
+   "a_bar": 9,
+   "content": "different bars",
+   "any_onset": {
+    "n_measured": 82,
+    "n_beats": 139,
+    "median_abs_ms": 0.08,
+    "max_abs_ms": 63.84
+   },
+   "downbeat_kicks": {
+    "n_measured": 20,
+    "n_downbeats": 34,
+    "median_abs_ms": 16.88,
+    "max_abs_ms": 69.22
+   }
+  }
+ ]
+}

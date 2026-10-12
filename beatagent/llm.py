@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import re
+from pathlib import Path
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
@@ -66,30 +67,36 @@ times: all numbers about the track come from the MEASURED GRID provided below.
 Deterministic code will validate your ops, check ranges, compute exact seconds,
 and echo the result to the user. NEVER reject a request yourself because a beat or bar
 number looks out of range: emit the literal op and let the code check it against the grid.
+Copy every number from the user's message LITERALLY (negative, zero, huge or fractional
+included). Never "correct" a number -- the code validates it and explains the problem.
 
 CONVENTIONS (fixed; always follow them and mention any you relied on in `interpretation`):
-- Beats are 0-based GRID LINES. A beat range is half-open [start, end): "beat 16-32"
-  -> {"unit":"beats","start":16,"end":32} = 16 beats. "beat 0 to beat 8" = start 0, end 8.
-- Bars are 1-based REGIONS, ranges inclusive: "bars 200-210" -> start 200, end 210.
-  "bar 5" -> start 5, end 5. "the first 4 bars" -> bars 1-4.
+- Beats are 0-based GRID LINES. A beat range is half-open [start, end): "beats 4 to 12"
+  -> {"unit":"beats","start":4,"end":12} = 8 beats ("through"/"until" read the same way).
+- Bars are 1-based REGIONS, ranges inclusive: "bars 9-12" -> start 9, end 12.
+  "bar 7" -> start 7, end 7. "the first 3 bars" -> bars 1-3.
 - "the last N beats/bars" -> use {"unit":..., "last": N}.
 - start/end null = start/end of the audio.
-- repeat: `total_plays` counts the original. "repeat it twice" / "loop it two times" = 2 plays
-  in total (original + 1 copy). "loop four times" = 4. The repeated block is inserted in
-  place and the rest of the track follows (state this reading).
+- Only whole beats and bars can be addressed. Fractions ("beat 3.5", "half a bar") -> "clarify".
+- repeat: `total_plays` counts the original. "repeat it twice" / "loop it two times" / "double it"
+  = 2 plays in total (original + 1 copy). "loop it 3 times" = 3. "repeat bar 7" with no count = 2.
+  The repeated block is inserted in place and the rest of the track follows (state this reading).
 - "cut X and repeat it" means take X as the slice to repeat, not delete it.
-- "cut"/"remove"/"delete"/"chop out" X on its own means remove X.
+- "cut"/"remove"/"delete"/"drop"/"kill"/"get rid of"/"chop out" X on its own means remove X.
+- "keep only X" / "trim it to X" / "just X" means keep_only X.
 - move/copy `to` is measured on the track BEFORE the edit; {"unit":"bars","index":k} is the
-  start of bar k; index null = end of track.
+  start of bar k; "after bar k" = start of bar k+1; "to the start" = bar 1; index null = end of track.
 - Multiple ops in one plan are applied in order, each against the grid produced by the previous one.
-- fade: direction "in" or "out" over the range. gain: db over the range.
+- fade: direction "in" or "out" over the range. gain: db over the range ("louder by N dB" = +N,
+  "quieter"/"down" = -N).
 - EVERY op has a `range`. The whole track is {"unit":"beats","start":null,"end":null}. Emit each op once.
 
 EXAMPLES (message -> ops):
-- "cut beat 16-32 and repeat it twice" -> [{"op":"repeat","range":{"unit":"beats","start":16,"end":32},"total_plays":2}]
-- "fade out the last 8 beats" -> [{"op":"fade","direction":"out","range":{"unit":"beats","last":8}}]
-- "remove bar 5" -> [{"op":"remove","range":{"unit":"bars","start":5,"end":5}}]
-- "loop the first 4 bars four times" -> [{"op":"repeat","range":{"unit":"bars","start":1,"end":4},"total_plays":4}]
+- "drop bars 9 to 12" -> [{"op":"remove","range":{"unit":"bars","start":9,"end":12}}]
+- "loop beats 8-16 three times" -> [{"op":"repeat","range":{"unit":"beats","start":8,"end":16},"total_plays":3}]
+- "fade the last 2 bars out" -> [{"op":"fade","direction":"out","range":{"unit":"bars","last":2}}]
+- "move bar 3 to the start of bar 10" -> [{"op":"move","range":{"unit":"bars","start":3,"end":3},"to":{"unit":"bars","index":10}}]
+- "trim it to bars 17-32" -> [{"op":"keep_only","range":{"unit":"bars","start":17,"end":32}}]
 - "turn it down 3 dB" -> [{"op":"gain","db":-3,"range":{"unit":"beats","start":null,"end":null}}]
 
 ACTIONS:
@@ -99,12 +106,14 @@ ACTIONS:
   (e.g. "the boring part", "the good bit", "make it shorter"). NEVER guess. If the MEASURED
   SECTIONS make a concrete proposal possible, put it in `ops` and ask the user to confirm,
   quoting the measurements (bars, energy) that support it. Otherwise ask a specific question.
+  If your message proposes a range ("did you mean bars 81 to 96?"), `ops` MUST contain that
+  edit: only ops can be confirmed -- a proposal that exists only in `message` makes "yes" do nothing.
 - "confirm": the user accepts the pending proposal (e.g. "yes", "do it").
 - "cancel": the user rejects the pending proposal.
 - "answer": a question about the track (tempo, bars, length) answered from the measured grid,
   or a request this editor cannot do (explain briefly in `message`, e.g. pitch shifting).
-- "sync": beat-match the PARTNER track onto this one (e.g. "sync B to this at bar 33",
-  "sync A7 to A1 starting at A1's bar 33"). Fill `sync` with a_bar (this track's bar), b_bar
+- "sync": beat-match the PARTNER track onto this one (e.g. "bring the other track in at bar 17",
+  "beatmatch B to this from bar 9"). Fill `sync` with a_bar (this track's bar), b_bar
   (partner's bar, default 1), duration_s (default 60). Only if PARTNER_TRACK is given in the
   context; otherwise "answer" that a second track must be loaded.
 
@@ -177,20 +186,39 @@ class GeminiInterpreter:
              partner=None) -> Plan:
         from google.genai import types
         ctx = _context(grid_summary, sections, pending, list(history), partner)
+        contents = f"CONTEXT:\n{ctx}\n\nUSER MESSAGE:\n{message}"
+        # Record/replay for evals (BEAT_AGENT_LLM_CACHE=dir): the same prompt is answered from
+        # disk, so re-runs are repeatable and spend no quota. Keyed on system prompt + contents.
+        cache_dir = os.environ.get("BEAT_AGENT_LLM_CACHE")
+        key = None
+        if cache_dir:
+            import hashlib
+            key = hashlib.sha256((SYSTEM + "\n" + contents).encode("utf-8")).hexdigest()[:32]
+            hit = Path(cache_dir) / f"{key}.json"
+            if hit.exists():
+                rec = json.loads(hit.read_text(encoding="utf-8"))
+                self.usage["cache_hits"] = self.usage.get("cache_hits", 0) + 1
+                self.last_model = rec.get("model")
+                return Plan.model_validate_json(rec["text"])
         resp = self._generate(
-            f"CONTEXT:\n{ctx}\n\nUSER MESSAGE:\n{message}",
+            contents,
             types.GenerateContentConfig(
                 system_instruction=SYSTEM, temperature=0.0,
                 response_mime_type="application/json", response_schema=Plan),
         )
         self.usage["calls"] += 1
+        self.last_model = self.model
         um = getattr(resp, "usage_metadata", None)
         if um:
             self.usage["input_tokens"] += um.prompt_token_count or 0
             self.usage["output_tokens"] += um.candidates_token_count or 0
-        if getattr(resp, "parsed", None) is not None:
-            return resp.parsed
-        return Plan.model_validate_json(resp.text)
+        plan = resp.parsed if getattr(resp, "parsed", None) is not None else Plan.model_validate_json(resp.text)
+        if cache_dir and key:
+            Path(cache_dir).mkdir(parents=True, exist_ok=True)
+            (Path(cache_dir) / f"{key}.json").write_text(
+                json.dumps({"model": self.model, "message": message, "text": plan.model_dump_json()}),
+                encoding="utf-8")
+        return plan
 
 
 # ---------------------------------------------------------------- offline fallback
@@ -279,7 +307,7 @@ class RuleInterpreter:
         if x:
             db = float(x.group(2)) * (1 if x.group(1) == "up" else -1)
             return Plan(action="edit", ops=[POp(op="gain", db=db, range=PRange(unit="beats"))])
-        x = re.search(r"sync.*?bar\s+(\d+)", m)
+        x = re.search(r"(?:sync|beat-?match)\b.*?\bbar\s+(\d+)", m)
         if x:
             if not partner:
                 return Plan(action="answer", message="Load a second track first: sync needs a partner track.")

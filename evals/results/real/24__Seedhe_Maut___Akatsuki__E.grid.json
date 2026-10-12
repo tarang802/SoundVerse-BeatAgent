@@ -30,7 +30,7 @@
   },
   {
    "start_beat": 56,
-   "end_beat": 394,
+   "end_beat": 395,
    "start_bar": 15,
    "end_bar": 99,
    "start_time": 21.5739,
@@ -44,7 +44,7 @@
   "note": "heuristic: share of grid beats confirmed by the tracker x share of tracker downbeats that agree with the chosen bar phase; not a calibrated probability"
  },
  "duration": 155.769229,
- "n_beats": 395,
+ "n_beats": 396,
  "n_bars": 99,
  "downbeats": [
   0.017566,
@@ -2517,6 +2517,12 @@
    "time": 151.540109,
    "bar": 99,
    "position": 3
+  },
+  {
+   "index": 395,
+   "time": 151.924736,
+   "bar": 99,
+   "position": 4
   }
  ],
  "meta": {
@@ -2564,6 +2570,7 @@
     "tracker_split_s": 30.24,
     "refined_s": 21.5739
    },
+   "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 1
@@ -2581,7 +2588,7 @@
   "n_tracked_beats": 200,
   "n_consistent_beats": 193,
   "n_tracked_downbeats": 54,
-  "tracking_s": 11.56,
-  "total_s": 14.24
+  "tracking_s": 3.49,
+  "total_s": 5.21
  }
 }

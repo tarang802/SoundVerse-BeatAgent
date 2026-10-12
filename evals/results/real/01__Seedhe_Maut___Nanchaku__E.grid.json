@@ -2731,6 +2731,7 @@
     "phase_shift_ms": -8.79,
     "n_beats_fitted": 318
    },
+   "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 4
@@ -2748,7 +2749,7 @@
   "n_tracked_beats": 320,
   "n_consistent_beats": 318,
   "n_tracked_downbeats": 108,
-  "tracking_s": 16.49,
-  "total_s": 19.9
+  "tracking_s": 12.67,
+  "total_s": 16.2
  }
 }

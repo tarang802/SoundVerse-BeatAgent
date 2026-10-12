@@ -1,0 +1,549 @@
+[
+ {
+  "pair": "same_tempo",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 124.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.0,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.13,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.25
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.21,
+   "max_abs_ms": 0.76
+  },
+  "elapsed_s": 33.6,
+  "pass": true
+ },
+ {
+  "pair": "b_+2pct",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 126.48,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.02,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.07,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.24
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.2,
+   "max_abs_ms": 1.06
+  },
+  "elapsed_s": 27.8,
+  "pass": true
+ },
+ {
+  "pair": "b_+10pct",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 136.4,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.1,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.08,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 116,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.67
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.39,
+   "max_abs_ms": 1.39
+  },
+  "elapsed_s": 30.1,
+  "pass": true
+ },
+ {
+  "pair": "b_+20pct",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 148.8,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.2,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.49,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 67,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 1.0
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.14,
+   "max_abs_ms": 1.04
+  },
+  "elapsed_s": 31.5,
+  "pass": true
+ },
+ {
+  "pair": "b_-10pct",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 111.6,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 0.9,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.07,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.24
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.61,
+   "max_abs_ms": 0.93
+  },
+  "elapsed_s": 30.1,
+  "pass": true
+ },
+ {
+  "pair": "b_-20pct",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 99.2,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 0.8,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.06,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.27
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 1.11,
+   "max_abs_ms": 1.4
+  },
+  "elapsed_s": 31.4,
+  "pass": true
+ },
+ {
+  "pair": "b_+30pct_refuse",
+  "expect": "refuse",
+  "a_bpm": 124.0,
+  "b_bpm": 80.6,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "refused",
+  "message": "B would need stretching by -35.0% (80.60 -> 124.00 BPM); beyond +-25% it sounds bad. Also tried matching B at double time +30.0% and half time -67.5% -- still beyond +-25%.",
+  "pass": true
+ },
+ {
+  "pair": "b_octave_62",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 124.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.0,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.75,
+   "max_abs_ms": 1.75
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.57
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 2.09,
+   "max_abs_ms": 2.94
+  },
+  "elapsed_s": 32.2,
+  "pass": true
+ },
+ {
+  "pair": "b_octave_248",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 124.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.0,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.63,
+   "max_abs_ms": 1.54
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.01,
+   "max_abs_ms": 0.04
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 1.03,
+   "max_abs_ms": 2.65
+  },
+  "elapsed_s": 30.6,
+  "pass": true
+ },
+ {
+  "pair": "b_48k_stereo",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.03226,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.1,
+   "max_abs_ms": 2.08
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.06,
+   "max_abs_ms": 0.27
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.28,
+   "max_abs_ms": 0.92
+  },
+  "elapsed_s": 16.9,
+  "pass": true
+ },
+ {
+  "pair": "b_drifting",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 112.65,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "variable",
+  "result": "rendered",
+  "ratio": 0.90113,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.55,
+   "max_abs_ms": 1.34
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.21
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 2.07,
+   "max_abs_ms": 2.58
+  },
+  "elapsed_s": 11.0,
+  "pass": true
+ },
+ {
+  "pair": "a_tempo_change_in_overlap",
+  "expect": "ok",
+  "a_bpm": 128.0,
+  "b_bpm": 124.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "piecewise_constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 0.96874,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 126,
+   "median_abs_ms": 0.15,
+   "max_abs_ms": 2.25
+  },
+  "any_onset": {
+   "n_measured": 125,
+   "n_beats": 125,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 37.91
+  },
+  "downbeat_kicks": {
+   "n_measured": 31,
+   "n_downbeats": 31,
+   "median_abs_ms": 0.35,
+   "max_abs_ms": 0.91
+  },
+  "elapsed_s": 17.2,
+  "pass": true
+ },
+ {
+  "pair": "b_bar_5",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.03227,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.2,
+   "max_abs_ms": 2.13
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.03,
+   "max_abs_ms": 0.26
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.23,
+   "max_abs_ms": 1.07
+  },
+  "elapsed_s": 12.2,
+  "pass": true
+ },
+ {
+  "pair": "a_bar_near_end_refuse",
+  "expect": "refuse",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "refused",
+  "message": "A only has 12.1s after bar 55; a 60s overlap doesn't fit.",
+  "pass": true
+ },
+ {
+  "pair": "b_too_short_refuse",
+  "expect": "refuse",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "refused",
+  "message": "After stretching, B from bar 1 only covers 39.3s, less than the 60s requested. Also tried matching B at double time +106.5% and half time -48.4% -- still beyond +-25%.",
+  "pass": true
+ },
+ {
+  "pair": "meter_mismatch_refuse",
+  "expect": "refuse",
+  "a_bpm": 124.0,
+  "b_bpm": 120.0,
+  "a_meter": "4/4",
+  "b_meter": "3/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "refused",
+  "message": "A is in 4/4 (4 beats/bar) but B is in 3/4 (3 beats/bar); their downbeats can't stay aligned bar by bar.",
+  "pass": true
+ },
+ {
+  "pair": "overlap_30s",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.03226,
+  "b_octave": 1.0,
+  "render_len_s": 30.0,
+  "ground_truth": {
+   "n": 62,
+   "median_abs_ms": 0.14,
+   "max_abs_ms": 2.06
+  },
+  "any_onset": {
+   "n_measured": 61,
+   "n_beats": 61,
+   "median_abs_ms": 0.03,
+   "max_abs_ms": 0.23
+  },
+  "downbeat_kicks": {
+   "n_measured": 15,
+   "n_downbeats": 15,
+   "median_abs_ms": 0.24,
+   "max_abs_ms": 0.94
+  },
+  "elapsed_s": 10.6,
+  "pass": true
+ },
+ {
+  "pair": "overlap_120s",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 128.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.03226,
+  "b_octave": 1.0,
+  "render_len_s": 120.0,
+  "ground_truth": {
+   "n": 248,
+   "median_abs_ms": 0.15,
+   "max_abs_ms": 2.08
+  },
+  "any_onset": {
+   "n_measured": 247,
+   "n_beats": 247,
+   "median_abs_ms": 0.04,
+   "max_abs_ms": 0.26
+  },
+  "downbeat_kicks": {
+   "n_measured": 61,
+   "n_downbeats": 61,
+   "median_abs_ms": 0.31,
+   "max_abs_ms": 1.04
+  },
+  "elapsed_s": 19.4,
+  "pass": true
+ },
+ {
+  "pair": "self_sync",
+  "expect": "ok",
+  "a_bpm": 124.0,
+  "b_bpm": 124.0,
+  "a_meter": "4/4",
+  "b_meter": "4/4",
+  "a_grid": "constant",
+  "b_grid": "constant",
+  "result": "rendered",
+  "ratio": 1.0,
+  "b_octave": 1.0,
+  "render_len_s": 60.0,
+  "ground_truth": {
+   "n": 124,
+   "median_abs_ms": 0.05,
+   "max_abs_ms": 2.04
+  },
+  "any_onset": {
+   "n_measured": 123,
+   "n_beats": 123,
+   "median_abs_ms": 0.05,
+   "max_abs_ms": 0.25
+  },
+  "downbeat_kicks": {
+   "n_measured": 30,
+   "n_downbeats": 30,
+   "median_abs_ms": 0.12,
+   "max_abs_ms": 0.18
+  },
+  "elapsed_s": 9.0,
+  "pass": true
+ }
+]

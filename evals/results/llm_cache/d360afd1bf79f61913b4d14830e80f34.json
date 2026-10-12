@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "message": "asdfgh qwerty", "text": "{\"action\":\"clarify\",\"ops\":[],\"sync\":null,\"interpretation\":\"The user message is gibberish, so I am asking for clarification.\",\"message\":\"I didn't understand that. Could you please specify an edit, such as removing bars or repeating a section?\"}"}

@@ -1872,6 +1872,7 @@
     "tracker_split_s": 62.6,
     "refined_s": 64.4983
    },
+   "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 1
@@ -1889,7 +1890,7 @@
   "n_tracked_beats": 294,
   "n_consistent_beats": 292,
   "n_tracked_downbeats": 73,
-  "tracking_s": 14.86,
-  "total_s": 19.39
+  "tracking_s": 3.34,
+  "total_s": 4.86
  }
 }

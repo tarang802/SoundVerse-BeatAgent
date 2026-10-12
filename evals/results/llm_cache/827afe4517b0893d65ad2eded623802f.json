@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "message": "keep only bars 17 to 32", "text": "{\"action\":\"edit\",\"ops\":[{\"op\":\"keep_only\",\"range\":{\"unit\":\"bars\",\"start\":17,\"end\":32,\"last\":null},\"total_plays\":null,\"to\":null,\"direction\":null,\"db\":null}],\"sync\":null,\"interpretation\":\"Trim the track to keep only bars 17 to 32 inclusive.\",\"message\":\"\"}"}

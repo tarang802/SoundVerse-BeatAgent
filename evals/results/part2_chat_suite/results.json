@@ -1,0 +1,2348 @@
+[
+ {
+  "id": "r1",
+  "category": "remove",
+  "track": "A1",
+  "say": "remove bar 5",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 5 (1 bar, 4 beats) = 8.220-10.156 s (1.935 s)\n361.496 s -> 359.561 s. Track now 359.561 s, 740 beats, 185 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bar ranges are inclusive, so bar 5 means start 5, end 5. Removing bar 5 as requested.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 5,
+      "end": 5
+     }
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive, so bar 5 means start 5, end 5. Removing bar 5 as requested.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 14.9
+ },
+ {
+  "id": "r2",
+  "category": "remove",
+  "track": "A1",
+  "say": "delete bars 9 to 12",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bars 9-12 inclusive (4 bars, 16 beats) = 15.962-23.704 s (7.742 s)\n361.496 s -> 353.754 s. Track now 353.754 s, 728 beats, 182 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bars are 1-based inclusive ranges. Removing bars 9 to 12 means deleting from the start of bar 9 through the end of bar 12.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 9,
+      "end": 12
+     }
+    }
+   ],
+   "interpretation": "Bars are 1-based inclusive ranges. Removing bars 9 to 12 means deleting from the start of bar 9 through the end of bar 12.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.6
+ },
+ {
+  "id": "r3",
+  "category": "remove",
+  "track": "A1",
+  "say": "get rid of beats 32 through 48",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove beats 32-48 [32, 48) (16 beats, bar 9.1 to bar 13.1) = 15.962-23.704 s (7.742 s)\n361.496 s -> 353.754 s. Track now 353.754 s, 728 beats, 182 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Remove the half-open beat range from 32 through 48 using 0-based grid lines.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "beats",
+      "start": 32,
+      "end": 48
+     }
+    }
+   ],
+   "interpretation": "Remove the half-open beat range from 32 through 48 using 0-based grid lines.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.2
+ },
+ {
+  "id": "r4",
+  "category": "remove",
+  "track": "A1",
+  "say": "cut the first 2 bars",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bars 1-2 inclusive (2 bars, 8 beats) = 0.478-4.349 s (3.871 s)\n361.496 s -> 357.625 s. Track now 357.625 s, 736 beats, 184 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bars are 1-based inclusive ranges. 'the first 2 bars' corresponds to bars 1 to 2. The op 'remove' deletes this range.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 2
+     }
+    }
+   ],
+   "interpretation": "Bars are 1-based inclusive ranges. 'the first 2 bars' corresponds to bars 1 to 2. The op 'remove' deletes this range.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 17.2
+ },
+ {
+  "id": "r5",
+  "category": "remove",
+  "track": "A1",
+  "say": "drop the last bar",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 186 (1 bar, 4 beats) = 358.543-361.496 s (2.954 s)\n361.496 s -> 358.543 s. Track now 358.543 s, 740 beats, 185 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Dropped the last bar of the track using the bars unit and last convention.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "last": 1
+     }
+    }
+   ],
+   "interpretation": "Dropped the last bar of the track using the bars unit and last convention.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.7
+ },
+ {
+  "id": "r6",
+  "category": "remove",
+  "track": "A1",
+  "say": "kill bars 20-24",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bars 20-24 inclusive (5 bars, 20 beats) = 37.252-46.930 s (9.677 s)\n361.496 s -> 351.819 s. Track now 351.819 s, 724 beats, 181 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Removing bars 20 through 24 inclusive using the 1-based bar range convention.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 20,
+      "end": 24
+     }
+    }
+   ],
+   "interpretation": "Removing bars 20 through 24 inclusive using the 1-based bar range convention.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 14.9
+ },
+ {
+  "id": "k1",
+  "category": "keep_only",
+  "track": "A1",
+  "say": "keep only bars 17 to 32",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: keep only bars 17-32 inclusive (16 bars, 64 beats) = 31.446-62.414 s (30.968 s); everything else is removed\n361.496 s -> 30.968 s. Track now 30.968 s, 64 beats, 16 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Trim the track to keep only bars 17 to 32 inclusive.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "keep_only",
+     "range": {
+      "unit": "bars",
+      "start": 17,
+      "end": 32
+     }
+    }
+   ],
+   "interpretation": "Trim the track to keep only bars 17 to 32 inclusive.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.43
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.2
+ },
+ {
+  "id": "k2",
+  "category": "keep_only",
+  "track": "A1",
+  "say": "trim it down to just bars 1-8",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: keep only bars 1-8 inclusive (8 bars, 32 beats) = 0.478-15.962 s (15.484 s); everything else is removed\n361.496 s -> 15.484 s. Track now 15.484 s, 32 beats, 8 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Keep only bars 1 to 8 inclusive using the keep_only operation on the measured bar grid.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "keep_only",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 8
+     }
+    }
+   ],
+   "interpretation": "Keep only bars 1 to 8 inclusive using the keep_only operation on the measured bar grid.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.55
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.2
+ },
+ {
+  "id": "k3",
+  "category": "keep_only",
+  "track": "A1",
+  "say": "I only want the first 16 bars",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: keep only bars 1-16 inclusive (16 bars, 64 beats) = 0.478-31.446 s (30.968 s); everything else is removed\n361.496 s -> 30.968 s. Track now 30.968 s, 64 beats, 16 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "The user wants to keep only the first 16 bars of the track, following the inclusive bar numbering convention for ranges.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "keep_only",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 16
+     }
+    }
+   ],
+   "interpretation": "The user wants to keep only the first 16 bars of the track, following the inclusive bar numbering convention for ranges.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.55
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.3
+ },
+ {
+  "id": "p1",
+  "category": "repeat",
+  "track": "A1",
+  "say": "loop bars 9-12 three times",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat bars 9-12 inclusive (4 bars, 16 beats) = 15.962-23.704 s (7.742 s) so it plays 3x in total (2 extra copies inserted right after it, +15.484 s); the rest of the track follows\n361.496 s -> 376.980 s. Track now 376.980 s, 776 beats, 194 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Loop bars 9 to 12 three times in total (original + 2 copies), following the bar range convention for inclusive bounds.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 9,
+      "end": 12
+     },
+     "total_plays": 3
+    }
+   ],
+   "interpretation": "Loop bars 9 to 12 three times in total (original + 2 copies), following the bar range convention for inclusive bounds.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.9
+ },
+ {
+  "id": "p2",
+  "category": "repeat",
+  "track": "A1",
+  "say": "repeat bar 7",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat bar 7 (1 bar, 4 beats) = 12.091-14.026 s (1.935 s) so it plays 2x in total (1 extra copy inserted right after it, +1.935 s); the rest of the track follows\n361.496 s -> 363.432 s. Track now 363.432 s, 748 beats, 187 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bar ranges are inclusive and 1-based, so bar 7 spans from start 7 to end 7. Repeating it with no count implies 2 plays in total (original plus one copy), inserted in place with the rest of the track following.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 7,
+      "end": 7
+     },
+     "total_plays": 2
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive and 1-based, so bar 7 spans from start 7 to end 7. Repeating it with no count implies 2 plays in total (original plus one copy), inserted in place with the rest of the track following.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "p3",
+  "category": "repeat",
+  "track": "A1",
+  "say": "double bars 33 to 40",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat bars 33-40 inclusive (8 bars, 32 beats) = 62.414-77.897 s (15.484 s) so it plays 2x in total (1 extra copy inserted right after it, +15.484 s); the rest of the track follows\n361.496 s -> 376.980 s. Track now 376.980 s, 776 beats, 194 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Doubling bars 33 to 40 means repeating that section for a total of 2 plays in place, using inclusive bar indexing.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 33,
+      "end": 40
+     },
+     "total_plays": 2
+    }
+   ],
+   "interpretation": "Doubling bars 33 to 40 means repeating that section for a total of 2 plays in place, using inclusive bar indexing.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.6
+ },
+ {
+  "id": "p4",
+  "category": "repeat",
+  "track": "A1",
+  "say": "play the first 8 beats 4 times",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat beats 0-8 [0, 8) (8 beats, bar 1.1 to bar 3.1); the 0.478 s before beat 0 is kept (say 'from the start' to include it) = 0.478-4.349 s (3.871 s) so it plays 4x in total (3 extra copies inserted right after it, +11.613 s); the rest of the track follows\n361.496 s -> 373.109 s. Track now 373.109 s, 768 beats, 192 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Repeated the first 8 beats (beats 0 to 8, half-open) for a total of 4 plays in place, following the 0-based grid and repeat conventions.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "beats",
+      "start": 0,
+      "end": 8
+     },
+     "total_plays": 4
+    }
+   ],
+   "interpretation": "Repeated the first 8 beats (beats 0 to 8, half-open) for a total of 4 plays in place, following the 0-based grid and repeat conventions.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.5
+ },
+ {
+  "id": "m1",
+  "category": "move",
+  "track": "A1",
+  "say": "move bar 10 to the start",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: move bar 10 (1 bar, 4 beats) = 17.897-19.833 s (1.935 s) to the start of bar 1 (0.478 s in the track before the edit)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Moved bar 10 to the start (bar 1) using inclusive bar ranges.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "move",
+     "range": {
+      "unit": "bars",
+      "start": 10,
+      "end": 10
+     },
+     "to": {
+      "unit": "bars",
+      "index": 1
+     }
+    }
+   ],
+   "interpretation": "Moved bar 10 to the start (bar 1) using inclusive bar ranges.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.9
+ },
+ {
+  "id": "m2",
+  "category": "move",
+  "track": "A1",
+  "say": "move bars 3-4 after bar 8",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: move bars 3-4 inclusive (2 bars, 8 beats) = 4.349-8.220 s (3.871 s) to the start of bar 9 (15.962 s in the track before the edit)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bars 3-4 are moved to after bar 8, which corresponds to the start of bar 9 on the track before the edit, following standard bar indexing and ranges.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "move",
+     "range": {
+      "unit": "bars",
+      "start": 3,
+      "end": 4
+     },
+     "to": {
+      "unit": "bars",
+      "index": 9
+     }
+    }
+   ],
+   "interpretation": "Bars 3-4 are moved to after bar 8, which corresponds to the start of bar 9 on the track before the edit, following standard bar indexing and ranges.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.1
+ },
+ {
+  "id": "c1",
+  "category": "copy",
+  "track": "A1",
+  "say": "copy bar 2 to the end",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: copy bar 2 (1 bar, 4 beats) = 2.414-4.349 s (1.935 s) to the end of the track (361.496 s in the track before the edit)\n361.496 s -> 363.432 s. Track now 363.432 s, 748 beats, 187 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bar ranges are inclusive, so bar 2 to 2 is the single bar 2. Index null in 'to' targets the end of the track.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "copy",
+     "range": {
+      "unit": "bars",
+      "start": 2,
+      "end": 2
+     },
+     "to": {
+      "unit": "bars"
+     }
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive, so bar 2 to 2 is the single bar 2. Index null in 'to' targets the end of the track.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.9
+ },
+ {
+  "id": "c2",
+  "category": "copy",
+  "track": "A1",
+  "say": "put a copy of bars 5-6 right before bar 20",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: copy bars 5-6 inclusive (2 bars, 8 beats) = 8.220-12.091 s (3.871 s) to the start of bar 20 (37.252 s in the track before the edit)\n361.496 s -> 365.367 s. Track now 365.367 s, 752 beats, 188 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "I am copying bars 5 to 6 and inserting the copy right before bar 20 based on your instruction.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "copy",
+     "range": {
+      "unit": "bars",
+      "start": 5,
+      "end": 6
+     },
+     "to": {
+      "unit": "bars",
+      "index": 20
+     }
+    }
+   ],
+   "interpretation": "I am copying bars 5 to 6 and inserting the copy right before bar 20 based on your instruction.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "f1",
+  "category": "fade",
+  "track": "A1",
+  "say": "fade in the first 4 bars",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: fade in over bars 1-4 inclusive (4 bars, 16 beats) = 0.478-8.220 s (7.742 s) (equal-power curve)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Applying a fade in over the first 4 bars (bars 1 to 4 inclusive).",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "fade",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 4
+     },
+     "direction": "in"
+    }
+   ],
+   "interpretation": "Applying a fade in over the first 4 bars (bars 1 to 4 inclusive).",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.47
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.3
+ },
+ {
+  "id": "f2",
+  "category": "fade",
+  "track": "A1",
+  "say": "fade out the last 2 bars",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: fade out over bars 185-186 inclusive (2 bars, 8 beats) = 356.607-361.496 s (4.889 s) (equal-power curve)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Fade out the last 2 bars of the track using the bars unit and last convention.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "fade",
+     "range": {
+      "unit": "bars",
+      "last": 2
+     },
+     "direction": "out"
+    }
+   ],
+   "interpretation": "Fade out the last 2 bars of the track using the bars unit and last convention.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "f3",
+  "category": "fade",
+  "track": "A1",
+  "say": "fade out bars 180 to 186",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: fade out over bars 180-186 inclusive (7 bars, 28 beats) = 346.930-361.496 s (14.566 s) (equal-power curve)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bar ranges are inclusive, so fading out bars 180 to 186 applies a fade out direction over the specified bar range according to the established conventions.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "fade",
+     "range": {
+      "unit": "bars",
+      "start": 180,
+      "end": 186
+     },
+     "direction": "out"
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive, so fading out bars 180 to 186 applies a fade out direction over the specified bar range according to the established conventions.",
+   "message": "Fading out bars 180 to 186."
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.47
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.2
+ },
+ {
+  "id": "g1",
+  "category": "gain",
+  "track": "A1",
+  "say": "turn bars 9-16 down by 6 dB",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: gain -6.0 dB on bars 9-16 inclusive (8 bars, 32 beats) = 15.962-31.446 s (15.484 s)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bars are 1-based and inclusive. Turning bars 9-16 down by 6 dB translates to a gain operation of -6 dB on the bar range [9, 16].",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "gain",
+     "range": {
+      "unit": "bars",
+      "start": 9,
+      "end": 16
+     },
+     "db": -6.0
+    }
+   ],
+   "interpretation": "Bars are 1-based and inclusive. Turning bars 9-16 down by 6 dB translates to a gain operation of -6 dB on the bar range [9, 16].",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.47
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.1
+ },
+ {
+  "id": "g2",
+  "category": "gain",
+  "track": "A1",
+  "say": "make the whole track 3 dB louder",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: gain +3.0 dB on beats 0-744 [0, 744) (744 beats, bar 1.1 to end), including the 0.478 s before beat 0 = 0.000-361.496 s (361.496 s)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Applying a +3 dB gain to the entire track from the start to the end using beat units covering null range.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "gain",
+     "range": {
+      "unit": "beats"
+     },
+     "db": 3.0
+    }
+   ],
+   "interpretation": "Applying a +3 dB gain to the entire track from the start to the end using beat units covering null range.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.59
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.2
+ },
+ {
+  "id": "g3",
+  "category": "gain",
+  "track": "A1",
+  "say": "boost the first bar by 4.5 dB",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: gain +4.5 dB on bar 1 (1 bar, 4 beats) = 0.478-2.414 s (1.935 s)\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Bar ranges are inclusive, so the first bar is bars 1 to 1. The gain operation increases the volume by +4.5 dB over this range.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "gain",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 1
+     },
+     "db": 4.5
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive, so the first bar is bars 1 to 1. The gain operation increases the volume by +4.5 dB over this range.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.2
+ },
+ {
+  "id": "x1",
+  "category": "multi-op",
+  "track": "A1",
+  "say": "remove bar 5 and fade in the first bar",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: 1. remove bar 5 (1 bar, 4 beats) = 8.220-10.156 s (1.935 s)\nApplied: 2. fade in over bar 1 (1 bar, 4 beats) = 0.478-2.414 s (1.935 s) (equal-power curve)\n361.496 s -> 359.561 s. Track now 359.561 s, 740 beats, 185 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Removed bar 5 and applied a fade-in to bar 1 using inclusive bar ranges.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 5,
+      "end": 5
+     }
+    },
+    {
+     "op": "fade",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 1
+     },
+     "direction": "in"
+    }
+   ],
+   "interpretation": "Removed bar 5 and applied a fade-in to bar 1 using inclusive bar ranges.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "x2",
+  "category": "multi-op",
+  "track": "A1",
+  "say": "loop bars 1-2 twice, then fade out the last 4 beats",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: 1. repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.478-4.349 s (3.871 s) so it plays 2x in total (1 extra copy inserted right after it, +3.871 s); the rest of the track follows\nApplied: 2. fade out over beats 748-752 [748, 752) (4 beats, bar 188.1 to end) = 362.414-365.367 s (2.954 s) (equal-power curve)\n361.496 s -> 365.367 s. Track now 365.367 s, 752 beats, 188 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "I will repeat bars 1 to 2 for a total of 2 plays, and then fade out the last 4 beats of the resulting track.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 2
+     },
+     "total_plays": 2
+    },
+    {
+     "op": "fade",
+     "range": {
+      "unit": "beats",
+      "last": 4
+     },
+     "direction": "out"
+    }
+   ],
+   "interpretation": "I will repeat bars 1 to 2 for a total of 2 plays, and then fade out the last 4 beats of the resulting track.",
+   "message": "Looping bars 1-2 twice and fading out the last 4 beats."
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.3
+ },
+ {
+  "id": "s1",
+  "category": "grid-follow",
+  "track": "A1",
+  "say": "now remove bar 1",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 1 (1 bar, 4 beats) = 0.478-2.414 s (1.935 s)\n353.754 s -> 351.819 s. Track now 351.819 s, 724 beats, 181 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Remove bar 1 using 1-based bar indexing where bar 1 is start 1 and end 1.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 1
+     }
+    }
+   ],
+   "interpretation": "Remove bar 1 using 1-based bar indexing where bar 1 is start 1 and end 1.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.47
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 14.8
+ },
+ {
+  "id": "s2",
+  "category": "grid-follow",
+  "track": "A1",
+  "say": "remove bar 3",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 3 (1 bar, 4 beats) = 4.349-6.285 s (1.935 s)\n365.367 s -> 363.432 s. Track now 363.432 s, 748 beats, 187 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Removing bar 3 using inclusive bar range conventions for bar 3.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 3,
+      "end": 3
+     }
+    }
+   ],
+   "interpretation": "Removing bar 3 using inclusive bar range conventions for bar 3.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.5
+ },
+ {
+  "id": "u1",
+  "category": "undo-redo",
+  "track": "A1",
+  "say": "undo",
+  "action": "undo",
+  "ok": true,
+  "changed": true,
+  "reply": "undid: remove bar 5 (1 bar, 4 beats) = 8.220-10.156 s (1.935 s). Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "The user wants to undo the last action.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "undo",
+   "ops": [],
+   "interpretation": "The user wants to undo the last action.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": null,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "undo_restores": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 14.8
+ },
+ {
+  "id": "u2",
+  "category": "undo-redo",
+  "track": "A1",
+  "say": "undo that",
+  "action": "undo",
+  "ok": true,
+  "changed": true,
+  "reply": "undid: remove bar 6 (1 bar, 4 beats) = 10.156-12.091 s (1.935 s). Track now 359.561 s, 740 beats, 185 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "The user wants to undo the last action.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "undo",
+   "ops": [],
+   "interpretation": "The user wants to undo the last action.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "undo_restores": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "u3",
+  "category": "undo-redo",
+  "track": "A1",
+  "say": "undo",
+  "action": "undo",
+  "ok": false,
+  "changed": false,
+  "reply": "Nothing to undo: the track is in its original state.",
+  "interpretation": "The user requested to undo the previous action.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "undo",
+   "ops": [],
+   "interpretation": "The user requested to undo the previous action.",
+   "message": "Undoing the last operation."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.9
+ },
+ {
+  "id": "u4",
+  "category": "undo-redo",
+  "track": "A1",
+  "say": "redo",
+  "action": "redo",
+  "ok": true,
+  "changed": true,
+  "reply": "redid: remove bar 5 (1 bar, 4 beats) = 8.220-10.156 s (1.935 s). Track now 359.561 s, 740 beats, 185 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "Stepping forward one turn as requested by the user.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "redo",
+   "ops": [],
+   "interpretation": "Stepping forward one turn as requested by the user.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 15.0
+ },
+ {
+  "id": "b1",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "delete bar 500",
+  "action": "edit",
+  "ok": false,
+  "changed": false,
+  "reply": "I didn't change anything: Bar range 500-500 is out of range: this track has bars 1-186.",
+  "interpretation": "Remove bar 500 from the track following the rule that bars are 1-based and ranges are inclusive.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 500,
+      "end": 500
+     }
+    }
+   ],
+   "interpretation": "Remove bar 500 from the track following the rule that bars are 1-based and ranges are inclusive.",
+   "message": ""
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.9
+ },
+ {
+  "id": "b2",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "remove bars 10 to 5",
+  "action": "edit",
+  "ok": false,
+  "changed": false,
+  "reply": "I didn't change anything: Bar range 10-5 is reversed.",
+  "interpretation": "Following the user's literal instructions, removing bars 10 to 5. The validation code will check the range.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 10,
+      "end": 5
+     }
+    }
+   ],
+   "interpretation": "Following the user's literal instructions, removing bars 10 to 5. The validation code will check the range.",
+   "message": ""
+  },
+  "checks": {
+   "unchanged_or_right_reading": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.5
+ },
+ {
+  "id": "b3",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "repeat bar 3 zero times",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "Repeating zero times is not supported. To repeat a bar, the total plays must be at least 2 (original plus at least one copy). If you meant to remove bar 3, please say so.",
+  "interpretation": "",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": "Couldn't turn that into a valid edit: the 'repeat' edit is invalid (Input should be greater than or equal to 2): total_plays.",
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "",
+   "message": "Repeating zero times is not supported. To repeat a bar, the total plays must be at least 2 (original plus at least one copy). If you meant to remove bar 3, please say so."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "b4",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "repeat bar 3 a hundred times",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "I can only repeat a section up to 64 times. Would you like to repeat it 64 times instead?",
+  "interpretation": "The user asked to repeat bar 3 100 times, but the maximum allowed repeat count is 64.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": "Couldn't turn that into a valid edit: the 'repeat' edit is invalid (Input should be less than or equal to 64): total_plays.",
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user asked to repeat bar 3 100 times, but the maximum allowed repeat count is 64.",
+   "message": "I can only repeat a section up to 64 times. Would you like to repeat it 64 times instead?"
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "b5",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "make bars 1-4 60 dB louder",
+  "action": "clarify",
+  "ok": true,
+  "changed": false,
+  "reply": "A gain of 60 dB is too loud and will clip the audio. Would you like to use the maximum allowed gain of +24 dB for bars 1 to 4 instead?",
+  "interpretation": "The user requested a gain of +60 dB, which exceeds the maximum allowed limit of +24 dB.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": "Couldn't turn that into a valid edit: a gain of +60 dB is outside what I allow (-60 to +24 dB; more than +24 dB would just clip).",
+  "plan": {
+   "action": "clarify",
+   "ops": [],
+   "interpretation": "The user requested a gain of +60 dB, which exceeds the maximum allowed limit of +24 dB.",
+   "message": "A gain of 60 dB is too loud and will clip the audio. Would you like to use the maximum allowed gain of +24 dB for bars 1 to 4 instead?"
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.0
+ },
+ {
+  "id": "b6",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "remove everything",
+  "action": "edit",
+  "ok": true,
+  "changed": false,
+  "reply": "Applied: keep only bars 1-186 inclusive (186 bars, 744 beats) (from 0.000 s, so the pickup before bar 1 is included) = 0.000-361.496 s (361.496 s); everything else is removed\n361.496 s -> 361.496 s. Track now 361.496 s, 744 beats, 186 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "The user wants to remove everything from the track. We use keep_only with a null range spanning the entire track, which effectively clears it.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "keep_only",
+     "range": {
+      "unit": "bars"
+     }
+    }
+   ],
+   "interpretation": "The user wants to remove everything from the track. We use keep_only with a null range spanning the entire track, which effectively clears it.",
+   "message": ""
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "b7",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "make it sound better",
+  "action": "clarify",
+  "ok": true,
+  "changed": false,
+  "reply": "Did you mean removing the quiet section without drums from bars 81 to 96 (-10.7 dB loudness, 0.12 drum activity)? Type yes to do it or specify another change.\nProposed (not applied yet): remove bars 81-96 inclusive (16 bars, 64 beats) = 155.317-186.285 s (30.968 s)\nSay 'yes' to apply it or tell me what to change.",
+  "interpretation": "Subjective request 'make it sound better' matched to the quiet section without drums (bars 81-96, -10.7 dB loudness, 0.12 drum activity). Proposing to remove this section.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": "clarify proposal without ops",
+  "plan": {
+   "action": "clarify",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 81,
+      "end": 96
+     }
+    }
+   ],
+   "interpretation": "Subjective request 'make it sound better' matched to the quiet section without drums (bars 81-96, -10.7 dB loudness, 0.12 drum activity). Proposing to remove this section.",
+   "message": "Did you mean removing the quiet section without drums from bars 81 to 96 (-10.7 dB loudness, 0.12 drum activity)? Type yes to do it or specify another change."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.3
+ },
+ {
+  "id": "b8",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "pitch it up a semitone",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "I cannot change the pitch of audio tracks. I can only edit, arrange, fade, and adjust the volume of sections.",
+  "interpretation": "The user asked to pitch up the track by a semitone, which is an operation this editor cannot perform.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user asked to pitch up the track by a semitone, which is an operation this editor cannot perform.",
+   "message": "I cannot change the pitch of audio tracks. I can only edit, arrange, fade, and adjust the volume of sections."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "b9",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "reverse bar 3",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "I cannot reverse audio sections. I can remove, repeat, move, copy, fade, or adjust the gain of bars and beats.",
+  "interpretation": "The user requested reversing bar 3, but reverse operations are not supported by the editor.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user requested reversing bar 3, but reverse operations are not supported by the editor.",
+   "message": "I cannot reverse audio sections. I can remove, repeat, move, copy, fade, or adjust the gain of bars and beats."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "b10",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "asdfgh qwerty",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "I didn't understand that instruction. Please tell me what editing action you would like to perform, such as cutting, looping, or fading parts of the track.",
+  "interpretation": "The user input 'asdfgh qwerty' is gibberish, so I am answering to ask for a valid editing instruction.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user input 'asdfgh qwerty' is gibberish, so I am answering to ask for a valid editing instruction.",
+   "message": "I didn't understand that instruction. Please tell me what editing action you would like to perform, such as cutting, looping, or fading parts of the track."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.6
+ },
+ {
+  "id": "b11",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "remove bar -2",
+  "action": "error",
+  "ok": false,
+  "changed": false,
+  "reply": "I didn't change anything: 'bar -2' is negative. Bars are numbered from 1 and beats from 0 (beat N is a grid line). Which one did you mean?",
+  "interpretation": "",
+  "backend": "validator",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": null,
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 4.5
+ },
+ {
+  "id": "b12",
+  "category": "bad-input",
+  "track": "A1",
+  "say": "remove beat 3.5",
+  "action": "error",
+  "ok": false,
+  "changed": false,
+  "reply": "I didn't change anything: 'beat 3.5' is a fraction. I can only cut on whole beats and bars. Which whole beat or bar did you mean?",
+  "interpretation": "",
+  "backend": "validator",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": null,
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 4.6
+ },
+ {
+  "id": "q1",
+  "category": "subjective",
+  "track": "A1",
+  "say": "chop out the boring part",
+  "action": "clarify",
+  "ok": true,
+  "changed": false,
+  "reply": "Did you mean bars 81 to 96, which is the quiet section with no drums?\nProposed (not applied yet): remove bars 81-96 inclusive (16 bars, 64 beats) = 155.317-186.285 s (30.968 s)\nSay 'yes' to apply it or tell me what to change.",
+  "interpretation": "Interpreted 'the boring part' as the quiet section with no drums (bars 81-96, loudness -10.7 dB, drum activity 0.12).",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "clarify",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 81,
+      "end": 96
+     }
+    }
+   ],
+   "interpretation": "Interpreted 'the boring part' as the quiet section with no drums (bars 81-96, loudness -10.7 dB, drum activity 0.12).",
+   "message": "Did you mean bars 81 to 96, which is the quiet section with no drums?"
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true,
+   "measured_proposal": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.6
+ },
+ {
+  "id": "q2",
+  "category": "subjective",
+  "track": "A1",
+  "say": "yes",
+  "action": "confirm",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bars 81-96 inclusive (16 bars, 64 beats) = 155.317-186.285 s (30.968 s)\n361.496 s -> 330.528 s. Track now 330.528 s, 680 beats, 170 bars (constant grid, 124.00 BPM median).",
+  "interpretation": "User confirmed the pending proposal to remove bars 81 to 96.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "confirm",
+   "ops": [],
+   "interpretation": "User confirmed the pending proposal to remove bars 81 to 96.",
+   "message": "Applying the removal of bars 81 to 96."
+  },
+  "audio_checks": {
+   "max_click_db": -12.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.46
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 14.6
+ },
+ {
+  "id": "q3",
+  "category": "subjective",
+  "track": "A1",
+  "say": "cut the breakdown",
+  "action": "clarify",
+  "ok": true,
+  "changed": false,
+  "reply": "Did you mean the quiet breakdown from bars 81 to 96?\nProposed (not applied yet): remove bars 81-96 inclusive (16 bars, 64 beats) = 155.317-186.285 s (30.968 s)\nSay 'yes' to apply it or tell me what to change.",
+  "interpretation": "The user asked to cut the breakdown. Based on the measured sections, bars 81-96 are labeled 'no drums, quiet' with very low drum activity (0.12) and lower loudness (-10.7 dB), fitting the description of a breakdown. Proposing to remove bars 81 to 96.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "clarify",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 81,
+      "end": 96
+     }
+    }
+   ],
+   "interpretation": "The user asked to cut the breakdown. Based on the measured sections, bars 81-96 are labeled 'no drums, quiet' with very low drum activity (0.12) and lower loudness (-10.7 dB), fitting the description of a breakdown. Proposing to remove bars 81 to 96.",
+   "message": "Did you mean the quiet breakdown from bars 81 to 96?"
+  },
+  "checks": {
+   "right_section": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.0
+ },
+ {
+  "id": "q4",
+  "category": "subjective",
+  "track": "A1",
+  "say": "no, leave it",
+  "action": "cancel",
+  "ok": true,
+  "changed": false,
+  "reply": "OK, dropped the proposal. Nothing was changed.",
+  "interpretation": "The user rejected the pending proposal to remove bars 81-96 by saying 'no, leave it'.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "cancel",
+   "ops": [],
+   "interpretation": "The user rejected the pending proposal to remove bars 81-96 by saying 'no, leave it'.",
+   "message": "Proposal cancelled. The track remains unchanged."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.2
+ },
+ {
+  "id": "i1",
+  "category": "question",
+  "track": "A1",
+  "say": "what's the tempo?",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "The tempo is 124.0 BPM.",
+  "interpretation": "The user is asking for the tempo of the track, which is provided in the measured grid as 124.0 BPM.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user is asking for the tempo of the track, which is provided in the measured grid as 124.0 BPM.",
+   "message": "The tempo is 124.0 BPM."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true,
+   "states_measured_fact": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.7
+ },
+ {
+  "id": "i2",
+  "category": "question",
+  "track": "A1",
+  "say": "how many bars are there?",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "There are 186 bars in total.",
+  "interpretation": "The user asked for the total number of bars in the track, which is found directly in the measured grid.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user asked for the total number of bars in the track, which is found directly in the measured grid.",
+   "message": "There are 186 bars in total."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true,
+   "states_measured_fact": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.3
+ },
+ {
+  "id": "i3",
+  "category": "question",
+  "track": "A1",
+  "say": "how long is the track?",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "The track is 361.5 seconds long (6 minutes and 1 second).",
+  "interpretation": "The user is asking for the length of the track. Answered using the measured grid duration.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user is asking for the length of the track. Answered using the measured grid duration.",
+   "message": "The track is 361.5 seconds long (6 minutes and 1 second)."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true,
+   "states_measured_fact": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.0
+ },
+ {
+  "id": "v1",
+  "category": "tempo-change",
+  "track": "A5",
+  "say": "remove the first bar after the tempo change",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 33 (1 bar, 4 beats) = 64.498-66.373 s (1.875 s)\n140.531 s -> 138.656 s. Track now 138.656 s, 284 beats, 71 bars (variable grid, 128.00 BPM median).",
+  "interpretation": "The tempo change occurs at bar 33 according to the measured grid, so removing the first bar after the tempo change corresponds to removing bar 33.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 33,
+      "end": 33
+     }
+    }
+   ],
+   "interpretation": "The tempo change occurs at bar 33 according to the measured grid, so removing the first bar after the tempo change corresponds to removing bar 33.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -11.3,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.56
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 5.9
+ },
+ {
+  "id": "v2",
+  "category": "tempo-change",
+  "track": "A5",
+  "say": "loop the last bar before the tempo change twice",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat bar 32 (1 bar, 4 beats) = 62.498-64.498 s (2.000 s) so it plays 2x in total (1 extra copy inserted right after it, +2.000 s); the rest of the track follows\n140.531 s -> 142.531 s. Track now 142.531 s, 292 beats, 73 bars (variable grid, 128.00 BPM median).",
+  "interpretation": "The tempo change starts at bar 33 according to the grid, so the last bar before the tempo change is bar 32. Looping it twice means repeating bar 32 for a total of 2 plays in place.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 32,
+      "end": 32
+     },
+     "total_plays": 2
+    }
+   ],
+   "interpretation": "The tempo change starts at bar 33 according to the grid, so the last bar before the tempo change is bar 32. Looping it twice means repeating bar 32 for a total of 2 plays in place.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -8.8,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_16",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_16",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.48
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 8.0
+ },
+ {
+  "id": "v3",
+  "category": "variable-grid",
+  "track": "A3",
+  "say": "remove bars 10-12",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.438-25.539 s (6.102 s)\n185.171 s -> 179.069 s. Track now 179.069 s, 348 beats, 87 bars (variable grid, 118.00 BPM median).",
+  "interpretation": "Bars are 1-based inclusive regions, so 'bars 10-12' means bars 10, 11, and 12 will be removed.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 10,
+      "end": 12
+     }
+    }
+   ],
+   "interpretation": "Bars are 1-based inclusive regions, so 'bars 10-12' means bars 10, 11, and 12 will be removed.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -4.0,
+   "format": {
+    "sr": 44100,
+    "subtype": "PCM_24",
+    "expected_sr": 44100,
+    "expected_subtype": "PCM_24",
+    "ok": true
+   },
+   "grid_edited_median_ms": 11.38
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 8.5
+ },
+ {
+  "id": "y1",
+  "category": "sync",
+  "track": "A1+A7",
+  "say": "bring the other track in at bar 17",
+  "action": "sync",
+  "ok": true,
+  "changed": false,
+  "reply": "Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.00 BPM.\nB bar 1 (0.348 s) lands on A bar 17 (31.446 s); offset 31.086 s; 60 s rendered to sync_A-bar17_A7/mix.wav.\nMeasured onset offset B-A: median 0.05 ms, max 0.22 ms over 123/123 beats.\nNote: B's audio before its bar 1 downbeat (0.348s) is not used.",
+  "interpretation": "Bring the partner track in starting at bar 17 of this track, aligning with bar 1 of the partner track for a duration of 60 seconds.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "sync",
+   "ops": [],
+   "sync": {
+    "a_bar": 17,
+    "b_bar": 1,
+    "duration_s": 60.0
+   },
+   "interpretation": "Bring the partner track in starting at bar 17 of this track, aligning with bar 1 of the partner track for a duration of 60 seconds.",
+   "message": ""
+  },
+  "checks": {
+   "synced": true,
+   "right_bar": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 21.2
+ },
+ {
+  "id": "y2",
+  "category": "sync",
+  "track": "A1+A7",
+  "say": "beatmatch the other deck to this from bar 9 for 30 seconds",
+  "action": "sync",
+  "ok": true,
+  "changed": false,
+  "reply": "Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.00 BPM.\nB bar 1 (0.348 s) lands on A bar 9 (15.962 s); offset 15.603 s; 30 s rendered to sync_A-bar9_A7/mix.wav.\nMeasured onset offset B-A: median 0.04 ms, max 0.23 ms over 61/61 beats.\nNote: B's audio before its bar 1 downbeat (0.348s) is not used.",
+  "interpretation": "Beat-match the partner track to this track starting at bar 9 for a duration of 30 seconds using the default b_bar 1.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "sync",
+   "ops": [],
+   "sync": {
+    "a_bar": 9,
+    "b_bar": 1,
+    "duration_s": 30.0
+   },
+   "interpretation": "Beat-match the partner track to this track starting at bar 9 for a duration of 30 seconds using the default b_bar 1.",
+   "message": ""
+  },
+  "checks": {
+   "synced": true,
+   "right_bar": true,
+   "right_length": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 16.9
+ },
+ {
+  "id": "y3",
+  "category": "sync",
+  "track": "A1",
+  "say": "sync the other track at bar 9",
+  "action": "answer",
+  "ok": true,
+  "changed": false,
+  "reply": "A second track must be loaded before you can sync.",
+  "interpretation": "The user requested to sync a partner track, but no partner track is currently loaded in the context.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "answer",
+   "ops": [],
+   "interpretation": "The user requested to sync a partner track, but no partner track is currently loaded in the context.",
+   "message": "A second track must be loaded before you can sync."
+  },
+  "checks": {
+   "audio_unchanged": true,
+   "clear_reply": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 9.8
+ },
+ {
+  "id": "n1",
+  "category": "real-song",
+  "track": "REAL",
+  "say": "remove bar 8",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: remove bar 8 (1 bar, 4 beats) = 11.999-13.715 s (1.716 s)\n166.286 s -> 164.570 s. Track now 164.570 s, 365 beats, 92 bars (variable grid, 140.19 BPM median).",
+  "interpretation": "Bar ranges are inclusive, so bar 8 is bars 8 to 8. We use the remove operation to drop bar 8 from the track.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "remove",
+     "range": {
+      "unit": "bars",
+      "start": 8,
+      "end": 8
+     }
+    }
+   ],
+   "interpretation": "Bar ranges are inclusive, so bar 8 is bars 8 to 8. We use the remove operation to drop bar 8 from the track.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": 0.0,
+   "format": {
+    "sr": 48000,
+    "subtype": "PCM_24",
+    "expected_sr": 48000,
+    "expected_subtype": "PCM_24",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.34
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.3
+ },
+ {
+  "id": "n2",
+  "category": "real-song",
+  "track": "REAL",
+  "say": "loop the first 2 bars 4 times",
+  "action": "edit",
+  "ok": true,
+  "changed": true,
+  "reply": "Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.001-3.420 s (3.419 s) so it plays 4x in total (3 extra copies inserted right after it, +10.256 s); the rest of the track follows\n166.286 s -> 176.542 s. Track now 176.542 s, 393 beats, 99 bars (variable grid, 140.19 BPM median).",
+  "interpretation": "Bar ranges are 1-based and inclusive. 'the first 2 bars' means bars 1-2. 'loop it 4 times' means 4 plays in total.",
+  "backend": "gemini:gemini-2.5-flash",
+  "llm_model": "gemini-3.5-flash-lite",
+  "repair_round": null,
+  "plan": {
+   "action": "edit",
+   "ops": [
+    {
+     "op": "repeat",
+     "range": {
+      "unit": "bars",
+      "start": 1,
+      "end": 2
+     },
+     "total_plays": 4
+    }
+   ],
+   "interpretation": "Bar ranges are 1-based and inclusive. 'the first 2 bars' means bars 1-2. 'loop it 4 times' means 4 plays in total.",
+   "message": ""
+  },
+  "audio_checks": {
+   "max_click_db": -2.7,
+   "format": {
+    "sr": 48000,
+    "subtype": "PCM_24",
+    "expected_sr": 48000,
+    "expected_subtype": "PCM_24",
+    "ok": true
+   },
+   "grid_edited_median_ms": 0.35
+  },
+  "checks": {
+   "edit_matches_intent": true,
+   "audio_clean": true
+  },
+  "pass": true,
+  "offline_fallback": false,
+  "elapsed_s": 10.4
+ }
+]

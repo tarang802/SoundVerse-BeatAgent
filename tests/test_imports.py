@@ -12,11 +12,30 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 MODULES = ["beatagent.audio_io", "beatagent.grid", "beatagent.onsets", "beatagent.analyze", "beatagent.click",
            "beatagent.stretch", "beatagent.sync", "beatagent.edl", "beatagent.session", "beatagent.llm",
            "beatagent.agent", "beatagent.qc", "app.server", "evals.eval_beats", "evals.eval_sync",
-           "evals.eval_real", "evals.part1_report", "evals.make_testpack", "evals.smoke_test_guard"]
+           "evals.eval_real", "evals.part1_report", "evals.make_testpack", "evals.smoke_test_guard",
+           "beatagent.sections", "evals.eval_sessions", "evals.eval_robustness", "evals.eval_sync_robust",
+           "evals.eval_chat_suite", "evals.completion_report"]
+
+
+def control_chars():
+    """Shell-escaped patches once wrote a literal backspace (\\x08) where a regex
+    needed \\b, so the offline sync rule could never match. Source has no business
+    containing control characters other than newline and tab."""
+    root = Path(__file__).resolve().parents[1]
+    hits = []
+    for d in ("beatagent", "app", "evals", "tests"):
+        for f in (root / d).rglob("*.py"):
+            for n, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+                if any(ord(c) < 32 and c != "\t" for c in line):
+                    hits.append(f"{f.relative_to(root)}:{n}")
+    return hits
 
 
 def main():
     bad = []
+    cc = control_chars()
+    print(f"  [{'FAIL' if cc else 'PASS'}] no control characters in source {cc}")
+    bad += cc
     for m in MODULES:
         if m == "evals.smoke_test_guard":       # smoke_test runs on import; only compile it
             import py_compile

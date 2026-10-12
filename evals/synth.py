@@ -168,6 +168,25 @@ def render_groove(beats, bpb=4, duration=None, style="house", seed=0, jitter_ms=
             if on("bass", b):
                 p = beats[min(b + 1, len(beats) - 1)] - t
                 place(buf, tone(midi_hz(bass_root + 7 + bass_notes[(b // bpb) % 8]), p * 0.6, kind="pluck"), t, 0.5)
+        elif style == "waltz":        # 3/4: strong kick on 1, lighter snare on 2 and 3, 8th hats
+            if on("kick", b) and pos == 0: place(buf, K, t + j())
+            if on("snare", b) and pos in (1, 2): place(buf, S, t + j(), 0.45)
+            if on("hat", b):
+                for q in (0, 0.5):
+                    place(buf, hat(rng=rng), subdiv_time(beats, b + q) + j(), 0.5)
+            if on("bass", b) and pos == 0:
+                p = beats[min(b + bpb, len(beats) - 1)] - t if b + bpb < len(beats) else 1.0
+                place(buf, tone(midi_hz(bass_root + bass_notes[(b // bpb) % 8]), p * 0.8, cutoff=400), t, 0.4)
+        elif style == "swing":        # house kick/clap with SWUNG off-beat hats (2/3 of the beat)
+            if on("kick", b): place(buf, K, t + j())
+            if on("snare", b) and pos in (1, 3): place(buf, C, t + j(), 0.8)
+            if on("hat", b):
+                place(buf, hat(rng=rng), subdiv_time(beats, b + 2 / 3) + j(), 0.6)
+                place(buf, hat(rng=rng), t + j(), 0.3)
+            if on("bass", b):
+                bt = subdiv_time(beats, b + 2 / 3)
+                p = beats[min(b + 1, len(beats) - 1)] - t
+                place(buf, tone(midi_hz(bass_root + bass_notes[(b // bpb) % 8]), max(p * 0.3, 0.05), cutoff=500), bt, 0.35)
         if on("pad", b) and pos == 0 and sections:
             p = beats[min(b + bpb, len(beats) - 1)] - t if b + bpb < len(beats) else 2.0
             chord = [60, 63, 67] if (b // bpb) % 2 == 0 else [58, 62, 65]

@@ -6,31 +6,31 @@
    "slug": "12__Seedhe_Maut___Naam_Kaam_Sheher__E",
    "duration_s": 166.3,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 19.1,
+   "analysis_s": 20.8,
    "tempo_bpm": 140.19,
    "time_signature": "4/4",
    "grid_type": "variable",
    "n_bars": 93,
-   "confidence": 0.501,
+   "confidence": 0.499,
    "trimmed": {
     "leading": 0,
     "trailing": 11
    },
    "first_beat_s": 0.001,
    "onset_support": {
-    "share_of_beats_with_onset": 0.737,
+    "share_of_beats_with_onset": 0.74,
     "by_position": {
      "1": 0.763,
      "2": 0.717,
      "3": 0.728,
-     "4": 0.739
+     "4": 0.75
     },
-    "median_offset_ms": 0.11,
-    "p95_abs_offset_ms": 32.33
+    "median_offset_ms": 0.1,
+    "p95_abs_offset_ms": 32.34
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 18.67,
-    "share_over_35ms": 0.398
+    "median": 17.33,
+    "share_over_35ms": 0.404
    },
    "librosa_tempo": 140.62,
    "tempo_check": "agree",
@@ -38,17 +38,17 @@
     "windows": [
      {
       "t": 0.0,
-      "grid_bpm": 140.41,
+      "grid_bpm": 140.19,
       "indep_bpm": 140.03,
-      "diff_pct": -0.26,
+      "diff_pct": -0.11,
       "periodicity": 0.146,
-      "onset_support": 0.77
+      "onset_support": 0.79
      },
      {
       "t": 20.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 139.75,
       "indep_bpm": 140.22,
-      "diff_pct": 0.03,
+      "diff_pct": 0.34,
       "periodicity": 0.306,
       "onset_support": 1.0
      },
@@ -70,17 +70,17 @@
      },
      {
       "t": 80.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 139.97,
       "indep_bpm": 139.87,
-      "diff_pct": -0.23,
+      "diff_pct": -0.07,
       "periodicity": 0.236,
-      "onset_support": 0.91
+      "onset_support": 0.94
      },
      {
       "t": 100.0,
-      "grid_bpm": 139.97,
+      "grid_bpm": 140.19,
       "indep_bpm": 139.97,
-      "diff_pct": 0.0,
+      "diff_pct": -0.15,
       "periodicity": 0.281,
       "onset_support": 1.0
      },
@@ -109,12 +109,12 @@
    "downbeat_attack_vs_own_grid": {
     "n": 71,
     "median_ms": 0.08,
-    "p10_p90_spread_ms": 24.22
+    "p10_p90_spread_ms": 24.23
    },
    "downbeat_lowkick_vs_own_grid": {
-    "n": 71,
-    "median_ms": -7.74,
-    "p10_p90_spread_ms": 53.71
+    "n": 70,
+    "median_ms": -1.19,
+    "p10_p90_spread_ms": 52.17
    },
    "n_tracked_beats": 230,
    "n_consistent_beats": 228,
@@ -133,7 +133,7 @@
    "slug": "01__Seedhe_Maut___Nanchaku__E",
    "duration_s": 193.1,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 19.9,
+   "analysis_s": 16.2,
    "tempo_bpm": 140.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -268,7 +268,7 @@
    "slug": "01__Seedhe_Maut___Namastute",
    "duration_s": 120.2,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 2.7,
+   "analysis_s": 6.3,
    "tempo_bpm": 80.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -287,11 +287,11 @@
      "3": 0.711,
      "4": 0.789
     },
-    "median_offset_ms": 0.26,
-    "p95_abs_offset_ms": 29.84
+    "median_offset_ms": 0.23,
+    "p95_abs_offset_ms": 29.75
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 17.56,
+    "median": 17.68,
     "share_over_35ms": 0.086
    },
    "librosa_tempo": 161.5,
@@ -354,13 +354,13 @@
    },
    "downbeat_attack_vs_own_grid": {
     "n": 31,
-    "median_ms": 1.78,
-    "p10_p90_spread_ms": 5.03
+    "median_ms": 1.79,
+    "p10_p90_spread_ms": 4.88
    },
    "downbeat_lowkick_vs_own_grid": {
     "n": 33,
-    "median_ms": -12.83,
-    "p10_p90_spread_ms": 33.82
+    "median_ms": -12.84,
+    "p10_p90_spread_ms": 33.76
    },
    "n_tracked_beats": 160,
    "n_consistent_beats": 160,
@@ -379,7 +379,7 @@
    "slug": "02__Seedhe_Maut___Toh_Kya__E",
    "duration_s": 180.1,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 4.7,
+   "analysis_s": 10.2,
    "tempo_bpm": 150.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -514,17 +514,17 @@
    "slug": "02___BUN_MASKA___Calm__DL91_ERA__Seedhe",
    "duration_s": 193.7,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 6.5,
+   "analysis_s": 6.7,
    "tempo_bpm": 140.0,
    "time_signature": "4/4",
    "grid_type": "constant",
    "n_bars": 113,
-   "confidence": 0.353,
+   "confidence": 0.355,
    "trimmed": {
     "leading": 0,
     "trailing": 1
    },
-   "first_beat_s": 0.004,
+   "first_beat_s": 0.003,
    "onset_support": {
     "share_of_beats_with_onset": 0.744,
     "by_position": {
@@ -533,11 +533,11 @@
      "3": 0.875,
      "4": 0.732
     },
-    "median_offset_ms": -0.53,
-    "p95_abs_offset_ms": 30.48
+    "median_offset_ms": -0.54,
+    "p95_abs_offset_ms": 30.09
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 27.74,
+    "median": 27.58,
     "share_over_35ms": 0.456
    },
    "librosa_tempo": 139.67,
@@ -614,7 +614,7 @@
       "indep_bpm": 154.19,
       "diff_pct": 10.14,
       "periodicity": 0.016,
-      "onset_support": 0.83
+      "onset_support": 0.79
      }
     ],
     "n_graded_windows": 7,
@@ -624,13 +624,13 @@
    },
    "downbeat_attack_vs_own_grid": {
     "n": 77,
-    "median_ms": -0.69,
-    "p10_p90_spread_ms": 16.78
+    "median_ms": -0.65,
+    "p10_p90_spread_ms": 16.15
    },
    "downbeat_lowkick_vs_own_grid": {
     "n": 77,
-    "median_ms": -6.63,
-    "p10_p90_spread_ms": 52.67
+    "median_ms": -6.61,
+    "p10_p90_spread_ms": 52.45
    },
    "n_tracked_beats": 277,
    "n_consistent_beats": 274,
@@ -649,7 +649,7 @@
    "slug": "03___RINGTONE___Calm__DL91_ERA__Bhaskar",
    "duration_s": 264.5,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 8.5,
+   "analysis_s": 9.5,
    "tempo_bpm": 138.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -659,21 +659,21 @@
     "leading": 0,
     "trailing": 19
    },
-   "first_beat_s": 0.872,
+   "first_beat_s": 0.438,
    "onset_support": {
-    "share_of_beats_with_onset": 0.759,
+    "share_of_beats_with_onset": 0.76,
     "by_position": {
      "1": 0.768,
-     "2": 0.789,
+     "2": 0.79,
      "3": 0.741,
-     "4": 0.739
+     "4": 0.741
     },
-    "median_offset_ms": -0.15,
-    "p95_abs_offset_ms": 5.82
+    "median_offset_ms": -0.08,
+    "p95_abs_offset_ms": 6.66
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 219.18,
-    "share_over_35ms": 0.543
+    "median": 219.08,
+    "share_over_35ms": 0.545
    },
    "librosa_tempo": 139.67,
    "tempo_check": "agree",
@@ -685,7 +685,7 @@
       "indep_bpm": 137.93,
       "diff_pct": -0.05,
       "periodicity": 0.491,
-      "onset_support": 0.57
+      "onset_support": 0.58
      },
      {
       "t": 20.0,
@@ -791,16 +791,16 @@
    },
    "downbeat_attack_vs_own_grid": {
     "n": 109,
-    "median_ms": -0.15,
+    "median_ms": -0.07,
     "p10_p90_spread_ms": 1.04
    },
    "downbeat_lowkick_vs_own_grid": {
     "n": 101,
-    "median_ms": -7.73,
-    "p10_p90_spread_ms": 54.61
+    "median_ms": -7.64,
+    "p10_p90_spread_ms": 54.56
    },
    "n_tracked_beats": 306,
-   "n_consistent_beats": 304,
+   "n_consistent_beats": 303,
    "tempo_octave": {
     "tracker_bpm": 69.0,
     "factor": 2.0,
@@ -816,7 +816,7 @@
    "slug": "01__Seedhe_Maut___11K__E",
    "duration_s": 174.2,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 5.5,
+   "analysis_s": 14.0,
    "tempo_bpm": 135.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -946,30 +946,30 @@
      "a_bar": 9,
      "b_bar": 1,
      "a_start": 14.399751864901418,
-     "b_start": 6.002700711132297,
+     "b_start": 6.002576877944873,
      "duration": 60.0,
      "a_period": 0.3999981907853254,
-     "b_period": 0.3749811516926851,
-     "time_ratio": 1.066715457509563,
+     "b_period": 0.37498176745280176,
+     "time_ratio": 1.066713705848838,
      "a_bpm": 150.00067845857168,
-     "b_bpm": 160.0080423486801,
-     "b_needed": 56.247427163079344,
+     "b_bpm": 160.00777959838297,
+     "b_needed": 56.24751952751461,
      "notes": [
       "B matched at double time (80.00 BPM counted as 160.01).",
       "B's audio before its bar 1 downbeat (6.003s) is not used."
      ],
      "b_octave": 2.0,
-     "offset": 7.996578229532951,
-     "stretch_percent": 6.671545750956298
+     "offset": 7.9967208387862945,
+     "stretch_percent": 6.671370584883807
     },
     "alignment_any_onset": {
      "n_beats": 149,
-     "n_measured": 85,
-     "median_ms": -1.49,
-     "median_abs_ms": 4.24,
-     "p95_abs_ms": 31.29,
-     "max_abs_ms": 38.99,
-     "worst_at_s": 32.4,
+     "n_measured": 83,
+     "median_ms": 0.0,
+     "median_abs_ms": 0.06,
+     "p95_abs_ms": 29.51,
+     "max_abs_ms": 37.69,
+     "worst_at_s": 1.2,
      "target": {
       "median_abs_ms": 5.0,
       "max_abs_ms": 15.0
@@ -978,69 +978,69 @@
     },
     "alignment_downbeat_kicks": {
      "n_downbeats": 37,
-     "n_measured": 20,
+     "n_measured": 22,
      "a_has_kick": 29,
-     "b_has_kick": 27,
-     "median_ms": 7.41,
-     "median_abs_ms": 14.06,
-     "max_abs_ms": 54.71,
+     "b_has_kick": 29,
+     "median_ms": 6.49,
+     "median_abs_ms": 19.39,
+     "max_abs_ms": 55.41,
      "offsets_ms": [
-      31.76,
-      -12.54,
-      32.37,
-      -34.82,
-      -7.18,
-      -13.21,
-      -2.86,
-      -14.91,
-      -16.54,
+      -25.46,
+      -6.64,
+      26.7,
+      -34.25,
+      -3.38,
+      24.37,
+      7.73,
+      -54.11,
+      -13.43,
+      -16.2,
       34.69,
-      30.41,
-      10.86,
-      44.78,
-      3.96,
-      -54.71,
-      25.97,
-      12.56,
-      12.98,
-      -3.43,
-      13.02
+      29.87,
+      22.57,
+      -10.63,
+      6.28,
+      -55.41,
+      26.32,
+      4.97,
+      11.59,
+      6.69,
+      26.65,
+      7.45
      ],
      "pass": false
     },
     "alignment_downbeat_attacks": {
      "n_downbeats": 37,
-     "n_measured": 26,
-     "median_abs_ms": 3.31,
-     "max_abs_ms": 35.77,
-     "share_within_15ms": 0.846,
+     "n_measured": 24,
+     "median_abs_ms": 0.04,
+     "max_abs_ms": 35.95,
+     "share_within_15ms": 0.958,
      "offsets_ms": [
-      -6.9,
-      2.2,
-      -5.88,
-      -6.02,
-      0.62,
-      -0.75,
-      1.12,
-      -5.29,
-      0.28,
-      19.07,
-      -1.49,
-      6.77,
-      -0.14,
-      -16.7,
-      -0.05,
-      0.12,
-      -3.61,
-      -2.76,
-      -35.77,
-      15.33,
-      4.13,
-      -5.66,
-      -2.93,
-      3.01,
-      0.84,
-      -10.19
+      0.11,
+      -0.04,
+      -0.01,
+      0.03,
+      -0.04,
+      -0.01,
+      0.45,
+      -0.01,
+      -0.03,
+      0.01,
+      -0.02,
+      0.11,
+      0.08,
+      0.0,
+      0.06,
+      -3.1,
+      -11.14,
+      35.95,
+      3.1,
+      -0.11,
+      -0.08,
+      -0.02,
+      0.01,
+      -0.03
      ],
      "pass": false
     }

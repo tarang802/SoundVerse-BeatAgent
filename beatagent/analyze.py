@@ -23,7 +23,7 @@ import numpy as np
 
 from .audio_io import to_mono
 from .grid import BeatGrid, tempo_segments_from_beats
-from .onsets import flux_envelope
+from .onsets import flux_envelope, low_flux
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
 _MODEL_CACHE: dict = {}
@@ -97,51 +97,66 @@ def _base_period(ibi: np.ndarray) -> float:
 
 def _clean_beats(times: np.ndarray, tol: float = 0.25) -> tuple[np.ndarray, np.ndarray]:
     """Integer beat index for each tracked beat, measured from the last TRUSTED
-    beat. A beat whose gap is not close to a whole number of beats (a stray hit
-    79 ms after a real one, an off-beat) is dropped instead of being counted --
-    counting it shifted the index of every later beat by one and broke the fit
-    on real music. Gaps of 2, 3... beats (missed beats, half-time sections) are
-    bridged.
+    beat at the LOCAL beat length (median of the last 8 accepted steps).
 
-    Re-anchoring: if two consecutive rejected beats are a whole number of beats
-    apart from EACH OTHER, the tracker has changed phase (seen on a real track,
-    RINGTONE: a 0.3-beat jump at 7 s); we continue from the new phase instead of
-    rejecting every later beat. Returns (kept_times, indices)."""
+    * A beat whose gap is not close to a whole number of beats (a stray hit 79 ms
+      after a real one, an off-beat) is dropped instead of counted -- counting it
+      shifted every later index by one and broke the fit on real music.
+    * Gaps of 2, 3... beats (missed beats, half-time sections) are bridged.
+    * Phase jump: two consecutive rejected beats a whole number of beats apart
+      from EACH OTHER = the tracker changed phase (real track RINGTONE: a 0.3-beat
+      jump at 7 s) -> continue from the new phase.
+    * Tempo change: three consecutive rejected beats evenly spaced among
+      themselves (within 6 %) = a new tempo (synthetic 120 -> 128 -> 100 BPM: one
+      global beat length rejected every 100 BPM beat as "not a whole beat")
+      -> accept them and follow the new beat length.
+    Returns (kept_times, indices)."""
     ibi = np.diff(times)
-    p = _base_period(ibi)
-    for _ in range(2):                         # second pass with the refined period
-        keep_t, keep_k = [times[0]], [0]
-        steps_s, steps_n = [], []
-        pending = None                         # last rejected beat, candidate for re-anchoring
-        for t in times[1:]:
-            x = (t - keep_t[-1]) / p
-            n = int(round(x))
-            if n >= 1 and abs(x - n) < tol:
-                keep_t.append(t)
-                keep_k.append(keep_k[-1] + n)
-                if n <= 4:
-                    steps_s.append(t - keep_t[-2])
-                    steps_n.append(n)
-                pending = None
+    p0 = _base_period(ibi)
+    keep_t, keep_k = [times[0]], [0]
+    recent: list[float] = []                    # per-beat step lengths of accepted beats
+    rejected: list[float] = []                  # consecutive rejected beats since the last accepted one
+
+    def p_local() -> float:
+        if len(recent) >= 4:
+            r = np.array(recent[-8:])
+            med = np.median(r)
+            r = r[np.abs(r - med) < 0.1 * med]
+            # mean of steps near the median: the tracker's 20 ms frames make single
+            # steps alternate (860/880 ms); their mean recovers ~863.5 ms
+            return float(r.mean()) if len(r) else float(med)
+        return p0
+
+    for t in times[1:]:
+        p = p_local()
+        x = (t - keep_t[-1]) / p
+        n = int(round(x))
+        if n >= 1 and abs(x - n) < tol:
+            if n <= 4:
+                recent.append((t - keep_t[-1]) / n)
+            keep_t.append(t)
+            keep_k.append(keep_k[-1] + n)
+            rejected = []
+            continue
+        rejected.append(t)
+        if len(rejected) >= 2:                  # phase jump at the same tempo
+            y = (rejected[-1] - rejected[-2]) / p
+            m = int(round(y))
+            if m >= 1 and abs(y - m) < tol:
+                k_first = keep_k[-1] + max(1, int(round((rejected[-2] - keep_t[-1]) / p)))
+                keep_t += [rejected[-2], rejected[-1]]
+                keep_k += [k_first, k_first + m]
+                rejected = []
                 continue
-            if pending is not None:
-                y = (t - pending) / p
-                m = int(round(y))
-                if m >= 1 and abs(y - m) < tol:
-                    # two rejected beats agree with each other: new phase
-                    k_pending = keep_k[-1] + max(1, int(round((pending - keep_t[-1]) / p)))
-                    keep_t += [pending, t]
-                    keep_k += [k_pending, k_pending + m]
-                    pending = None
-                    continue
-            pending = t
-        if steps_s:
-            # mean (not median) of the per-beat steps near the median: the tracker's
-            # 20 ms frames make single steps alternate (860/880 ms); their mean
-            # recovers the true period (~863.5 ms) that the median cannot.
-            per = np.array(steps_s) / np.array(steps_n)
-            med = np.median(per)
-            p = float(per[np.abs(per - med) < 0.1 * med].mean())
+        if len(rejected) >= 3:                  # tempo change: evenly spaced at a new beat length
+            gaps = np.diff(rejected[-3:])
+            if abs(gaps[1] - gaps[0]) < 0.06 * gaps.mean():
+                new_p = float(gaps.mean())
+                k_first = keep_k[-1] + max(1, int(round((rejected[-3] - keep_t[-1]) / new_p)))
+                keep_t += rejected[-3:]
+                keep_k += [k_first, k_first + 1, k_first + 2]
+                recent = [new_p] * 4
+                rejected = []
     return np.array(keep_t), np.array(keep_k)
 
 
@@ -265,6 +280,43 @@ def _snap(beats: np.ndarray, flux: np.ndarray, fsr: float, win=0.025) -> np.ndar
         if len(seg) and seg.max() > 2 * np.median(flux[max(0, a - int(fsr)):b + int(fsr)]) + 1e-9:
             out[i] = (a + int(np.argmax(seg))) / fsr
     return out
+
+
+def _resnap_outliers(g: np.ndarray, flux: np.ndarray, fsr: float, tol=0.015, win=0.025,
+                     half=3) -> np.ndarray:
+    """Variable grids: a beat far from where its neighbours put it is re-snapped
+    to the onset nearest that prediction.
+
+    Seen on a drifting take: the tracker put ~1 beat in 7 about 30 ms early, out of
+    reach of the +-25 ms snap (which then sometimes grabbed a wrong, earlier onset).
+    The prediction is a median over +-`half` neighbours, so one bad neighbour does
+    not move it. If no clear onset is near the prediction the beat is left alone."""
+    g = g.copy()
+    for i in range(half, len(g) - half):
+        js = np.r_[-half:0, 1:half + 1]
+        per = np.median(np.diff(g[i - half:i + half + 1]))
+        pred = float(np.median(g[i + js] - js * per))
+        if abs(g[i] - pred) <= tol:
+            continue
+        a, b = max(int((pred - win) * fsr), 0), int((pred + win) * fsr) + 1
+        seg = flux[a:b]
+        floor = 2 * np.median(flux[max(0, a - int(fsr)):b + int(fsr)]) + 1e-9
+        peaks = [j for j in range(1, len(seg) - 1) if seg[j] >= seg[j - 1] and seg[j] > seg[j + 1] and seg[j] > floor]
+        if peaks:
+            j = min(peaks, key=lambda j: abs((a + j) / fsr - pred))
+            g[i] = (a + j) / fsr
+    return g
+
+
+def _fill(beats: np.ndarray, k: np.ndarray) -> list:
+    """Tracked beats with tracker gaps filled by interpolation (k = integer beat index)."""
+    filled = [beats[0]]
+    for i in range(1, len(beats)):
+        n = int(k[i] - k[i - 1])
+        for j in range(1, n):
+            filled.append(beats[i - 1] + (beats[i] - beats[i - 1]) * j / n)
+        filled.append(beats[i])
+    return filled
 
 
 def _fit_line(beats: np.ndarray, k: np.ndarray, flux: np.ndarray, fsr: float) -> tuple[float, float, dict]:
@@ -405,14 +457,47 @@ def _trim_unsupported(grid: np.ndarray, flux: np.ndarray, fsr: float) -> tuple[n
 
 
 def _is_compound(grid: np.ndarray, flux, fsr) -> bool:
-    """Is the beat divided in 3 (6/8, 12/8) rather than 2? Onset energy at the
-    beat's thirds vs its half."""
+    """Is the beat divided in 3 (6/8, 12/8) rather than 2? Onset energy at BOTH
+    thirds of the beat must beat the half. (Requiring only their average let a
+    swung 4/4 groove -- hits at 2/3 only -- read as 12/8.) Not judged above
+    160 BPM: that is an 8th-note grid, where this test looks at 32nds (a 3/4
+    waltz tracked at 240 BPM came out as "18/8")."""
+    if len(grid) < 3 or 60.0 / np.median(np.diff(grid)) >= 2 * BPM_MIN:
+        return False
     xs = np.arange(len(flux)) / fsr
     span = np.diff(grid)
     g = grid[:-1]
-    thirds = np.interp(np.concatenate([g + span / 3, g + 2 * span / 3]), xs, flux).mean()
+    t1 = np.interp(g + span / 3, xs, flux).mean()
+    t2 = np.interp(g + 2 * span / 3, xs, flux).mean()
     halves = np.interp(g + span / 2, xs, flux).mean()
-    return bool(thirds > 1.3 * halves)
+    on_beat = np.interp(g, xs, flux).mean()
+    # both thirds must hold a REAL hit (>= 25 % of the on-beat hits), not just beat the
+    # half: on a swung groove 1/3 = 0.66 vs 1/2 = 0.27 -- both noise next to ~11 for a hit
+    return bool(min(t1, t2) > max(1.3 * halves, 0.25 * on_beat))
+
+
+def _accent_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int | None:
+    """Bar length (3 or 4 beats) from the LOW-END accent pattern: the kick repeats
+    once per bar. For each candidate length L, average the low-band onset strength
+    per position in the bar; a clear winner (one position much stronger than the
+    rest, and clearly more so than for the other L) decides. Four-on-the-floor
+    (a kick on every beat) has no pattern -> None, keep the tracker's estimate.
+    Added because 3/4 depended on where the tracker put its downbeats (the same
+    synthetic waltz came out 3/4 with one seed and 4/4 with another)."""
+    if len(grid) < 24:
+        return None
+    w = int(0.03 * lfsr)
+    e = np.array([lflux[max(0, int(t * lfsr) - w): int(t * lfsr) + w + 1].max(initial=0.0) for t in grid])
+    contrast = {}
+    for L in (3, 4):
+        m = np.array([e[i::L].mean() for i in range(L)])
+        contrast[L] = float(m.max() / (m.mean() + 1e-12))
+    c3, c4 = contrast[3], contrast[4]
+    if c3 > 1.3 and c3 > 1.25 * c4:
+        return 3
+    if c4 > 1.3 and c4 > 1.25 * c3:
+        return 4
+    return None
 
 
 def _double(grid: np.ndarray) -> np.ndarray:
@@ -421,12 +506,41 @@ def _double(grid: np.ndarray) -> np.ndarray:
     return np.sort(np.concatenate([grid, mids]))
 
 
-def _halve(grid: np.ndarray, flux, fsr) -> np.ndarray:
-    """Half the tempo: keep every other beat, choosing the half that lands on
-    more onset energy."""
-    xs = np.arange(len(flux)) / fsr
+def _halve(grid: np.ndarray, flux, fsr, downs: np.ndarray | None = None) -> np.ndarray:
+    """Half the tempo: keep every other beat. Keep the half that contains the
+    tracker's DOWNBEATS (the "1"); onset energy only breaks ties. (Energy alone
+    kept the snare beats 2 and 4 on a 174 BPM groove, so every bar started on
+    the wrong beat.)"""
     a, b = grid[0::2], grid[1::2]
+    if downs is not None and len(downs):
+        def hits(x):
+            idx = np.clip(np.searchsorted(x, downs), 1, len(x) - 1)
+            return int(np.sum(np.minimum(np.abs(x[idx - 1] - downs), np.abs(x[idx] - downs)) < 0.07))
+        ha, hb = hits(a), hits(b)
+        if ha != hb:
+            return a if ha > hb else b
+    xs = np.arange(len(flux)) / fsr
     return a if np.interp(a, xs, flux).mean() >= np.interp(b, xs, flux).mean() else b
+
+
+def _extend_edges(grid: np.ndarray, flux, fsr, duration: float) -> np.ndarray:
+    """After doubling, add the half-beat before the first / after the last beat
+    when an onset supports it (midpoints only fill BETWEEN beats, so a half-time
+    track lost its last real beat: 430 ms 'drift' at the end)."""
+    if len(grid) < 4:
+        return grid
+    p = float(np.median(np.diff(grid)))
+    w = int(0.025 * fsr)
+
+    def ev(t):
+        return flux[max(0, int(t * fsr) - w): int(t * fsr) + w + 1].max(initial=0.0)
+    typical = float(np.median([ev(t) for t in grid])) + 1e-12
+    out = list(grid)
+    if grid[0] - p > 0 and ev(grid[0] - p) >= WEAK_EVIDENCE * typical:
+        out.insert(0, grid[0] - p)
+    if grid[-1] + p < duration and ev(grid[-1] + p) >= WEAK_EVIDENCE * typical:
+        out.append(grid[-1] + p)
+    return np.array(out)
 
 
 def _meter(grid: np.ndarray, downs: np.ndarray, flux, fsr, force_bpb: int | None = None) -> tuple[int, int, float, str]:
@@ -444,6 +558,9 @@ def _meter(grid: np.ndarray, downs: np.ndarray, flux, fsr, force_bpb: int | None
     gaps = np.diff(near)
     gaps = gaps[(gaps >= 2) & (gaps <= 7)]
     bpb = force_bpb or (int(np.bincount(gaps).argmax()) if len(gaps) else 4)
+    if bpb == 2 and not _is_compound(grid, flux, fsr):
+        bpb = 4          # 2/4 vs 4/4 is not a meaningful distinction for DJ bars (a fast house
+                         # groove came out "2/4" and could no longer sync with a 4/4 track)
     votes = np.bincount(near % bpb, minlength=bpb)
     phase = int(votes.argmax())
     agree = float(votes.max() / max(1, votes.sum()))
@@ -564,13 +681,11 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
         grid_kind = "constant" if constant else "piecewise_constant"
     else:
         # variable tempo: tracked beats, gaps filled, snapped to onsets
-        filled = [beats[0]]
-        for i in range(1, len(beats)):
-            n = int(k[i] - k[i - 1])
-            for j in range(1, n):
-                filled.append(beats[i - 1] + (beats[i] - beats[i - 1]) * j / n)
-            filled.append(beats[i])
-        grid = _snap(np.array(filled), flux, fsr)
+        filled = _fill(beats, k)
+        # (A global lateness correction like the constant path's was TRIED here and
+        # rejected: on a drifting take the tracker's beats were already within 5-18 ms
+        # and the correction moved them +26 ms the wrong way. Per-beat snap only.)
+        grid = _resnap_outliers(_snap(np.array(filled), flux, fsr), flux, fsr)
         constant, change_idx, grid_kind = False, [], "variable"
         # Before settling for "variable", test a constant grid with onset-chosen
         # phase: use it if its beats are at least as clearly ON the beat (phase
@@ -597,14 +712,25 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
     force_bpb = None
     grid_tracker_octave = grid          # confidence is judged at the tracker's octave (see below)
     if len(grid) > 8 and not _is_compound(grid, flux, fsr):
+        bpb_o = _meter(grid, downs, flux, fsr)[0]       # bar length at the tracker's octave
         bpm = 60 / np.median(np.diff(grid))
         while bpm < BPM_MIN:
             grid, bpm, octave["factor"] = _double(grid), bpm * 2, octave["factor"] * 2
+        if octave["factor"] > 1:
+            grid = _extend_edges(grid, flux, fsr, duration)
         while bpm >= 2 * BPM_MIN:
-            grid, bpm, octave["factor"] = _halve(grid, flux, fsr), bpm / 2, octave["factor"] / 2
+            grid, bpm, octave["factor"] = _halve(grid, flux, fsr, downs), bpm / 2, octave["factor"] / 2
         if octave["factor"] != 1.0:
-            force_bpb = 4
+            # Bar length after the change: a triple meter stays triple (a 3/4 waltz
+            # tracked as 6 eighths per bar at 240 BPM becomes 3 per bar at 120);
+            # otherwise 4 beats per bar, the DJ convention.
+            force_bpb = 3 if bpb_o % 3 == 0 else 4
     octave["reported_bpm"] = round(float(60 / np.median(np.diff(grid))), 2)
+    if len(grid) > 8 and not _is_compound(grid, flux, fsr):
+        acc = _accent_bar_length(grid, *low_flux(mono, sr))
+        fit_info["accent_bar_length"] = acc
+        if acc:
+            force_bpb = acc
     change_idx = [int(np.searchsorted(grid, t - 1e-6)) for t in change_t if grid[0] < t <= grid[-1]]
     if grid_kind == "piecewise_constant" and not change_idx:
         # the only "tempo change" was into/out of a stretch we just trimmed

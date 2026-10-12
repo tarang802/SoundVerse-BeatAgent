@@ -1,0 +1,53 @@
+{
+ "ops": 421,
+ "applied": 414,
+ "refused_cleanly": 7,
+ "crashed": 0,
+ "length_fail": 0,
+ "order_fail": 0,
+ "grid_fail": 2,
+ "click_fail": 0,
+ "undo_fail": 0,
+ "redo_fail": 0,
+ "by_kind": {
+  "keep_only": {
+   "applied": 68,
+   "refused": 0,
+   "failed_checks": 0
+  },
+  "move": {
+   "applied": 49,
+   "refused": 2,
+   "failed_checks": 0
+  },
+  "gain": {
+   "applied": 58,
+   "refused": 0,
+   "failed_checks": 0
+  },
+  "repeat": {
+   "applied": 60,
+   "refused": 0,
+   "failed_checks": 1
+  },
+  "fade": {
+   "applied": 60,
+   "refused": 0,
+   "failed_checks": 1
+  },
+  "copy": {
+   "applied": 67,
+   "refused": 0,
+   "failed_checks": 0
+  },
+  "remove": {
+   "applied": 52,
+   "refused": 5,
+   "failed_checks": 0
+  }
+ },
+ "pass_rate_applied_ops": 0.9952
+}
+failures: 2
+   {"seq": 23, "step": 6, "op": {"op": "repeat", "range": {"unit": "bars", "start": 1, "end": 2, "last": null}, "total_plays": 4}, "failed": ["grid_ok"], "check": {"length_ok": true, "order_ok": true, "grid_found_share": 0.9142857142857143, "grid_median_ms": 2.320711134903619, "grid_ok": false, "grid_m
+   {"seq": 23, "step": 7, "op": {"op": "fade", "range": {"unit": "bars", "start": 6, "end": 6, "last": null}, "direction": "out"}, "failed": ["grid_ok"], "check": {"length_ok": true, "order_ok": true, "grid_found_share": 0.9142857142857143, "grid_median_ms": 2.3170224941155837, "grid_ok": false, "grid_

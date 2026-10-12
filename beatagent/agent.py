@@ -1,6 +1,7 @@
 """One chat turn: interpret (LLM) -> validate -> execute (code) -> echo."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 from . import edl
@@ -22,6 +23,42 @@ class Reply:
 
     def to_dict(self) -> dict:
         return self.__dict__.copy()
+
+
+_PROPOSES = re.compile(r"\b(bars?|beats?)\s+\d+", re.IGNORECASE)   # a clarify message naming a range
+_NUM_REF = re.compile(r"\b(bars?|beats?)\s+(?:number\s+)?(-\s?\d+(?:\.\d+)?|\d+\.\d+)", re.IGNORECASE)
+
+
+def _bad_numbers(text: str) -> str | None:
+    """A bar/beat reference that is negative or fractional, as a user-facing message."""
+    m = _NUM_REF.search(text.replace("−", "-"))
+    if not m:
+        return None
+    unit, num = m.group(1).lower(), m.group(2).replace(" ", "")
+    if num.startswith("-"):
+        return (f"'{unit} {num}' is negative. Bars are numbered from 1 and beats from 0 "
+                "(beat N is a grid line). Which one did you mean?")
+    return (f"'{unit} {num}' is a fraction. I can only cut on whole beats and bars. "
+            "Which whole beat or bar did you mean?")
+
+
+_DB = re.compile(r"([-+−]?\s?\d+(?:\.\d+)?)\s*(?:db|decibels?)\b", re.IGNORECASE)
+
+
+def _keep_user_db(text: str, plan: Plan) -> str | None:
+    """If the user stated exactly one dB amount, every gain op uses that magnitude;
+    the interpreter only chooses the direction (up/down). An LLM once turned
+    "60 dB louder" into +24 dB (the engine's limit) and it was applied silently."""
+    vals = {abs(float(m.replace("−", "-").replace(" ", ""))) for m in _DB.findall(text)}
+    if len(vals) != 1:
+        return None
+    user = vals.pop()
+    changed = False
+    for o in plan.ops or []:
+        if o.op == "gain" and o.db is not None and abs(o.db) != user:
+            o.db = user if o.db >= 0 else -user
+            changed = True
+    return f"used your {user:g} dB (the interpreter had changed the number)" if changed else None
 
 
 def measured_sections(session: Session) -> list:
@@ -53,6 +90,13 @@ class BeatAgent:
 
     def handle(self, text: str) -> Reply:
         self.log.append(f"user: {text}")
+        bad = _bad_numbers(text)
+        if bad:
+            # Deterministic, before any LLM: an LLM once "corrected" "remove bar -2" to bar 1
+            # and applied it. Numbers that can't address the grid are refused by code.
+            r = Reply(f"I didn't change anything: {bad}", "error", ok=False, backend="validator")
+            self.log.append(f"agent: {r.text}")
+            return r
         sections, partner = None, None         # defined even if the try fails early (used by the fallback)
         try:
             sections = self.sections_fn(self.s) if self.sections_fn else None
@@ -74,6 +118,18 @@ class BeatAgent:
                                          "needs a `range` (whole track: start and end null). Return a corrected plan.]",
                                          self.s.grid.summary(), sections, self.pending_raw, self.log,
                                          partner=partner)
+            elif plan.action == "clarify" and not plan.ops and _PROPOSES.search(plan.message or ""):
+                # Seen: "Did you mean bars 81 to 96?" with no ops. Only ops can be confirmed,
+                # so the user's "yes" would do nothing. One round to attach the edit.
+                self.retried = "clarify proposal without ops"
+                fixed = self.llm.plan(f"{text}\n\n[SYSTEM: your clarify message proposes a range ({plan.message!r}) "
+                                      "but `ops` is empty, so the user cannot confirm it. Return the same clarify "
+                                      "with that edit in `ops`, or a question that proposes no range.]",
+                                      self.s.grid.summary(), sections, self.pending_raw, self.log,
+                                      partner=partner)
+                if fixed.action == "clarify":
+                    plan = fixed
+            db_note = _keep_user_db(text, plan)
             self.last_plan = plan
         except Exception as e:  # noqa: BLE001  (network, quota, malformed JSON)
             # Degrade instead of failing: the offline rule parser covers simple phrasings.
@@ -95,6 +151,8 @@ class BeatAgent:
             self.log.append(f"agent: {r.text}")
             return r
         r = self._execute(plan)
+        if db_note:
+            r.warnings = [*r.warnings, db_note]
         r.backend = f"{self.llm.name}:{getattr(self.llm, 'model', '')}".rstrip(":")
         notes = getattr(self.llm, "notes", None)
         if notes:                              # e.g. configured model retired -> fallback used
@@ -114,7 +172,8 @@ class BeatAgent:
             return Reply(f"{t.echo[0]}. {self._track_line()}" if t.ok else t.error, "redo", t.ok, changed=t.ok)
         if plan.action == "confirm":
             if not self.pending:
-                return Reply("There's no pending proposal to confirm.", "confirm", False)
+                return Reply("There's no concrete proposal pending, so nothing was changed. Say the edit with "
+                             "numbers (e.g. 'remove bars 81-96').", "confirm", False)
             ops, self.pending, self.pending_raw = self.pending, None, None
             return self._apply(ops, "confirm")
         if plan.action == "cancel":

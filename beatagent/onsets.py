@@ -97,19 +97,12 @@ def onsets_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
 
 
 
-def kick_flux_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
-                   fmax: float = 150.0, min_ratio: float = 4.0) -> np.ndarray:
-    """KICK onset nearest each expected time: peak of LOW-FREQUENCY spectral flux
-    (bins <= fmax Hz at ~21 Hz resolution, ~1.5 ms hop)
-    within +-win. NaN where no low-band onset stands out (min_ratio x the track's
-    median low-band flux) -- i.e. no kick on that beat, so it is not compared.
-    This exists because the broadband onsets_near compares "any hit": on real
-    hip-hop that paired A's kick with B's hi-hat."""
+def low_flux(x: np.ndarray, sr: int, fmax: float = 150.0) -> tuple[np.ndarray, float]:
+    """LOW-FREQUENCY (30..fmax Hz) spectral flux, ~21 Hz bins, ~1.5 ms hop.
+    Computed at 4 kHz: same resolution as a 2048-point STFT at 44.1 kHz with ~20x
+    less memory (the full-rate version needed 3.8 GB on a 6-minute track)."""
     if x.ndim == 2:
         x = x.mean(axis=1)
-    # Only < fmax Hz matters, so work at 4 kHz: same ~21 Hz bins and ~1.5 ms hop
-    # as a 2048-point STFT at 44.1 kHz, ~20x less memory (the full-rate version
-    # needed 3.8 GB on a 6-minute track and crashed).
     import soxr
     lsr = 4000
     y = soxr.resample(x.astype(np.float32), sr, lsr)
@@ -117,8 +110,17 @@ def kick_flux_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
     f, t, Z = signal.stft(y, fs=lsr, nperseg=n_fft, noverlap=n_fft - hop, boundary="even", padded=True)
     lo = (f >= 30) & (f <= fmax)
     S = np.log1p(100 * np.abs(Z[lo]))
-    flux = np.concatenate([[0], np.maximum(0, np.diff(S, axis=1)).sum(axis=0)])
-    fsr = lsr / hop
+    return np.concatenate([[0], np.maximum(0, np.diff(S, axis=1)).sum(axis=0)]), lsr / hop
+
+
+def kick_flux_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
+                   fmax: float = 150.0, min_ratio: float = 4.0) -> np.ndarray:
+    """KICK onset nearest each expected time: peak of LOW-FREQUENCY spectral flux
+    within +-win. NaN where no low-band onset stands out (min_ratio x the track's
+    median low-band flux) -- i.e. no kick on that beat, so it is not compared.
+    This exists because the broadband onsets_near compares "any hit": on real
+    hip-hop that paired A's kick with B's hi-hat."""
+    flux, fsr = low_flux(x, sr, fmax)
     ref = np.median(flux[flux > 0]) + 1e-12
     out = np.full(len(times), np.nan)
     w = int(win * fsr)

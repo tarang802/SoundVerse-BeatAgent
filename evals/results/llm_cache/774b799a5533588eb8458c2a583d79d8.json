@@ -1,0 +1,1 @@
+{"model": "gemini-3.5-flash-lite", "message": "what's the tempo?", "text": "{\"action\":\"answer\",\"ops\":[],\"sync\":null,\"interpretation\":\"The user is asking for the tempo of the track, which is provided in the measured grid as 124.0 BPM.\",\"message\":\"The tempo is 124.0 BPM.\"}"}
