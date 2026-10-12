@@ -21,6 +21,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -142,9 +143,25 @@ def open_path(req: OpenReq):
     return _open(p)
 
 
+_UNSAFE = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
+
+
+def _safe_upload_name(raw: str | None) -> str:
+    """Last path component, with characters Windows forbids replaced. Seen: an upload
+    named 'beat: final?.wav' became a 0-byte file 'xxxx_beat' with the audio hidden in
+    an NTFS alternate data stream (':' selects a stream). Also drops '../' parts."""
+    name = re.split(r"[\\/]", raw or "")[-1]
+    stem, dot, ext = name.rpartition(".")
+    if not dot:
+        stem, ext = name, ""
+    stem = _UNSAFE.sub("_", stem).strip(" .") or "upload"
+    ext = _UNSAFE.sub("", ext).strip(" .")
+    return f"{stem}.{ext}" if ext else stem
+
+
 @app.post("/api/upload")
 async def upload(file: UploadFile = File(...)):
-    name = Path(file.filename or "upload.wav").name
+    name = _safe_upload_name(file.filename)
     if Path(name).suffix.lower() not in (".wav", ".mp3", ".flac"):
         raise HTTPException(400, "Only WAV, MP3 or FLAC files are supported.")
     d = WORK / "uploads"
