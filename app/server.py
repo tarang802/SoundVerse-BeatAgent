@@ -195,12 +195,22 @@ def click_wav(sid: str):
 # ------------------------------------------------------------------ Part 2: chat edits
 class ChatReq(BaseModel):
     text: str
+    partner: str | None = None     # the other deck's session id, for "sync ..." commands
 
 
 @app.post("/api/{sid}/chat")
 def chat(sid: str, req: ChatReq):
-    r = _agent(sid).handle(req.text)
-    return {"reply": r.to_dict(), "state": _state(sid)}
+    a = _agent(sid)
+    a.partner = SESSIONS[req.partner].s if req.partner in SESSIONS and req.partner != sid else None
+    r = a.handle(req.text)
+    out = {"reply": r.to_dict(), "state": _state(sid)}
+    if r.action == "sync" and r.ok and a.last_sync:
+        d = Path(a.last_sync["dir"])
+        sync_id = uuid.uuid4().hex[:8]
+        SYNCS[sync_id] = d
+        (d / "report.json").write_text(json.dumps(a.last_sync, indent=1))
+        out["sync_id"] = sync_id
+    return out
 
 
 @app.post("/api/{sid}/undo")

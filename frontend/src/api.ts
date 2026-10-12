@@ -33,7 +33,8 @@ export const api = {
     fd.append("file", file);
     return call<DeckState>("/api/upload", { method: "POST", body: fd });
   },
-  chat: (sid: string, text: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/chat`, { text }),
+  chat: (sid: string, text: string, partner?: string) =>
+    post<{ reply: ChatReply; state: DeckState; sync_id?: string }>(`/api/${sid}/chat`, { text, partner }),
   undo: (sid: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/undo`),
   redo: (sid: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/redo`),
   octave: (sid: string, factor: 2 | 0.5) => post<DeckState>(`/api/${sid}/octave`, { factor }),

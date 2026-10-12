@@ -93,8 +93,16 @@ class Session:
             try:
                 ops.append(_OP_ADAPTER.validate_python(clean))
             except Exception as e:  # noqa: BLE001
-                raise EditError(f"Couldn't turn that into a valid edit ({o.get('op', '?')}): "
-                                f"{str(e).splitlines()[0]}") from e
+                # readable: "the 'fade' edit is missing range" instead of pydantic's dump
+                errs = getattr(e, "errors", lambda: [])()
+                if errs:
+                    first = errs[0]
+                    field = ".".join(str(x) for x in first.get("loc", [])[1:]) or "value"
+                    why = "is missing" if first.get("type") == "missing" else f"is invalid ({first.get('msg')})"
+                    detail = f"the '{o.get('op', '?')}' edit {why}: {field}"
+                else:
+                    detail = f"the '{o.get('op', '?')}' edit is invalid"
+                raise EditError(f"Couldn't turn that into a valid edit: {detail}.") from e
         return ops
 
     def apply(self, ops: list, label: str = "") -> TurnResult:

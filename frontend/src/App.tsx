@@ -38,9 +38,9 @@ export function App() {
       </header>
       <main className="decks">
         <Deck key={`A${swapGen}`} name="A" role="TEMPO MASTER · unchanged" color="#00e5ff" library={library} state={a}
-              onState={setA} markerAtBar={aBar} onPlayheadBar={setAPlayBar} />
+              onState={setA} markerAtBar={aBar} onPlayheadBar={setAPlayBar} partnerSid={b?.sid} />
         <Deck key={`B${swapGen}`} name="B" role="FOLLOWS A · stretched, pitch kept" color="#ff2bd6" library={library}
-              state={b} onState={setB} onPlayheadBar={setBPlayBar} />
+              state={b} onState={setB} onPlayheadBar={setBPlayBar} partnerSid={a?.sid} />
       </main>
       <SyncPanel a={a} b={b} aBar={aBar} onABar={setABar} aPlayBar={aPlayBar} bPlayBar={bPlayBar} onSwap={swap} />
       <footer className="foot">

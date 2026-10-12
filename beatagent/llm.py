@@ -35,16 +35,27 @@ class PPosition(BaseModel):
 
 class POp(BaseModel):
     op: Literal["remove", "keep_only", "repeat", "move", "copy", "fade", "gain"]
-    range: Optional[PRange] = None
+    # REQUIRED for every op. It was optional (so a whole-track gain could omit it) and
+    # Gemini then dropped it for every fade, even "fade out beats 700 to 744". Whole
+    # track = {"unit": "beats", "start": null, "end": null}.
+    range: PRange
     total_plays: Optional[int] = None
     to: Optional[PPosition] = None
     direction: Optional[Literal["in", "out"]] = None
     db: Optional[float] = None
 
 
+class PSync(BaseModel):
+    """Beat-match the PARTNER track (B) to this track (A, the tempo master)."""
+    a_bar: int = 1                # this track's bar where the overlap starts
+    b_bar: int = 1                # the partner's bar that lands on it
+    duration_s: float = 60.0
+
+
 class Plan(BaseModel):
-    action: Literal["edit", "undo", "redo", "clarify", "answer", "confirm", "cancel"]
+    action: Literal["edit", "undo", "redo", "clarify", "answer", "confirm", "cancel", "sync"]
     ops: list[POp] = Field(default_factory=list)
+    sync: Optional[PSync] = None
     interpretation: str = ""      # which reading of the request was used, in one or two sentences
     message: str = ""             # question / answer / refusal text for the user
 
@@ -53,7 +64,8 @@ SYSTEM = """You are the interpreter for Beat Agent, a chat-driven audio editor.
 You turn ONE user message into a JSON plan. You never measure audio and never guess
 times: all numbers about the track come from the MEASURED GRID provided below.
 Deterministic code will validate your ops, check ranges, compute exact seconds,
-and echo the result to the user, so prefer emitting the literal op and let code reject it.
+and echo the result to the user. NEVER reject a request yourself because a beat or bar
+number looks out of range: emit the literal op and let the code check it against the grid.
 
 CONVENTIONS (fixed; always follow them and mention any you relied on in `interpretation`):
 - Beats are 0-based GRID LINES. A beat range is half-open [start, end): "beat 16-32"
@@ -70,7 +82,15 @@ CONVENTIONS (fixed; always follow them and mention any you relied on in `interpr
 - move/copy `to` is measured on the track BEFORE the edit; {"unit":"bars","index":k} is the
   start of bar k; index null = end of track.
 - Multiple ops in one plan are applied in order, each against the grid produced by the previous one.
-- fade: direction "in" or "out" over the range. gain: db, range null = whole track.
+- fade: direction "in" or "out" over the range. gain: db over the range.
+- EVERY op has a `range`. The whole track is {"unit":"beats","start":null,"end":null}. Emit each op once.
+
+EXAMPLES (message -> ops):
+- "cut beat 16-32 and repeat it twice" -> [{"op":"repeat","range":{"unit":"beats","start":16,"end":32},"total_plays":2}]
+- "fade out the last 8 beats" -> [{"op":"fade","direction":"out","range":{"unit":"beats","last":8}}]
+- "remove bar 5" -> [{"op":"remove","range":{"unit":"bars","start":5,"end":5}}]
+- "loop the first 4 bars four times" -> [{"op":"repeat","range":{"unit":"bars","start":1,"end":4},"total_plays":4}]
+- "turn it down 3 dB" -> [{"op":"gain","db":-3,"range":{"unit":"beats","start":null,"end":null}}]
 
 ACTIONS:
 - "edit": ops non-empty.
@@ -83,14 +103,24 @@ ACTIONS:
 - "cancel": the user rejects the pending proposal.
 - "answer": a question about the track (tempo, bars, length) answered from the measured grid,
   or a request this editor cannot do (explain briefly in `message`, e.g. pitch shifting).
+- "sync": beat-match the PARTNER track onto this one (e.g. "sync B to this at bar 33",
+  "sync A7 to A1 starting at A1's bar 33"). Fill `sync` with a_bar (this track's bar), b_bar
+  (partner's bar, default 1), duration_s (default 60). Only if PARTNER_TRACK is given in the
+  context; otherwise "answer" that a second track must be loaded.
+
+MEASURED_SECTIONS (when present) lists consecutive bars with measured loudness and drum activity
+relative to the whole track. For subjective requests ("boring", "the quiet bit", "the drop") use it
+to PROPOSE a concrete range with "clarify", quote the numbers that support it, and wait for "yes".
 Keep `message` short and concrete. Never invent measurements that are not in the context."""
 
 
-def _context(grid_summary: dict, sections: list | None, pending: list | None, history: list[str]) -> str:
+def _context(grid_summary: dict, sections: list | None, pending: list | None, history: list[str],
+             partner: dict | None = None) -> str:
     return json.dumps({
         "MEASURED_GRID": grid_summary,
         "MEASURED_SECTIONS": sections or "not computed",
         "PENDING_PROPOSAL": pending or None,
+        "PARTNER_TRACK": partner,
         "RECENT_TURNS": history[-6:],
     }, indent=1)
 
@@ -99,7 +129,11 @@ def _context(grid_summary: dict, sections: list | None, pending: list | None, hi
 # project's key: gemini-2.5-flash -> 404 "no longer available to new users";
 # gemini-flash-latest -> 503 (high demand); gemini-3.5-flash -> OK.
 DEFAULT_MODEL = "gemini-3.5-flash"
-FALLBACK_MODELS = ("gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-latest")
+# The free tier allows 20 requests/day PER MODEL (hit during the eval runs), so the
+# "lite" models -- checked to produce the same ops for "fade out the last 8 beats" --
+# extend capacity before the agent drops to the offline rule parser.
+FALLBACK_MODELS = ("gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-latest",
+                   "gemini-3.5-flash-lite", "gemini-3.1-flash-lite")
 
 
 class GeminiInterpreter:
@@ -139,9 +173,10 @@ class GeminiInterpreter:
             tried.append(m)
         raise RuntimeError(f"all Gemini models failed ({', '.join(tried)}): {last}")
 
-    def plan(self, message: str, grid_summary: dict, sections=None, pending=None, history=()) -> Plan:
+    def plan(self, message: str, grid_summary: dict, sections=None, pending=None, history=(),
+             partner=None) -> Plan:
         from google.genai import types
-        ctx = _context(grid_summary, sections, pending, list(history))
+        ctx = _context(grid_summary, sections, pending, list(history), partner)
         resp = self._generate(
             f"CONTEXT:\n{ctx}\n\nUSER MESSAGE:\n{message}",
             types.GenerateContentConfig(
@@ -177,7 +212,8 @@ class RuleInterpreter:
     """Offline fallback (no LLM). Deliberately narrow; anything else -> clarify."""
     name = "offline-rules"
 
-    def plan(self, message: str, grid_summary: dict, sections=None, pending=None, history=()) -> Plan:
+    def plan(self, message: str, grid_summary: dict, sections=None, pending=None, history=(),
+             partner=None) -> Plan:
         m = message.lower().strip().rstrip(".!")
         m = m.replace("–", "-").replace("—", "-")
         if re.fullmatch(r"(undo|undo that|undo it|go back)", m):
@@ -242,11 +278,25 @@ class RuleInterpreter:
         x = re.search(r"(?:turn|make)\s+(?:it|the track|everything)\s+(up|down)\s+(?:by\s+)?(\d+(?:\.\d+)?)\s*db", m)
         if x:
             db = float(x.group(2)) * (1 if x.group(1) == "up" else -1)
-            return Plan(action="edit", ops=[POp(op="gain", db=db)])
+            return Plan(action="edit", ops=[POp(op="gain", db=db, range=PRange(unit="beats"))])
+        x = re.search(r"sync.*?bar\s+(\d+)", m)
+        if x:
+            if not partner:
+                return Plan(action="answer", message="Load a second track first: sync needs a partner track.")
+            return Plan(action="sync", sync=PSync(a_bar=int(x.group(1))),
+                        interpretation=f"partner's bar 1 lands on this track's bar {x.group(1)}, 60 s overlap.")
         if re.search(r"boring|good part|best part|interesting|the drop|make it better|shorter", m):
+            quiet = [s_ for s_ in (sections or []) if s_.get("drum_activity", 1) < 0.3]
+            if quiet:
+                s_ = min(quiet, key=lambda z: (z["drum_activity"], z["loudness_db_vs_track"]))
+                return Plan(action="clarify",
+                            ops=[POp(op="remove", range=PRange(unit="bars", start=s_["bars"][0], end=s_["bars"][1]))],
+                            message=(f"'Boring' is a judgement call. The least active section I measured is bars "
+                                     f"{s_['bars'][0]}-{s_['bars'][1]}: drum activity {s_['drum_activity']} "
+                                     f"(vs ~1+ elsewhere), {s_['loudness_db_vs_track']} dB vs the track."))
             return Plan(action="clarify",
-                        message="That's a judgement call I can't measure directly. Tell me which bars, "
-                                "or ask me to list the sections I measured.")
+                        message="That's a judgement call I can't measure directly, and I found no section without "
+                                "drums. Tell me which bars.")
         return Plan(action="clarify", message="I couldn't map that to an edit (offline rule parser: set "
                                               "GEMINI_API_KEY for full language understanding). Try e.g. "
                                               "'remove bars 5-8', 'repeat beats 16-32 twice', 'undo'.")

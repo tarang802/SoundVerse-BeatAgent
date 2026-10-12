@@ -14,6 +14,7 @@ interface Props {
   onState: (s: DeckState | null) => void;
   markerAtBar?: number;          // sync start bar to highlight on this deck
   onPlayheadBar?: (bar: number) => void;   // bar under the playhead (for "sync from playhead")
+  partnerSid?: string;           // the other deck, so "sync ..." works from this deck's chat
 }
 
 interface Msg {
@@ -23,7 +24,7 @@ interface Msg {
   tag?: string;
 }
 
-export function Deck({ name, role, color, library, state, onState, markerAtBar, onPlayheadBar }: Props) {
+export function Deck({ name, role, color, library, state, onState, markerAtBar, onPlayheadBar, partnerSid }: Props) {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const time = useAudioClock(audio);
   const [click, setClick] = useState(false);
@@ -77,12 +78,13 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar, 
     }
   };
 
-  const send = async (t: string, fn: () => Promise<{ reply: ChatReply; state: DeckState }>) => {
+  const send = async (t: string, fn: () => Promise<{ reply: ChatReply; state: DeckState; sync_id?: string }>) => {
     if (!state) return;
     setMsgs((m) => [...m, { who: "you", text: t }]);
     try {
-      const { reply, state: st } = await fn();
-      const body = reply.interpretation ? `${reply.text}\nReading: ${reply.interpretation}` : reply.text;
+      const { reply, state: st, sync_id } = await fn();
+      let body = reply.interpretation ? `${reply.text}\nReading: ${reply.interpretation}` : reply.text;
+      if (sync_id) body += `\nListen: ${location.origin}${api.syncUrl(sync_id, "mix")}`;
       setMsgs((m) => [...m, { who: "agent", text: body, tag: `${reply.action} · ${reply.backend}`,
         kind: !reply.ok ? "err" : reply.action === "clarify" ? "ask" : reply.changed ? "ok" : undefined }]);
       onState(st);
@@ -221,7 +223,7 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar, 
                 </div>
               ))}
             </div>
-            <form className="chat" onSubmit={(e) => { e.preventDefault(); const t = text.trim(); if (t) { setText(""); void send(t, () => api.chat(state.sid, t)); } }}>
+            <form className="chat" onSubmit={(e) => { e.preventDefault(); const t = text.trim(); if (t) { setText(""); void send(t, () => api.chat(state.sid, t, partnerSid)); } }}>
               <input value={text} onChange={(e) => setText(e.target.value)} placeholder='e.g. "cut beat 16-32 and repeat it twice"' />
               <button className="btn">SEND</button>
               <button type="button" className="btn ghost" disabled={!state.can_undo} onClick={() => void send("undo", () => api.undo(state.sid))}>UNDO</button>

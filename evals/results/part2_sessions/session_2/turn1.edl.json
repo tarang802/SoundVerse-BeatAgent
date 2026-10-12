@@ -1,0 +1,41 @@
+{
+ "source": "C:\\Users\\Gupt Ah\\Desktop\\beat-agent\\data\\substitute\\A2.wav",
+ "sr": 48000,
+ "subtype": "PCM_24",
+ "history": [
+  "original",
+  "repeat bars 1-4 inclusive (4 bars, 16 beats) = 0.299-11.462 s (11.163 s) so it plays 4x in total (3 extra copies inserted right after it, +33.488 s); the rest of the track follows"
+ ],
+ "pieces": [
+  {
+   "src_start": 0,
+   "src_end": 14346,
+   "envs": []
+  },
+  {
+   "src_start": 14346,
+   "src_end": 550160,
+   "envs": []
+  },
+  {
+   "src_start": 14346,
+   "src_end": 550160,
+   "envs": []
+  },
+  {
+   "src_start": 14346,
+   "src_end": 550160,
+   "envs": []
+  },
+  {
+   "src_start": 14346,
+   "src_end": 550160,
+   "envs": []
+  },
+  {
+   "src_start": 550160,
+   "src_end": 7554306,
+   "envs": []
+  }
+ ]
+}

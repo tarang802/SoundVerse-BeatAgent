@@ -210,6 +210,9 @@ def resolve_range(r: Range, grid: BeatGrid) -> tuple[float, float, str, list[str
         label = (f"beats {s}-{e} [{s}, {e}) ({e - s} beats, {_fmt_line(grid, s)} to {_fmt_line(grid, e)})")
         if r.start is None and r.last is None and grid.n_beats and grid.beats[0] > 0.05:
             label += f", including the {grid.beats[0]:.3f} s before beat 0"
+        elif s == 0 and grid.n_beats and grid.beats[0] > 0.05:
+            # "cut beat 0 to beat 8" starts AT beat 0; say what happens to the audio before it
+            label += f"; the {grid.beats[0]:.3f} s before beat 0 is kept (say 'from the start' to include it)"
         return a, b, label, warn
     nb = grid.n_bars
     if nb == 0:

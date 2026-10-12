@@ -1,0 +1,32 @@
+{
+ "source": "C:\\Users\\Gupt Ah\\Desktop\\beat-agent\\data\\substitute\\A1.wav",
+ "sr": 44100,
+ "subtype": "PCM_16",
+ "history": [
+  "original",
+  "repeat beats 16-32 [16, 32) (16 beats, bar 5.1 to bar 9.1) = 8.220-15.962 s (7.742 s) so it plays 2x in total (1 extra copy inserted right after it, +7.742 s); the rest of the track follows",
+  "remove bar 5 (1 bar, 4 beats) = 8.220-10.156 s (1.935 s)"
+ ],
+ "pieces": [
+  {
+   "src_start": 0,
+   "src_end": 362503,
+   "envs": []
+  },
+  {
+   "src_start": 447858,
+   "src_end": 703923,
+   "envs": []
+  },
+  {
+   "src_start": 362503,
+   "src_end": 703923,
+   "envs": []
+  },
+  {
+   "src_start": 703923,
+   "src_end": 15941979,
+   "envs": []
+  }
+ ]
+}
