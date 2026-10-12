@@ -1,0 +1,208 @@
+{
+ "dev_set": "data/p3dev (synthetic, separate from P1-P4)",
+ "current": {
+  "kick_rel": 0.3,
+  "kick_floor": 0.06,
+  "hat_on_kick_q": 0.0,
+  "dev_drums_F": 0.8405,
+  "piano_only_false_hits": 0
+ },
+ "best": {
+  "kick_rel": 0.15,
+  "kick_floor": 0.045,
+  "hat_on_kick_q": 0.0,
+  "dev_drums_F": 0.8465,
+  "piano_only_false_hits": 0
+ },
+ "grid": [
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8465,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8267,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.78,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8465,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8267,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.78,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8452,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8252,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.15,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7796,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8462,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8263,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7796,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8462,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8263,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7796,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8452,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8252,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.2,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7796,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8405,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8217,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.03,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7781,
+   "piano_only_false_hits": 4
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8405,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8217,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.045,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7781,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.0,
+   "dev_drums_F": 0.8405,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.3,
+   "dev_drums_F": 0.8217,
+   "piano_only_false_hits": 0
+  },
+  {
+   "kick_rel": 0.3,
+   "kick_floor": 0.06,
+   "hat_on_kick_q": 0.5,
+   "dev_drums_F": 0.7781,
+   "piano_only_false_hits": 0
+  }
+ ]
+}
