@@ -362,6 +362,35 @@ def recreate(req: RecreateReq):
             "tracks": [{"name": t.name, "kind": t.kind, "notes": len(t.notes)} for t in score.tracks]}
 
 
+RECREATE_CHATS: dict = {}
+
+
+class ScoreChatReq(BaseModel):
+    text: str
+
+
+@app.post("/api/recreate/{rid}/chat")
+def recreate_chat(rid: str, req: ScoreChatReq):
+    """Chat changes to a recreation ("mute the drums", "play it at 140"): typed score ops,
+    validated and applied by code; the page is regenerated from the new score."""
+    from beatagent.score import Score
+    from beatagent.score_chat import ScoreChat
+    from beatagent.webaudio import write_page
+    d = RECREATES.get(rid)
+    if d is None:
+        raise HTTPException(404, "Unknown recreation.")
+    with LOCK:
+        chat = RECREATE_CHATS.get(rid) or RECREATE_CHATS.setdefault(rid, ScoreChat(Score.load(d / "score.json")))
+    r = chat.handle(req.text)
+    if r.get("changed"):
+        chat.score.save(d / "score.json")
+        write_page(chat.score, d / "page.html")
+    s = chat.score
+    return {**r, "version": len(chat.history), "tempo_bpm": s.tempo_bpm,
+            "tracks": [{"name": t.name, "kind": t.kind, "notes": len(t.notes), "mute": t.mute,
+                        "gain_db": t.gain_db} for t in s.tracks]}
+
+
 @app.get("/api/recreate/{rid}/{which}")
 def recreate_file(rid: str, which: str):
     d = RECREATES.get(rid)

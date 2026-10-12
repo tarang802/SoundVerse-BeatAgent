@@ -121,3 +121,14 @@ export interface RecreateResult {
   analysis: Record<string, unknown>;
   tracks: { name: string; kind: string; notes: number }[];
 }
+
+export interface RecreateChatReply {
+  ok: boolean;
+  action: string;
+  text: string;
+  backend?: string;
+  changed?: boolean;
+  version: number;
+  tempo_bpm: number;
+  tracks: { name: string; kind: string; notes: number; mute: boolean; gain_db: number }[];
+}

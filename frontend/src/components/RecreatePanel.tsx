@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
-import type { DeckState, LibraryItem, RecreateResult } from "../types";
+import type { DeckState, LibraryItem, RecreateChatReply, RecreateResult } from "../types";
 
 interface Props {
   deckA: DeckState | null;
@@ -16,6 +16,9 @@ export function RecreatePanel({ deckA }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState<string | null>(null);
+  const [version, setVersion] = useState(1);
+  const [msg, setMsg] = useState("");
+  const [log, setLog] = useState<{ you: string; reply: RecreateChatReply }[]>([]);
 
   // the generated page posts {beatagent: "ready"} once its script has run
   useEffect(() => {
@@ -38,12 +41,27 @@ export function RecreatePanel({ deckA }: Props) {
     setBusy(true);
     setError(null);
     setReady(null);
+    setLog([]);
+    setVersion(1);
     try {
       setRes(choice === "__deckA" ? await api.recreate({ sid: deckA?.sid }) : await api.recreate({ path: choice }));
     } catch (e) {
       setError((e as Error).message);
     } finally {
       setBusy(false);
+    }
+  };
+
+  const send = async () => {
+    if (!res || !msg.trim()) return;
+    const text = msg.trim();
+    setMsg("");
+    try {
+      const reply = await api.recreateChat(res.id, text);
+      setLog((l) => [...l, { you: text, reply }]);
+      if (reply.changed) { setReady(null); setVersion(reply.version); }
+    } catch (e) {
+      setError((e as Error).message);
     }
   };
 
@@ -82,7 +100,19 @@ export function RecreatePanel({ deckA }: Props) {
             </div>
             <div>
               <div className="deck-role">RECREATION (generated page){ready ? ` · ${ready}` : " · loading…"}</div>
-              <iframe title="recreation" sandbox="allow-scripts" src={api.recreateUrl(res.id, "page.html")} />
+              <iframe title="recreation" sandbox="allow-scripts" src={`${api.recreateUrl(res.id, "page.html")}?v=${version}`} />
+              <div className="recreate-chat">
+                {log.map((m, i) => (
+                  <p key={i} className={m.reply.ok ? "" : "warn"}>
+                    <b>you:</b> {m.you}<br /><b>agent</b> <span className="small">({m.reply.backend ?? "—"})</span>: {m.reply.text}
+                  </p>
+                ))}
+                <div className="row">
+                  <input value={msg} onChange={(e) => setMsg(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()}
+                         placeholder='e.g. "mute the drums", "make the bass brighter", "play it at 140", "undo"' />
+                  <button className="btn" onClick={send} disabled={!msg.trim()}>SEND</button>
+                </div>
+              </div>
             </div>
           </div>
         </>
