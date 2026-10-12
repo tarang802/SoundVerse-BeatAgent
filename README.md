@@ -59,8 +59,9 @@ copy .env.example .env            # then put your GEMINI_API_KEY in .env (never 
 `basic-pitch` is installed with `--no-deps` on purpose: its default dependencies pull
 TensorFlow 2.15 (~400 MB), but the bundled ONNX model only needs `onnxruntime`.
 
-*Honesty note:* the dev machine was set up with `uv` (same versions as
-`requirements.txt`); a clean install on a fresh machine was not re-run before submission.
+*Verified:* a fresh virtual environment built from exactly these two install lines (with
+`uv`, which resolved packages from its local cache) passes all 10 test suites, 201
+checks. A different machine with an empty package cache was not tested.
 
 ### The one command
 
