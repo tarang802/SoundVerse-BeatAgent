@@ -30,11 +30,18 @@ from .score import Note, Score, Track, default_patch
 
 BASS_SPLIT = 47                   # MIDI: below -> bass track (B2)
 MIN_ANALYSIS_S = 20.0
-DRUM_BANDS = {                    # name: (lo, hi, relative threshold, GM pitch)
-    "kick": (30.0, 120.0, 0.30, 36),
-    "snare": (1000.0, 5000.0, 0.40, 38),
-    "hat": (7000.0, 16000.0, 0.25, 42),
+DRUM_BANDS = {                    # name: (lo, hi, relative threshold, GM pitch, absolute floor)
+    "kick": (30.0, 120.0, 0.30, 36, 0.06),
+    "snare": (1000.0, 5000.0, 0.40, 38, 0.0),
+    "hat": (7000.0, 16000.0, 0.25, 42, 0.01),
 }
+# A hit must also be loud in ABSOLUTE terms (x the clip's peak), not only relative to
+# the band's strongest onset: in a clip without drums the strongest "onset" is a piano
+# attack. Measured on the synthetic P1-P4: real kicks 0.15-0.35 of the peak vs piano
+# 0.03; hats 0.06-0.14 vs 0.00. Snares cannot be told from piano partials by level
+# (piano 0.10 > snares 0.01-0.03), but a snare is NOISE: spectral flatness 1-8 kHz of
+# real snares 0.32-0.40, piano attacks 0.00 -> SNARE_MIN_FLATNESS.
+SNARE_MIN_FLATNESS = 0.2
 
 
 def band_onsets(x: np.ndarray, sr: int, lo: float, hi: float, rel: float,
@@ -62,11 +69,25 @@ def _hat_is_open(x: np.ndarray, sr: int, t: float) -> bool:
     return head > 0 and tail / head > 0.25
 
 
-def transcribe_drums(perc: np.ndarray, sr: int) -> list[tuple[float, int, int]]:
-    """-> [(time_s, GM pitch, velocity)]"""
+def flatness(x: np.ndarray, sr: int, t: float, lo=1000.0, hi=8000.0, win=0.03) -> float:
+    """Spectral flatness (geometric / arithmetic mean power) in [lo, hi] over win after t:
+    ~0.3-0.5 for noise (snare, hats), ~0 for tones (piano partials)."""
+    seg = x[int(t * sr): int((t + win) * sr)]
+    if len(seg) < 256:
+        return 0.0
+    S = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))) ** 2
+    f = np.fft.rfftfreq(len(seg), 1 / sr)
+    S = S[(f >= lo) & (f <= hi)] + 1e-12
+    return float(np.exp(np.mean(np.log(S))) / np.mean(S))
+
+
+def transcribe_drums(perc: np.ndarray, sr: int, peak: float) -> list[tuple[float, int, int]]:
+    """-> [(time_s, GM pitch, velocity)]. peak: the clip's peak |amplitude|."""
     hits = []
-    for name, (lo, hi, rel, pitch) in DRUM_BANDS.items():
-        ons = band_onsets(perc, sr, lo, hi, rel)
+    for name, (lo, hi, rel, pitch, floor) in DRUM_BANDS.items():
+        ons = [(t, s) for t, s in band_onsets(perc, sr, lo, hi, rel) if s >= floor * peak]
+        if name == "snare":
+            ons = [(t, s) for t, s in ons if flatness(perc, sr, t) >= SNARE_MIN_FLATNESS]
         if not ons:
             continue
         top = max(s for _, s in ons)
@@ -142,7 +163,7 @@ def transcribe(audio: np.ndarray, sr: int, name: str = "clip") -> Score:
         return round(b % loop_beats, 4)
 
     tracks = []
-    drums = transcribe_drums(perc, sr)
+    drums = transcribe_drums(perc, sr, float(np.abs(mono).max()) or 1.0)
     if drums:
         tracks.append(Track(name="drums", kind="drums", patch=default_patch("drums"),
                             notes=[Note(start=beat_of(t), duration=0.25, pitch=p, velocity=v) for t, p, v in drums]))
