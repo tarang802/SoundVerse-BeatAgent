@@ -10,11 +10,14 @@ interface Props {
   b: DeckState | null;
   aBar: number;
   onABar: (n: number) => void;
+  aPlayBar: number;
+  bPlayBar: number;
+  onSwap: () => void;
 }
 
 type Src = "mix" | "a" | "b";
 
-export function SyncPanel({ a, b, aBar, onABar }: Props) {
+export function SyncPanel({ a, b, aBar, onABar, aPlayBar, bPlayBar, onSwap }: Props) {
   const [bBar, setBBar] = useState(1);
   const [dur, setDur] = useState(60);
   const [res, setRes] = useState<SyncResult | null>(null);
@@ -60,17 +63,20 @@ export function SyncPanel({ a, b, aBar, onABar }: Props) {
   return (
     <section className="sync">
       <header className="sync-head">
-        <h2>SYNC <small>beat-match B to master A</small></h2>
+        <h2>SYNC <small>B follows A's tempo and bar; A is never changed</small></h2>
         <div className="sync-controls">
           <label>A bar <input type="number" min={1} value={aBar} onChange={(e) => onABar(+e.target.value)} /></label>
+          <button className="btn ghost" disabled={!a} title="use the bar under deck A's playhead" onClick={() => onABar(aPlayBar)}>◎ A PLAYHEAD</button>
           <label>B bar <input type="number" min={1} value={bBar} onChange={(e) => setBBar(+e.target.value)} /></label>
+          <button className="btn ghost" disabled={!b} title="use the bar under deck B's playhead" onClick={() => setBBar(bPlayBar)}>◎ B PLAYHEAD</button>
+          <button className="btn ghost" disabled={!a || !b} title="make B the tempo master" onClick={() => { setRes(null); onSwap(); }}>⇄ SWAP MASTER</button>
           <label>seconds <input type="number" min={5} max={300} value={dur} onChange={(e) => setDur(+e.target.value)} /></label>
           <button className="btn sync-btn" disabled={!a || !b || busy} onClick={() => void run()}>
             {busy ? "RENDERING…" : "SYNC ⇄"}
           </button>
         </div>
       </header>
-      {!a || !b ? <p className="hint">Load a track on both decks. A is the master and is never changed; B is time-stretched (pitch preserved) so its bar {bBar} downbeat lands on A's bar {aBar} downbeat.</p> : null}
+      {!a || !b ? <p className="hint">Load a track on both decks. Scrub each deck to where they should meet and press the PLAYHEAD buttons (or type bars). B is time-stretched with pitch preserved so its bar {bBar} downbeat lands on A's bar {aBar} downbeat; tracks about 2x apart (70 vs 140 BPM) are matched at half/double time automatically.</p> : null}
       {error && <div className="deck-error">⚠ {error}</div>}
 
       {res && al && peaks && (
@@ -88,9 +94,9 @@ export function SyncPanel({ a, b, aBar, onABar }: Props) {
           </div>
 
           <div className="tiles">
-            <Tile label="KICK OFFSET median |B−A|" val={`${al.median_abs_ms ?? "—"} ms`} target="≤ 5 ms"
+            <Tile label="ONSET OFFSET median |B−A| (all beats)" val={`${al.median_abs_ms ?? "—"} ms`} target="≤ 5 ms"
                   ok={(al.median_abs_ms ?? 99) <= 5} />
-            <Tile label="KICK OFFSET max |B−A|" val={`${al.max_abs_ms ?? "—"} ms`} target="≤ 15 ms"
+            <Tile label="ONSET OFFSET max |B−A| (all beats)" val={`${al.max_abs_ms ?? "—"} ms`} target="≤ 15 ms"
                   ok={(al.max_abs_ms ?? 99) <= 15} />
             <Tile label="BEATS MEASURED" val={`${al.n_measured}/${al.n_beats}`} target="coverage of the score"
                   ok={al.n_measured >= 0.9 * al.n_beats} />
@@ -98,7 +104,7 @@ export function SyncPanel({ a, b, aBar, onABar }: Props) {
           </div>
 
           <div className="offsets" title="B − A kick offset per beat (ms); red line = ±15 ms limit">
-            <span className="label">PER-BEAT OFFSET (B − A), scale ±{maxAbs.toFixed(1)} ms</span>
+            <span className="label">PER-BEAT ONSET OFFSET (B − A) — nearest onset of any kind; validated on four-on-the-floor material, not kick-specific on sparse real drums — scale ±{maxAbs.toFixed(1)} ms</span>
             <div className="bars">
               {offs.map((o, i) => (
                 <div key={i} className={`ob ${Math.abs(o) > 15 ? "bad" : ""}`}

@@ -115,23 +115,26 @@ def main():
     rows = []
     for name in (METHODS if args.method == "all" else [args.method]):
         t0 = time.time()
-        r = METHODS[name](a_audio, a_fmt.sr, b_audio, b_fmt.sr, plan, a_grid, b_grid)
+        r = METHODS[name](a_audio, a_fmt.sr, b_audio, b_fmt.sr, plan, a_grid, sync.matched_b_grid(plan, b_grid))
         el = time.time() - t0
         m = sync.measure_alignment(r["a"], r["b"], r["sr"], a_grid, plan)
+        dk = sync.measure_downbeat_kicks(r["a"], r["b"], r["sr"], a_grid, plan)
         edges = {"beats": (0.0,), "beats_attack": (0.0, 0.0325),
                  "constant_attack": (-(sync.JOIN_XFADE / 2 + 0.040), 0.030 + sync.JOIN_XFADE / 2)}
-        clicks = join_clicks(r, b_src, plan, a_grid, b_grid, edges[name]) if name in edges else None
+        clicks = join_clicks(r, b_src, plan, a_grid, sync.matched_b_grid(plan, b_grid), edges[name]) if name in edges else None
         pitch = pitch_check(name)
         for k in ("a", "b", "mix"):
             save(out / f"{name}_{k}.wav", r[k], r["sr"], "PCM_16", "WAV")
         rep = {"label": "SYNTHETIC SUBSTITUTE pair" if args.pack == "substitute" else args.pack,
                "a": args.a, "b": args.b, "method": r["method"], "render_s": round(el, 2),
-               "plan": plan.to_dict(), "alignment": m, "join_clicks": clicks, "pitch_check": pitch}
+               "plan": plan.to_dict(), "alignment": m, "downbeat_kicks": dk, "join_clicks": clicks,
+               "pitch_check": pitch}
         with open(out / f"{name}_report.json", "w") as f:
             json.dump(rep, f, indent=1)
         rows.append({"method": name, "measured": f"{m['n_measured']}/{m['n_beats']}",
                      "median_abs_ms": m.get("median_abs_ms"), "p95_abs_ms": m.get("p95_abs_ms"),
                      "max_abs_ms": m.get("max_abs_ms"), "pass": m.get("pass"),
+                     "downbeat_kicks": f"{dk.get('n_measured')}/{dk.get('n_downbeats')} med {dk.get('median_abs_ms')} max {dk.get('max_abs_ms')}",
                      "join_click_max_db": clicks["max_db"] if clicks else "n/a",
                      "pitch_cents": pitch["cents"], "render_s": round(el, 1)})
         print("  " + json.dumps(rows[-1]))

@@ -49,7 +49,12 @@ class BeatAgent:
             self.log.append(f"agent: {r.text}")
             return r
         r = self._execute(plan)
-        r.backend = self.llm.name
+        r.backend = f"{self.llm.name}:{getattr(self.llm, 'model', '')}".rstrip(":")
+        notes = getattr(self.llm, "notes", None)
+        if notes:                              # e.g. configured model retired -> fallback used
+            r.warnings = [*r.warnings, *notes]
+            r.text += "\nNote: " + " ".join(notes)
+            notes.clear()
         r.interpretation = plan.interpretation
         self.log.append(f"agent: {r.text}")
         return r

@@ -3,7 +3,7 @@
  "a": "A1",
  "b": "A7",
  "method": "beat_anchored",
- "render_s": 14.71,
+ "render_s": 13.35,
  "plan": {
   "a_bar": 33,
   "b_bar": 1,
@@ -19,11 +19,12 @@
   "notes": [
    "B's audio before its bar 1 downbeat (0.348s) is not used."
   ],
+  "b_octave": 1.0,
   "offset": 62.054233427656534,
   "stretch_percent": 3.2258133333319394
  },
  "alignment": {
-  "n_beats": 124,
+  "n_beats": 123,
   "n_measured": 62,
   "median_ms": -0.11,
   "median_abs_ms": 0.11,
@@ -98,6 +99,48 @@
    "median_abs_ms": 5.0,
    "max_abs_ms": 15.0
   },
+  "pass": true
+ },
+ "downbeat_kicks": {
+  "n_downbeats": 30,
+  "n_measured": 30,
+  "a_has_kick": 30,
+  "b_has_kick": 30,
+  "median_ms": 2.38,
+  "median_abs_ms": 2.38,
+  "max_abs_ms": 6.42,
+  "offsets_ms": [
+   3.35,
+   3.25,
+   1.22,
+   1.45,
+   2.99,
+   1.53,
+   -0.41,
+   6.42,
+   3.18,
+   2.85,
+   -0.51,
+   1.54,
+   2.95,
+   1.9,
+   1.24,
+   5.87,
+   3.35,
+   3.22,
+   -0.61,
+   1.65,
+   2.97,
+   1.56,
+   -0.31,
+   6.32,
+   3.15,
+   3.27,
+   -0.74,
+   1.61,
+   2.95,
+   1.55
+  ],
   "pass": true
  },
  "join_clicks": {

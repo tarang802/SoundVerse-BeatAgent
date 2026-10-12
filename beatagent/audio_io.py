@@ -36,8 +36,23 @@ class AudioFormat:
 
 
 def load(path: str | Path) -> tuple[np.ndarray, AudioFormat]:
-    info = sf.info(str(path))
-    audio, sr = sf.read(str(path), dtype="float32", always_2d=True)
+    try:
+        info = sf.info(str(path))
+        audio, sr = sf.read(str(path), dtype="float32", always_2d=True)
+    except sf.LibsndfileError as e:
+        # Seen on a real FLAC: header says 174 s but the file is 786 KB (an
+        # interrupted download). libsndfile's own message ("decoder lost sync")
+        # doesn't tell the user that.
+        size = Path(path).stat().st_size if Path(path).exists() else 0
+        hint = ""
+        try:
+            dur = sf.info(str(path)).duration
+            if dur > 0 and size / dur < 8000:     # < 64 kbit/s: far too small even for MP3
+                hint = (f" The file looks truncated or corrupt: {size / 1e6:.1f} MB for a "
+                        f"{dur:.0f} s track (an interrupted download?).")
+        except Exception:  # noqa: BLE001
+            pass
+        raise ValueError(f"Can't decode {Path(path).name}: {str(e).rstrip('.')}.{hint}") from e
     fmt = AudioFormat(sr=sr, subtype=info.subtype, container=info.format, channels=audio.shape[1])
     return audio, fmt
 

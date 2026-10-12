@@ -44,6 +44,7 @@ from beatagent.agent import BeatAgent  # noqa: E402
 from beatagent.audio_io import save  # noqa: E402
 from beatagent.click import audition  # noqa: E402
 from beatagent.llm import make_interpreter  # noqa: E402
+from beatagent.edl import EditError  # noqa: E402
 from beatagent.session import Session  # noqa: E402
 
 WORK = ROOT / "work"
@@ -81,6 +82,8 @@ def _state(sid: str) -> dict:
         "beats": [round(float(t), 5) for t in g.beats], "positions": [int(p) for p in g.positions],
         "duration": g.duration, "peaks": _peaks_b64(y, s.sr), "peak_rate": PEAK_RATE,
         "meta": {k: v for k, v in g.meta.items() if k != "fit"},
+        "tempo_octave": (s.src_grid.meta.get("fit") or {}).get("tempo_octave"),
+        "user_octave": s.src_grid.meta.get("user_octave_override"),
     }
 
 
@@ -96,6 +99,8 @@ def _open(p: Path) -> dict:
     t0 = time.time()
     try:
         s = Session(p, WORK / sid)
+    except ValueError as e:                # our own user-facing messages (decode errors, no pulse...)
+        raise HTTPException(400, str(e)) from e
     except Exception as e:  # noqa: BLE001
         raise HTTPException(400, f"Couldn't analyse {p.name}: {e}") from e
     with LOCK:
@@ -208,6 +213,20 @@ def redo(sid: str):
     return chat(sid, ChatReq(text="redo"))
 
 
+class OctaveReq(BaseModel):
+    factor: float             # 2 = double the BPM, 0.5 = halve it
+
+
+@app.post("/api/{sid}/octave")
+def octave(sid: str, req: OctaveReq):
+    a = _agent(sid)
+    try:
+        a.s.set_octave(req.factor)
+    except EditError as e:
+        raise HTTPException(400, str(e)) from e
+    return _state(sid)
+
+
 @app.post("/api/{sid}/export")
 def export(sid: str):
     paths = _agent(sid).s.export()
@@ -232,7 +251,7 @@ def do_sync(req: SyncReq):
         raise HTTPException(400, str(e)) from e
     t0 = time.time()
     ya, yb = sa.render(), sb.render()        # current (possibly edited) versions of each deck
-    r = syncmod.render(ya, sa.sr, yb, sb.sr, plan, sa.grid, sb.grid)
+    r = syncmod.render(ya, sa.sr, yb, sb.sr, plan, sa.grid, syncmod.matched_b_grid(plan, sb.grid))
     m = syncmod.measure_alignment(r["a"], r["b"], r["sr"], sa.grid, plan)
     sync_id = uuid.uuid4().hex[:8]
     d = WORK / "sync" / sync_id

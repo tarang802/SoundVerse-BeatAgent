@@ -3,7 +3,7 @@
  "a": "A1",
  "b": "A7",
  "method": "constant_r3+verbatim_40ms_pre_30ms_attack",
- "render_s": 8.57,
+ "render_s": 6.4,
  "plan": {
   "a_bar": 33,
   "b_bar": 1,
@@ -19,19 +19,19 @@
   "notes": [
    "B's audio before its bar 1 downbeat (0.348s) is not used."
   ],
+  "b_octave": 1.0,
   "offset": 62.054233427656534,
   "stretch_percent": 3.2258133333319394
  },
  "alignment": {
-  "n_beats": 124,
-  "n_measured": 123,
-  "median_ms": -0.14,
-  "median_abs_ms": 0.14,
+  "n_beats": 123,
+  "n_measured": 122,
+  "median_ms": -0.15,
+  "median_abs_ms": 0.15,
   "p95_abs_ms": 0.25,
   "max_abs_ms": 0.28,
   "worst_at_s": 17.903,
   "offsets_ms": [
-   0.03,
    -0.25,
    -0.03,
    -0.17,
@@ -159,6 +159,48 @@
    "median_abs_ms": 5.0,
    "max_abs_ms": 15.0
   },
+  "pass": true
+ },
+ "downbeat_kicks": {
+  "n_downbeats": 30,
+  "n_measured": 30,
+  "a_has_kick": 30,
+  "b_has_kick": 30,
+  "median_ms": -0.09,
+  "median_abs_ms": 0.18,
+  "max_abs_ms": 0.88,
+  "offsets_ms": [
+   -0.1,
+   -0.67,
+   0.17,
+   -0.03,
+   0.16,
+   -0.88,
+   0.13,
+   -0.02,
+   -0.3,
+   -0.08,
+   0.32,
+   -0.87,
+   0.04,
+   -0.25,
+   0.21,
+   -0.01,
+   -0.37,
+   -0.63,
+   0.14,
+   -0.1,
+   0.17,
+   -0.21,
+   0.37,
+   -0.09,
+   -0.11,
+   -0.18,
+   0.27,
+   -0.59,
+   0.03,
+   -0.56
+  ],
   "pass": true
  },
  "join_clicks": {

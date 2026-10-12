@@ -95,3 +95,47 @@ def onsets_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
             out[i] = (a + k) / fsr
     return out
 
+
+
+def kick_flux_near(x: np.ndarray, sr: int, times: np.ndarray, win: float = 0.04,
+                   fmax: float = 150.0, min_ratio: float = 4.0) -> np.ndarray:
+    """KICK onset nearest each expected time: peak of LOW-FREQUENCY spectral flux
+    (bins <= fmax Hz at ~21 Hz resolution, ~1.5 ms hop)
+    within +-win. NaN where no low-band onset stands out (min_ratio x the track's
+    median low-band flux) -- i.e. no kick on that beat, so it is not compared.
+    This exists because the broadband onsets_near compares "any hit": on real
+    hip-hop that paired A's kick with B's hi-hat."""
+    if x.ndim == 2:
+        x = x.mean(axis=1)
+    # Only < fmax Hz matters, so work at 4 kHz: same ~21 Hz bins and ~1.5 ms hop
+    # as a 2048-point STFT at 44.1 kHz, ~20x less memory (the full-rate version
+    # needed 3.8 GB on a 6-minute track and crashed).
+    import soxr
+    lsr = 4000
+    y = soxr.resample(x.astype(np.float32), sr, lsr)
+    n_fft, hop = 192, 6
+    f, t, Z = signal.stft(y, fs=lsr, nperseg=n_fft, noverlap=n_fft - hop, boundary="even", padded=True)
+    lo = (f >= 30) & (f <= fmax)
+    S = np.log1p(100 * np.abs(Z[lo]))
+    flux = np.concatenate([[0], np.maximum(0, np.diff(S, axis=1)).sum(axis=0)])
+    fsr = lsr / hop
+    ref = np.median(flux[flux > 0]) + 1e-12
+    out = np.full(len(times), np.nan)
+    w = int(win * fsr)
+    for i, tt in enumerate(times):
+        c = int(round(tt * fsr))
+        a, b = max(1, c - w), min(len(flux) - 1, c + w + 1)
+        if b - a < 3:
+            continue
+        seg = flux[a:b]
+        k = int(np.argmax(seg))
+        if seg[k] < min_ratio * ref:
+            continue
+        kf = float(k)
+        if 0 < k < len(seg) - 1:
+            y0, y1, y2 = seg[k - 1], seg[k], seg[k + 1]
+            den = y0 - 2 * y1 + y2
+            if den:
+                kf = k + 0.5 * (y0 - y2) / den
+        out[i] = (a + kf) / fsr
+    return out

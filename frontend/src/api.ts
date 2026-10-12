@@ -36,6 +36,7 @@ export const api = {
   chat: (sid: string, text: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/chat`, { text }),
   undo: (sid: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/undo`),
   redo: (sid: string) => post<{ reply: ChatReply; state: DeckState }>(`/api/${sid}/redo`),
+  octave: (sid: string, factor: 2 | 0.5) => post<DeckState>(`/api/${sid}/octave`, { factor }),
   sync: (a: string, b: string, a_bar: number, b_bar: number, duration: number) =>
     post<SyncResult>("/api/sync", { a, b, a_bar, b_bar, duration }),
   audioUrl: (s: DeckState, click: boolean) => `/api/${s.sid}/audio/${s.state_id}.wav?click=${click ? 1 : 0}`,

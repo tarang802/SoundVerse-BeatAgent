@@ -95,6 +95,13 @@ def _context(grid_summary: dict, sections: list | None, pending: list | None, hi
     }, indent=1)
 
 
+# Tried in order after the configured model. Checked 2026-10-12 against this
+# project's key: gemini-2.5-flash -> 404 "no longer available to new users";
+# gemini-flash-latest -> 503 (high demand); gemini-3.5-flash -> OK.
+DEFAULT_MODEL = "gemini-3.5-flash"
+FALLBACK_MODELS = ("gemini-3.5-flash", "gemini-3.8-flash", "gemini-flash-latest")
+
+
 class GeminiInterpreter:
     name = "gemini"
 
@@ -104,16 +111,40 @@ class GeminiInterpreter:
         if not key:
             raise RuntimeError("GEMINI_API_KEY not set")
         self.client = genai.Client(api_key=key)
-        self.model = model or os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+        self.model = model or os.environ.get("GEMINI_MODEL") or DEFAULT_MODEL
         self.usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+        self.notes: list[str] = []          # e.g. "configured model unavailable, used X"
+
+    def _generate(self, contents: str, config):
+        """Call the configured model; on 404 (retired/unknown model) move to the
+        next fallback, on 429/503 (busy) retry once then move on. Raises the last
+        error if every model fails."""
+        import time as _t
+        tried, last = [], None
+        for m in dict.fromkeys([self.model, *FALLBACK_MODELS]):
+            for attempt in range(2):
+                try:
+                    resp = self.client.models.generate_content(model=m, contents=contents, config=config)
+                    if m != self.model:
+                        self.notes.append(f"model {self.model} unavailable ({str(last)[:80]}); using {m}")
+                        self.model = m             # remember what works for later turns
+                    return resp
+                except Exception as e:  # noqa: BLE001
+                    last = e
+                    code = getattr(e, "code", None) or getattr(e, "status_code", None)
+                    if code in (429, 503) and attempt == 0:
+                        _t.sleep(2.0)
+                        continue
+                    break
+            tried.append(m)
+        raise RuntimeError(f"all Gemini models failed ({', '.join(tried)}): {last}")
 
     def plan(self, message: str, grid_summary: dict, sections=None, pending=None, history=()) -> Plan:
         from google.genai import types
         ctx = _context(grid_summary, sections, pending, list(history))
-        resp = self.client.models.generate_content(
-            model=self.model,
-            contents=f"CONTEXT:\n{ctx}\n\nUSER MESSAGE:\n{message}",
-            config=types.GenerateContentConfig(
+        resp = self._generate(
+            f"CONTEXT:\n{ctx}\n\nUSER MESSAGE:\n{message}",
+            types.GenerateContentConfig(
                 system_instruction=SYSTEM, temperature=0.0,
                 response_mime_type="application/json", response_schema=Plan),
         )

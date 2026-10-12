@@ -1238,49 +1238,46 @@
   "tracker": "beat_this:small0",
   "grid_kind": "constant",
   "fit": {
+   "merged_phase_jumps": {
+    "segment_bpms": [
+     117.891,
+     118.0
+    ],
+    "onset_score_per_candidate": [
+     3.7229,
+     13.193
+    ],
+    "chosen_segment": 1
+   },
    "segment_0": {
-    "p95_residual_ms": 19.57,
-    "max_trend_ms": 0.7,
-    "inlier_frac": 0.955,
-    "period_s": 1.017132,
-    "bpm": 58.9894,
-    "phase_shift_ms": -59.67,
-    "n_beats_fitted": 22
-   },
-   "segment_1": {
-    "p95_residual_ms": 16.09,
-    "max_trend_ms": 0.13,
-    "inlier_frac": 1.0,
-    "period_s": 0.507933,
-    "bpm": 118.1258,
-    "phase_shift_ms": -51.08,
-    "n_beats_fitted": 23
-   },
-   "segment_2": {
     "p95_residual_ms": 14.88,
     "max_trend_ms": 2.28,
     "inlier_frac": 0.99,
+    "local_tempo_spread_pct": 0.06,
+    "longest_outlier_run_beats": 2,
     "period_s": 0.508475,
     "bpm": 117.9999,
     "phase_shift_ms": -36.08,
     "n_beats_fitted": 195
    },
-   "change_0": {
-    "tracker_split_s": 31.04,
-    "refined_s": 39.0918
-   },
-   "change_1": {
-    "tracker_split_s": 43.3,
-    "refined_s": 43.179
-   },
    "trimmed_unsupported_beats": {
-    "leading": 53,
+    "leading": 92,
     "trailing": 1
+   },
+   "tempo_octave": {
+    "tracker_bpm": 118.0,
+    "factor": 1.0,
+    "preferred_range": [
+     80.0,
+     160.0
+    ],
+    "reported_bpm": 118.0
    }
   },
   "n_tracked_beats": 256,
+  "n_consistent_beats": 256,
   "n_tracked_downbeats": 69,
-  "tracking_s": 2.28,
-  "total_s": 3.62
+  "tracking_s": 9.27,
+  "total_s": 11.49
  }
 }

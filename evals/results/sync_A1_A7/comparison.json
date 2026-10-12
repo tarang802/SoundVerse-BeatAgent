@@ -1,46 +1,50 @@
 [
  {
   "method": "constant",
-  "measured": "62/124",
+  "measured": "62/123",
   "median_abs_ms": 4.4,
   "p95_abs_ms": 12.18,
   "max_abs_ms": 18.01,
   "pass": false,
+  "downbeat_kicks": "30/30 med 7.1 max 13.84",
   "join_click_max_db": "n/a",
   "pitch_cents": -0.0,
-  "render_s": 7.9
+  "render_s": 8.4
  },
  {
   "method": "beats",
-  "measured": "62/124",
+  "measured": "62/123",
   "median_abs_ms": 0.11,
   "p95_abs_ms": 0.17,
   "max_abs_ms": 0.25,
   "pass": true,
+  "downbeat_kicks": "30/30 med 2.38 max 6.42",
   "join_click_max_db": -2.4,
   "pitch_cents": 10.92,
-  "render_s": 14.7
+  "render_s": 13.3
  },
  {
   "method": "beats_attack",
-  "measured": "88/124",
+  "measured": "87/123",
   "median_abs_ms": 0.11,
   "p95_abs_ms": 0.61,
   "max_abs_ms": 1.05,
   "pass": true,
+  "downbeat_kicks": "30/30 med 2.34 max 5.26",
   "join_click_max_db": 0.0,
   "pitch_cents": 10.92,
-  "render_s": 13.7
+  "render_s": 10.4
  },
  {
   "method": "constant_attack",
-  "measured": "123/124",
-  "median_abs_ms": 0.14,
+  "measured": "122/123",
+  "median_abs_ms": 0.15,
   "p95_abs_ms": 0.25,
   "max_abs_ms": 0.28,
   "pass": true,
+  "downbeat_kicks": "30/30 med 0.18 max 0.88",
   "join_click_max_db": 0.0,
   "pitch_cents": -0.0,
-  "render_s": 8.6
+  "render_s": 6.4
  }
 ]

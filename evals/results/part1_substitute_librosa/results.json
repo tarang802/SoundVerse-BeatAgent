@@ -5,37 +5,25 @@
   {
    "clip": "A1",
    "duration_s": 361.5,
-   "analysis_s": 54.6,
+   "analysis_s": 42.99,
    "tracker": "librosa",
-   "grid_type": "piecewise_constant",
+   "grid_type": "constant",
    "tempo_bpm": 124.0,
    "time_signature": "4/4",
-   "confidence": 0.972,
-   "beat_F": 0.0121,
+   "confidence": 0.924,
+   "beat_F": 0.0,
    "raw_beat_F": 0.0,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,
    "drift_max_ms": 50081.46,
-   "drift_median_ms": 241.11,
+   "drift_median_ms": 241.1,
    "within_10ms": 0.0,
-   "err_first10pct_ms": 13547.56,
+   "err_first10pct_ms": 13547.53,
    "err_last10pct_ms": -32420.17,
    "raw_drift_max_ms": 50061.98,
    "segments": [
     [
      1,
-     124.0
-    ],
-    [
-     68,
-     123.016
-    ],
-    [
-     73,
-     124.368
-    ],
-    [
-     79,
      124.0
     ]
    ]
@@ -43,7 +31,7 @@
   {
    "clip": "A2",
    "duration_s": 157.4,
-   "analysis_s": 22.11,
+   "analysis_s": 18.01,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 172.0,
@@ -69,23 +57,27 @@
   {
    "clip": "A3",
    "duration_s": 185.2,
-   "analysis_s": 6.92,
+   "analysis_s": 5.63,
    "tracker": "librosa",
-   "grid_type": "constant",
+   "grid_type": "piecewise_constant",
    "tempo_bpm": 117.997,
    "time_signature": "4/4",
-   "confidence": 0.939,
-   "beat_F": 0.9528,
+   "confidence": 0.989,
+   "beat_F": 0.9903,
    "raw_beat_F": 0.9986,
-   "drift_max_ms": 531.75,
-   "drift_median_ms": 6.41,
-   "within_10ms": 0.8389,
-   "err_first10pct_ms": 13.29,
-   "err_last10pct_ms": 7.82,
+   "drift_max_ms": 545.05,
+   "drift_median_ms": 7.67,
+   "within_10ms": 0.8694,
+   "err_first10pct_ms": 12.82,
+   "err_last10pct_ms": 9.01,
    "raw_drift_max_ms": 537.78,
    "segments": [
     [
-     0,
+     1,
+     112.545
+    ],
+    [
+     5,
      117.997
     ]
    ]
@@ -93,7 +85,7 @@
   {
    "clip": "A4",
    "duration_s": 145.9,
-   "analysis_s": 7.3,
+   "analysis_s": 5.04,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 118.0,
@@ -119,7 +111,7 @@
   {
    "clip": "A5",
    "duration_s": 140.5,
-   "analysis_s": 52.57,
+   "analysis_s": 4.44,
    "tracker": "librosa",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 128.004,
@@ -149,7 +141,7 @@
   {
    "clip": "A6",
    "duration_s": 114.0,
-   "analysis_s": 22.5,
+   "analysis_s": 3.55,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 68.0,
@@ -175,7 +167,7 @@
   {
    "clip": "A7",
    "duration_s": 183.3,
-   "analysis_s": 39.55,
+   "analysis_s": 5.85,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 128.0,

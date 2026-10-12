@@ -836,6 +836,8 @@
     "p95_residual_ms": 0.05,
     "max_trend_ms": 0.01,
     "inlier_frac": 1.0,
+    "local_tempo_spread_pct": 0.0,
+    "longest_outlier_run_beats": 0,
     "period_s": 0.882351,
     "bpm": 68.0002,
     "phase_shift_ms": -14.82,
@@ -847,8 +849,9 @@
    }
   },
   "n_tracked_beats": 127,
+  "n_consistent_beats": 127,
   "n_tracked_downbeats": 32,
-  "tracking_s": 14.92,
-  "total_s": 22.5
+  "tracking_s": 2.79,
+  "total_s": 3.55
  }
 }

@@ -51,6 +51,8 @@ export interface DeckState {
   peak_rate: number;
   meta: Record<string, unknown>;
   analysis_s?: number;
+  tempo_octave?: { tracker_bpm: number; reported_bpm: number; factor: number; preferred_range: number[] } | null;
+  user_octave?: number | null;
 }
 
 export interface ChatReply {

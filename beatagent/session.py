@@ -60,6 +60,29 @@ class Session:
                                           else edl.map_grid(self.src_grid, self.state, self.sr))
         return self._grid_cache[self.pos]
 
+    def set_octave(self, factor: float) -> None:
+        """User override of the tempo octave (DJ-software style x2 / /2): half-time
+        music is genuinely ambiguous (Naam Kaam Sheher reads as 70 or 140 to
+        different listeners), so the user decides. Rebuilds the grid at that
+        octave. Only on an unedited track: edits are addressed in beats, and
+        changing what "a beat" means under existing edits would move them."""
+        from .sync import octave_grid
+        if factor not in (2.0, 0.5):
+            raise EditError("Octave factor must be 2 or 0.5.")
+        if self.pos != 0 or len(self.history) > 1:
+            raise EditError("Change the tempo octave before editing (undo all edits first): "
+                            "edits are addressed in beats and would move.")
+        if self.src_grid.time_signature.endswith("/8"):
+            raise EditError(f"{self.src_grid.time_signature} is a compound meter; doubling or halving "
+                            "its beat would break the bar.")
+        new = octave_grid(self.src_grid, factor)
+        net = (self.src_grid.meta.get("user_octave_override") or 1.0) * factor   # x2 then /2 = back to auto
+        new.meta = {k: v for k, v in new.meta.items() if k != "user_octave_override"}
+        if net != 1.0:
+            new.meta["user_octave_override"] = net
+        self.src_grid = new
+        self._grid_cache = {}
+
     # ------------------------------------------------------------ editing
     @staticmethod
     def parse_ops(raw_ops: list[dict]) -> list:

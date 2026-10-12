@@ -13,6 +13,7 @@ interface Props {
   state: DeckState | null;
   onState: (s: DeckState | null) => void;
   markerAtBar?: number;          // sync start bar to highlight on this deck
+  onPlayheadBar?: (bar: number) => void;   // bar under the playhead (for "sync from playhead")
 }
 
 interface Msg {
@@ -22,7 +23,7 @@ interface Msg {
   tag?: string;
 }
 
-export function Deck({ name, role, color, library, state, onState, markerAtBar }: Props) {
+export function Deck({ name, role, color, library, state, onState, markerAtBar, onPlayheadBar }: Props) {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const time = useAudioClock(audio);
   const [click, setClick] = useState(false);
@@ -102,6 +103,18 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar }
   };
 
   const idx = state ? beatIndexAt(state.beats, time) : -1;
+  const playBar = state && idx >= 0 ? bars[idx] : 1;
+  useEffect(() => { onPlayheadBar?.(Math.max(1, playBar)); }, [playBar]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setOctave = async (f: 2 | 0.5) => {
+    if (!state) return;
+    setError(null);
+    try {
+      onState(await api.octave(state.sid, f));
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
   const counter = state && idx >= 0 ? `${bars[idx]}.${state.positions[idx]}` : "--.-";
   const s = state?.summary;
   const conf = state?.confidence.overall ?? 0;
@@ -143,7 +156,13 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar }
       {state && peaks && s && (
         <>
           <div className="deck-display">
-            <div className="bpm"><span className="bpm-val">{s.tempo_bpm.toFixed(2)}</span><span className="bpm-unit">BPM</span></div>
+            <div className="bpm">
+              <span className="bpm-val">{s.tempo_bpm.toFixed(2)}</span><span className="bpm-unit">BPM</span>
+              <span className="octave" title="Half-time music can be counted at either tempo (e.g. 70 or 140). Set the one you hear; sync works either way.">
+                <button className="btn mini" disabled={state.version > 0 || s.time_signature.endsWith("/8")} onClick={() => void setOctave(0.5)}>½×</button>
+                <button className="btn mini" disabled={state.version > 0 || s.time_signature.endsWith("/8")} onClick={() => void setOctave(2)}>2×</button>
+              </span>
+            </div>
             <div className="counter"><span className="label">BAR.BEAT</span><span className="val">{counter}</span></div>
             <div className="facts">
               <span><b>{s.time_signature}</b> meter</span>
@@ -157,6 +176,13 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar }
               <span className="val">{conf.toFixed(2)}</span>
             </div>
           </div>
+          {(state.user_octave || (state.tempo_octave && state.tempo_octave.factor !== 1)) && (
+            <div className="segments">
+              {state.user_octave
+                ? `TEMPO OCTAVE set by you (x${state.user_octave === 2 ? "2" : "1/2"})`
+                : `TEMPO OCTAVE auto: tracker heard ${state.tempo_octave!.tracker_bpm} BPM, shown x${state.tempo_octave!.factor === 2 ? "2" : "1/2"} to fit ${state.tempo_octave!.preferred_range[0]}-${state.tempo_octave!.preferred_range[1]} BPM. Use ½× / 2× if you count it differently.`}
+            </div>
+          )}
           {s.tempo_segments.length > 1 && (
             <div className="segments">
               TEMPO CHANGE · {s.tempo_segments.map((g) => `bar ${g.start_bar}: ${g.bpm.toFixed(2)}`).join("  →  ")}

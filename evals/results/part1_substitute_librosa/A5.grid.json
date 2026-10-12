@@ -1813,6 +1813,8 @@
     "p95_residual_ms": 3.1,
     "max_trend_ms": 0.48,
     "inlier_frac": 1.0,
+    "local_tempo_spread_pct": 0.01,
+    "longest_outlier_run_beats": 0,
     "period_s": 0.499992,
     "bpm": 120.002,
     "phase_shift_ms": -25.0,
@@ -1822,6 +1824,8 @@
     "p95_residual_ms": 3.1,
     "max_trend_ms": 0.79,
     "inlier_frac": 1.0,
+    "local_tempo_spread_pct": 0.03,
+    "longest_outlier_run_beats": 0,
     "period_s": 0.468734,
     "bpm": 128.0045,
     "phase_shift_ms": -22.19,
@@ -1837,8 +1841,9 @@
    }
   },
   "n_tracked_beats": 282,
+  "n_consistent_beats": 282,
   "n_tracked_downbeats": 71,
-  "tracking_s": 50.89,
-  "total_s": 52.57
+  "tracking_s": 3.42,
+  "total_s": 4.44
  }
 }

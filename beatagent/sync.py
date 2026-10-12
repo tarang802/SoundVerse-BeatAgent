@@ -17,8 +17,8 @@ from dataclasses import asdict, dataclass
 
 import numpy as np
 
-from .grid import BeatGrid
-from .onsets import onsets_near
+from .grid import BeatGrid, tempo_segments_from_beats
+from .onsets import kick_flux_near, onsets_near
 from .stretch import stretch
 
 MAX_STRETCH = 0.25        # refuse ratios beyond +-25 %: Rubber Band can do it, but it sounds bad
@@ -42,6 +42,7 @@ class SyncPlan:
     b_bpm: float
     b_needed: float           # seconds of ORIGINAL B audio the overlap consumes
     notes: list
+    b_octave: float = 1.0     # 2 = B matched at double time (its grid's beats doubled), 0.5 = half time
 
     @property
     def offset(self) -> float:
@@ -57,6 +58,32 @@ class SyncPlan:
         return d
 
 
+def octave_grid(g: BeatGrid, factor: float) -> BeatGrid:
+    """B's grid at double (factor 2) or half (0.5) time, keeping its downbeats as
+    downbeats and 4 beats per bar -- how a DJ matches a 75 BPM track to a 150 one."""
+    if factor == 1.0:
+        return g
+    i0 = int(g.downbeat_idx[0]) if g.n_bars else 0
+    if factor == 2.0:
+        beats = np.sort(np.concatenate([g.beats, (g.beats[:-1] + g.beats[1:]) / 2]))
+        j0 = 2 * i0
+    elif factor == 0.5:
+        beats = g.beats[i0 % 2::2]
+        j0 = (i0 - i0 % 2) // 2
+    else:
+        raise ValueError(factor)
+    pos = ((np.arange(len(beats)) - j0) % g.beats_per_bar) + 1
+    return BeatGrid(beats=beats, positions=pos, beats_per_bar=g.beats_per_bar, time_signature=g.time_signature,
+                    duration=g.duration, constant_tempo=g.constant_tempo,
+                    segments=tempo_segments_from_beats(beats, pos, []), confidence=g.confidence,
+                    meta={**g.meta, "octave_factor": factor})
+
+
+def matched_b_grid(plan: "SyncPlan", b: BeatGrid) -> BeatGrid:
+    """The B grid the plan was computed on (use it for rendering and measuring)."""
+    return octave_grid(b, plan.b_octave)
+
+
 def _median_period(beats: np.ndarray, t0: float, t1: float) -> float:
     """Median inter-beat interval of the beats inside [t0, t1]."""
     inside = beats[(beats >= t0 - 1e-6) & (beats <= t1 + 1e-6)]
@@ -67,6 +94,31 @@ def _median_period(beats: np.ndarray, t0: float, t1: float) -> float:
 
 def plan_sync(a: BeatGrid, b: BeatGrid, a_bar: int, b_bar: int = 1,
               duration: float = 60.0) -> SyncPlan:
+    """Plan at B's own tempo; if that needs more than MAX_STRETCH but B at double
+    or half time would not, match at that octave (and say so in notes)."""
+    first_err, tried = None, []
+    for factor in (1.0, 2.0, 0.5):
+        try:
+            p = _plan_once(a, octave_grid(b, factor), a_bar, b_bar, duration)
+        except SyncError as e:
+            if first_err is None:
+                first_err = e
+            if factor == 1.0 and "stretching" not in str(e):
+                raise                       # not a tempo problem: report it as is
+            if factor != 1.0:
+                tried.append(f"{'double' if factor == 2 else 'half'} time {e.args[0].split('stretching by ')[-1].split('%')[0]}%"
+                             if "stretching by" in str(e) else f"{'double' if factor == 2 else 'half'} time: {e}")
+            continue
+        if factor != 1.0:
+            p.b_octave = factor
+            p.notes.insert(0, f"B matched at {'double' if factor == 2 else 'half'} time "
+                              f"({60 / p.b_period / factor:.2f} BPM counted as {60 / p.b_period:.2f}).")
+        return p
+    raise SyncError(f"{first_err} Also tried matching B at {' and '.join(tried)} -- still beyond "
+                    f"+-{MAX_STRETCH * 100:.0f}%.") if tried else first_err
+
+
+def _plan_once(a: BeatGrid, b: BeatGrid, a_bar: int, b_bar: int, duration: float) -> SyncPlan:
     notes: list[str] = []
 
     # ---- the bars must exist
@@ -104,7 +156,7 @@ def plan_sync(a: BeatGrid, b: BeatGrid, a_bar: int, b_bar: int = 1,
     if abs(ratio - 1.0) > MAX_STRETCH:
         raise SyncError(f"B would need stretching by {(ratio - 1) * 100:+.1f}% "
                         f"({60 / b_period:.2f} -> {60 / a_period:.2f} BPM); beyond +-{MAX_STRETCH * 100:.0f}% "
-                        f"it sounds bad. Pick a closer track (or a half/double-time match).")
+                        f"it sounds bad.")
     if b_start + b_needed > b.duration + 1e-6:
         raise SyncError(f"After stretching, B from bar {b_bar} only covers "
                         f"{(b.duration - b_start) * ratio:.1f}s, less than the {duration:.0f}s requested.")
@@ -124,6 +176,8 @@ def plan_sync(a: BeatGrid, b: BeatGrid, a_bar: int, b_bar: int = 1,
 # ============================================================ step 2: render
 PREROLL = 0.5     # seconds of B before its downbeat fed to the stretcher (warm-up), then cut away
 B_FADE_IN = 0.003 # tiny fade where B's audio starts at t=0, so the cut itself doesn't click
+EDGE_SKIP = 0.05  # measurement ignores beats in the first 50 ms of the render (no audio before
+                  # them -> detector edge artefact: the t=0 downbeat read 19.7 ms, all others <1 ms)
 
 
 def _match_format(x: np.ndarray, sr_from: int, sr_to: int, channels: int) -> np.ndarray:
@@ -182,7 +236,9 @@ def measure_alignment(a_seg: np.ndarray, b_seg: np.ndarray, sr: int, a_grid: Bea
     A's stem and in B's stem (spectral-flux peak within +-40 ms; on A7 vs its
     known beat times this detector's spread was 0.5 ms p95) and report B - A. Measuring both stems the
     same way cancels the detector's own bias."""
-    in_win = (a_grid.beats >= plan.a_start - 1e-6) & (a_grid.beats < plan.a_start + plan.duration - 0.05)
+    # skip beats in the first EDGE_SKIP s: the render starts ON A's downbeat, so
+    # there is no audio before it and onset detectors give edge artefacts there
+    in_win = (a_grid.beats >= plan.a_start + EDGE_SKIP) & (a_grid.beats < plan.a_start + plan.duration - 0.05)
     expected = a_grid.beats[in_win] - plan.a_start          # render-timeline times
     on_a = onsets_near(a_seg, sr, expected)
     on_b = onsets_near(b_seg, sr, expected)
@@ -203,6 +259,56 @@ def measure_alignment(a_seg: np.ndarray, b_seg: np.ndarray, sr: int, a_grid: Bea
         "target": {"median_abs_ms": 5.0, "max_abs_ms": 15.0},
         "pass": bool(np.median(np.abs(off)) <= 5.0 and np.max(np.abs(off)) <= 15.0),
     }
+
+
+
+def measure_downbeat_kicks(a_seg: np.ndarray, b_seg: np.ndarray, sr: int, a_grid: BeatGrid,
+                           plan: SyncPlan) -> dict:
+    """Kick-vs-kick on DOWNBEATS only, from low-frequency (< 150 Hz) spectral flux.
+
+    measure_alignment compares the nearest onset of any kind; on real hip-hop,
+    where many beats have no kick, that paired A's kick with B's hi-hat. Validated
+    on known beat times: downbeat spread p95 0.2 ms (A7, A2), 1.1 ms (A1); one false
+    kick in 16 drumless breakdown bars. Only downbeats where BOTH stems have a kick
+    are compared."""
+    bars = a_grid.positions == 1
+    in_win = bars & (a_grid.beats >= plan.a_start + EDGE_SKIP) & (a_grid.beats < plan.a_start + plan.duration - 0.05)
+    expected = a_grid.beats[in_win] - plan.a_start
+    ka, kb = kick_flux_near(a_seg, sr, expected), kick_flux_near(b_seg, sr, expected)
+    both = ~np.isnan(ka) & ~np.isnan(kb)
+    off = (kb - ka)[both] * 1000.0
+    out = {"n_downbeats": int(len(expected)), "n_measured": int(both.sum()),
+           "a_has_kick": int((~np.isnan(ka)).sum()), "b_has_kick": int((~np.isnan(kb)).sum())}
+    if len(off):
+        out.update({"median_ms": round(float(np.median(off)), 2),
+                    "median_abs_ms": round(float(np.median(np.abs(off))), 2),
+                    "max_abs_ms": round(float(np.max(np.abs(off))), 2),
+                    "offsets_ms": [round(float(x), 2) for x in off],
+                    "pass": bool(np.median(np.abs(off)) <= 5.0 and np.max(np.abs(off)) <= 15.0)})
+    return out
+
+
+
+def measure_downbeat_attacks(a_seg: np.ndarray, b_seg: np.ndarray, sr: int, a_grid: BeatGrid,
+                             plan: SyncPlan) -> dict:
+    """Attack-vs-attack on DOWNBEATS: broadband onset (spectral flux) nearest each
+    of A's downbeats, in each stem. On real hip-hop the downbeat attack is what
+    sits tightly on the grid (Toh Kya: 1.3 ms spread vs its own grid), while the
+    low-frequency 'kick' moment drifts with 808 sub-bass (27 ms spread)."""
+    bars = a_grid.positions == 1
+    in_win = bars & (a_grid.beats >= plan.a_start + EDGE_SKIP) & (a_grid.beats < plan.a_start + plan.duration - 0.05)
+    expected = a_grid.beats[in_win] - plan.a_start
+    oa, ob = onsets_near(a_seg, sr, expected), onsets_near(b_seg, sr, expected)
+    both = ~np.isnan(oa) & ~np.isnan(ob)
+    off = (ob - oa)[both] * 1000.0
+    out = {"n_downbeats": int(len(expected)), "n_measured": int(both.sum())}
+    if len(off):
+        out.update({"median_abs_ms": round(float(np.median(np.abs(off))), 2),
+                    "max_abs_ms": round(float(np.max(np.abs(off))), 2),
+                    "share_within_15ms": round(float(np.mean(np.abs(off) <= 15)), 3),
+                    "offsets_ms": [round(float(x), 2) for x in off],
+                    "pass": bool(np.median(np.abs(off)) <= 5.0 and np.max(np.abs(off)) <= 15.0)})
+    return out
 
 
 # ============================================================ step 3: beat-anchored render

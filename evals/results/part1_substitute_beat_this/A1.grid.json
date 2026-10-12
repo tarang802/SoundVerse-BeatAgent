@@ -4692,6 +4692,8 @@
     "p95_residual_ms": 16.0,
     "max_trend_ms": 7.45,
     "inlier_frac": 0.972,
+    "local_tempo_spread_pct": 0.08,
+    "longest_outlier_run_beats": 14,
     "period_s": 0.483871,
     "bpm": 124.0,
     "phase_shift_ms": -28.84,
@@ -4700,11 +4702,21 @@
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 1
+   },
+   "tempo_octave": {
+    "tracker_bpm": 124.0,
+    "factor": 1.0,
+    "preferred_range": [
+     80.0,
+     160.0
+    ],
+    "reported_bpm": 124.0
    }
   },
   "n_tracked_beats": 747,
+  "n_consistent_beats": 747,
   "n_tracked_downbeats": 293,
-  "tracking_s": 37.03,
-  "total_s": 40.64
+  "tracking_s": 39.8,
+  "total_s": 49.0
  }
 }
