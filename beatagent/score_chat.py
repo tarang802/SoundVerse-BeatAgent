@@ -181,7 +181,10 @@ class ScoreChat:
     def __init__(self, score: Score, interpreter=None):
         self.history = [score]
         if interpreter is None:
+            import os
             try:
+                if os.environ.get("BEAT_AGENT_LLM", "").lower() == "offline":
+                    raise RuntimeError("offline mode")
                 interpreter = GeminiScoreInterpreter()
             except Exception:  # noqa: BLE001  (no key)
                 interpreter = RuleScoreInterpreter()

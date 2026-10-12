@@ -336,6 +336,9 @@ class RuleInterpreter:
 
 
 def make_interpreter(prefer: str = "auto"):
+    # BEAT_AGENT_LLM=offline forces the rule parser (deterministic UI tests; no key / no quota)
+    if prefer == "auto" and os.environ.get("BEAT_AGENT_LLM", "").lower() == "offline":
+        prefer = "rules"
     if prefer in ("auto", "gemini"):
         try:
             return GeminiInterpreter()
