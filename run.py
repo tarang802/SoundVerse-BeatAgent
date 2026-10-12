@@ -50,7 +50,8 @@ def mod(m, *a):
 
 
 TESTS = ["tests.test_imports", "tests.test_edl", "tests.test_score", "tests.test_ref_formats",
-         "tests.test_click_metric", "tests.test_agent_llm", "tests.test_audio_paths", "tests.test_recreate_api"]
+         "tests.test_click_metric", "tests.test_agent_llm", "tests.test_audio_paths", "tests.test_recreate_api",
+         "tests.test_score_chat"]
 
 
 def run_tests() -> bool:
