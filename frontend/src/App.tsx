@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
 import { Deck } from "./components/Deck";
+import { RecreatePanel } from "./components/RecreatePanel";
 import { SyncPanel } from "./components/SyncPanel";
 import type { DeckState, LibraryItem } from "./types";
 
@@ -43,6 +44,7 @@ export function App() {
               state={b} onState={setB} onPlayheadBar={setBPlayBar} partnerSid={a?.sid} />
       </main>
       <SyncPanel a={a} b={b} aBar={aBar} onABar={setABar} aPlayBar={aPlayBar} bPlayBar={bPlayBar} onSwap={swap} />
+      <RecreatePanel deckA={a} />
       <footer className="foot">
         Grid conventions: beats are 0-based grid lines, beat ranges [start, end); bars are 1-based and inclusive;
         bar 0 = pickup. Tempo, beats and offsets are measured from the audio — the LLM only interprets chat.

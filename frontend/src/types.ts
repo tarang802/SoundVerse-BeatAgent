@@ -110,3 +110,14 @@ export interface SyncResult {
   peaks: { a: string; b: string; mix: string };
   peak_rate: number;
 }
+
+export interface RecreateResult {
+  id: string;
+  name: string;
+  tempo_bpm: number;
+  time_signature: string;
+  bars: number;
+  loop_s: number;
+  analysis: Record<string, unknown>;
+  tracks: { name: string; kind: string; notes: number }[];
+}

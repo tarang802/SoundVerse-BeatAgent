@@ -209,6 +209,11 @@ for (const t of SCORE.tracks) {
   box.onchange = () => { mix[t.name].mute = box.checked; if (live) applyMix(live.graph); };
   mixer.appendChild(row);
 }
+// embedded in the app (a sandboxed iframe, so the app cannot look inside): say we loaded
+if (window.parent !== window) {
+  window.parent.postMessage({beatagent: "ready", tracks: SCORE.tracks.length, notes:
+    SCORE.tracks.reduce((n, t) => n + t.notes.length, 0)}, "*");
+}
 </script></main></body></html>
 """
 

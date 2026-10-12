@@ -144,3 +144,12 @@ select:focus, input:focus { outline: 1px solid var(--accent, var(--a)); }
 
 .octave { display: inline-flex; gap: 4px; margin-left: 8px; align-self: center; }
 .btn.mini { padding: 3px 7px; font-size: 10px; }
+
+.recreate { margin-top: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+.recreate select { max-width: 420px; }
+.recreate-meta { color: var(--muted); font-size: 12px; margin: 12px 0; }
+.recreate-grid { display: grid; grid-template-columns: 280px 1fr; gap: 14px; align-items: start; }
+@media (max-width: 800px) { .recreate-grid { grid-template-columns: 1fr; } }
+.recreate audio { width: 100%; margin: 8px 0; }
+.recreate-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.recreate iframe { width: 100%; height: 360px; border: 1px solid var(--line); border-radius: 10px; background: #0b0b0d; margin-top: 8px; }
