@@ -36,11 +36,11 @@
   "tracks": {
    "drums": 30
   },
-  "transcribe_s": 14.67,
+  "transcribe_s": 8.81,
   "render": {
    "static_ok": true,
    "forbidden_found": [],
-   "bytes": 12872,
+   "bytes": 12871,
    "browser": "msedge",
    "network_requests": [],
    "page_errors": [],
@@ -102,11 +102,11 @@
    "bass": 21,
    "keys": 1
   },
-  "transcribe_s": 11.36,
+  "transcribe_s": 6.73,
   "render": {
    "static_ok": true,
    "forbidden_found": [],
-   "bytes": 16072,
+   "bytes": 16071,
    "browser": "msedge",
    "network_requests": [],
    "page_errors": [],
@@ -166,11 +166,11 @@
   "tracks": {
    "keys": 74
   },
-  "transcribe_s": 10.77,
+  "transcribe_s": 4.5,
   "render": {
    "static_ok": true,
    "forbidden_found": [],
-   "bytes": 15613,
+   "bytes": 15611,
    "browser": "msedge",
    "network_requests": [],
    "page_errors": [],
@@ -232,7 +232,7 @@
    "bass": 46,
    "keys": 60
   },
-  "transcribe_s": 23.71,
+  "transcribe_s": 11.06,
   "render": {
    "static_ok": true,
    "forbidden_found": [],

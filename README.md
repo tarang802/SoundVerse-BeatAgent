@@ -170,7 +170,7 @@ for each way it misbehaved in testing (see `DECISIONS.md` §6).
 | Downbeat F ≥ 0.80 | 1.00 on A1, A2, A4, A5, A7; **A6 0.67** (counted 12/8 vs a 6/8 reference) |
 | Drift ≤ 10 ms over 6 min (A1) | **1.92 ms** max (raw tracker: 377 ms) |
 | Sync kicks median ≤ 5 / max ≤ 15 ms (A7 → A1 @ bar 33) | **0.05 / 0.23 ms** |
-| 6-minute track < 60 s on CPU | **11 s** |
+| 6-minute track < 60 s on CPU | **11–34 s** across runs on the dev laptop (load-dependent; the `run.py demo` run was the slow one) |
 
 Plus: 29/30 robustness cases (tempo 60–200, grooves, meters, tempo changes, levels,
 formats, silence/noise refused with a message); 19/19 sync cases against exact ground

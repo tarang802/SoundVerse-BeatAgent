@@ -21,7 +21,7 @@
   "drums": "HPSS percussive part, per-band onsets (kick 30-120 Hz, snare 1-5 kHz, hats 7-16 kHz), relative thresholds",
   "pitched": "Basic Pitch 0.4 (ONNX) on the HPSS harmonic part, overtone ghosts dropped",
   "llm_used": false,
-  "seconds": 11.36
+  "seconds": 6.73
  },
  "tracks": [
   {
