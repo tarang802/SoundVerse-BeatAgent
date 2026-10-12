@@ -91,6 +91,22 @@ Individual steps:
 | `python run.py report` | regenerate `evals/results/COMPLETION_REPORT.md` from the result files |
 | `python run.py testpack` / `p3pack` | rebuild the synthetic A1–A7 / P1–P4 packs |
 
+### Running against the official test pack
+
+Put the clips and annotations in `data/testpack/` (A1–A7 audio with beat/downbeat files
+next to them; P1–P4 audio with `.mid` files), then:
+
+```bash
+python run.py eval --pack testpack
+python -m evals.eval_sync --pack testpack
+python -m evals.eval_sessions --pack testpack --llm gemini
+python -m evals.eval_part3 --pack data/testpack
+```
+
+Results go to `evals/results/part1_testpack_*`, `sync_*`, `part2_sessions/` and
+`evals/results/part3_testpack/` (run `eval` first: the sync step reuses its grids; the
+sync and session folders are shared with the synthetic runs and get overwritten).
+
 ## Demo workflow (what the Loom shows)
 
 Start with `python run.py app`, open http://localhost:8000 in Chrome or Edge.
