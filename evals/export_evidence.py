@@ -49,8 +49,9 @@ def main():
         rows.append(("Part 1 sync A7 -> A1 @ bar 33, method " + p.stem.replace("_mix", "") + note,
                      mp3(p, OUT / "part1" / f"sync_{p.stem}.mp3")))
     for d in sorted((RES / "part2_sessions").glob("session_*")):
-        turns = sorted(d.glob("turn*.wav"), key=lambda q: int(q.stem.replace("turn", "").split(".")[0]))
-        turns = [t for t in turns if not t.stem.endswith(".click")]
+        # edited audio keeps the input's format: A3 is FLAC, so session 5 writes .flac
+        turns = [t for t in d.glob("turn*.*") if t.suffix in (".wav", ".flac") and not t.stem.endswith(".click")]
+        turns.sort(key=lambda q: int(q.stem.replace("turn", "").split(".")[0]))
         if turns:
             rows.append((f"Part 2 brief {d.name}, audio after the last edited turn",
                          mp3(turns[-1], OUT / "part2" / f"{d.name}_{turns[-1].stem}.mp3")))
