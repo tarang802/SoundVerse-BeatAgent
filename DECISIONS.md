@@ -130,6 +130,14 @@ a drum hit starts is masked — to the ear as well.
 **Trade-off.** No source separation (Demucs was not installed: large and slow on CPU);
 HPSS is weak on dense mixes (P4).
 
+**Tuning without touching the test clips.** Drum thresholds were checked on a separate
+synthetic development set (`evals/make_p3dev.py`: 12 loops with other tempos, patterns
+and bass levels, two piano-only), never on P1–P4. The best alternative raised dev drum F
+by only 0.006 (noise) and a "hat on a kick" rule lowered it, so nothing changed
+(`evals/results/part3/drum_tuning_dev.json`). The remaining drum errors — kicks under a
+loud bass line — need a learned drum classifier, not thresholds. *Would change my mind:*
+a small labelled drum dataset to train one.
+
 ## Assumptions where the brief or a command was unclear
 
 * **Test pack not provided.** All brief-target numbers are on **synthetic substitutes**
