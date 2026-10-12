@@ -27,7 +27,7 @@
 | Unit tests `tests.test_ref_formats` | | 15/15 pass (exit 0) |
 | Unit tests `tests.test_click_metric` | | 5/5 pass (exit 0) |
 | Unit tests `tests.test_agent_llm` | | 31/31 pass (exit 0) |
-| Unit tests `tests.test_audio_paths` | | 38/38 pass (exit 0) |
+| Unit tests `tests.test_audio_paths` | | 42/42 pass (exit 0) |
 | Unit tests `tests.test_recreate_api` | | 14/14 pass (exit 0) |
 | Unit tests `tests.test_score_chat` | | 20/20 pass (exit 0) |
 | Unit tests `tests.test_webaudio_page` | | 8/8 pass (exit 0) |
@@ -279,6 +279,9 @@ SYNTHETIC substitute clips (the brief's P1-P4 were not provided); details in `ev
 | chat suite (13 Oct) | "remove everything" deleted all 186 bars | edits leaving < 2 s need a yes (a 5 % rule was tried first and blocked a deliberate trim) | fixed |
 | Part 3 eval (13 Oct) | Piano clip: 50 false drum hits; drum loop: 7 fake pitched notes; snare noise faked open hats | absolute-level and spectral-flatness gates, drum-tone removal, hat-on-snare rule | fixed (measured per clip) |
 | Part 3 UI check (13 Oct) | Generated page blank inside the app's built-in browser pane | that pane does not run scripts in sandboxed iframes; verified working in real Edge via Playwright | environment limit (documented) |
+| page safety test (13 Oct) | Generated page built mixer rows with innerHTML from track names (markup injection) and embedded raw `<` in its data | names inserted as text; `< > &` escaped in the JSON | fixed |
+| security review (13 Oct) | `/api/open` accepted absolute paths: any client could read audio anywhere on disk | only files inside the project | fixed |
+| one-command check (13 Oct) | `run.py demo` into a log lost the test summary (stdout buffered while the app served) | line-buffered output | fixed |
 | A3 investigation | 112→118 BPM ramp in the first 15 s: piecewise line misses up to 108 ms there | tried splicing tracked beats into ramps: worse overall (tracker unreliable there) — reverted | **open** |
 
 ## Known limitations (honest)

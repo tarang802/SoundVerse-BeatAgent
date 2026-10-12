@@ -224,8 +224,12 @@ scripts in sandboxed iframes, so use Chrome/Edge for the RECREATE panel.
   server-side only; the frontend never sees it.
 * Uploads: names sanitised (a `:` once hid the audio in an NTFS stream), path
   components dropped, only WAV/MP3/FLAC accepted, decode errors never reveal server paths.
-* Generated pages: built by code from a fixed template; the score is inert JSON;
-  `Content-Security-Policy: default-src 'none'`; shown in a sandboxed iframe.
+  Opening by path is limited to files inside the project; the server listens on
+  localhost only.
+* Generated pages: built by code from a fixed template; the score is inert JSON with
+  `<`, `>`, `&` escaped, and track names are inserted as text, never as markup
+  (`tests/test_webaudio_page.py`); `Content-Security-Policy: default-src 'none'`; shown in
+  a sandboxed iframe.
 * The LLM's output is data validated against a schema; it is never executed.
 
 ## More
