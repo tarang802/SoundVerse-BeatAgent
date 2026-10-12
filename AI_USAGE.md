@@ -76,7 +76,12 @@ and deciding what ships.
 6. **A guard that over-reached.** The AI's first "near-total deletion" guard used a
    5 % rule and blocked a deliberate "trim it down to just bars 1-8" on a long track; the
    chat suite caught it and the rule became an absolute 2 s floor.
-7. **Ignoring a standing instruction.** The AI added a `Co-Authored-By` trailer to
+7. **An injectable page, from the AI that wrote the template.** The generated Part 3 page
+   built its mixer rows with `innerHTML` from track names and only escaped `</` in its
+   data, so a crafted name could add markup and run script inside the page. Caught by a
+   safety test written afterwards (`tests/test_webaudio_page.py`); names are now inserted
+   as text and `< > &` are escaped.
+8. **Ignoring a standing instruction.** The AI added a `Co-Authored-By` trailer to
    commits although Tarang had asked for commits under his name only; Tarang caught it
    on GitHub and the affected commits were rewritten.
 
