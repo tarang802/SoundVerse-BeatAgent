@@ -201,10 +201,16 @@ document.getElementById("info").textContent =
   SCORE.tracks.map(t => `${t.name} (${t.notes.length} notes)`).join(", ");
 const mixer = document.getElementById("mixer");
 for (const t of SCORE.tracks) {
+  // built with DOM calls, never innerHTML: track names are data and must not become markup
   const row = document.createElement("div"); row.className = "trk";
-  row.innerHTML = `<span>${t.name}</span><input type="range" min="-30" max="6" step="0.5" value="${t.gain_db}">` +
-                  `<span class="small">${t.gain_db.toFixed(1)} dB</span><label><input type="checkbox" ${t.mute ? "checked" : ""}> mute</label>`;
-  const [slider, label, box] = [row.querySelector("input[type=range]"), row.querySelector(".small"), row.querySelector("input[type=checkbox]")];
+  const name = document.createElement("span"); name.textContent = t.name;
+  const slider = document.createElement("input");
+  slider.type = "range"; slider.min = "-30"; slider.max = "6"; slider.step = "0.5"; slider.value = String(t.gain_db);
+  const label = document.createElement("span"); label.className = "small"; label.textContent = `${t.gain_db.toFixed(1)} dB`;
+  const boxLabel = document.createElement("label"), box = document.createElement("input");
+  box.type = "checkbox"; box.checked = t.mute;
+  boxLabel.append(box, " mute");
+  row.append(name, slider, label, boxLabel);
   slider.oninput = () => { mix[t.name].db = parseFloat(slider.value); label.textContent = `${mix[t.name].db.toFixed(1)} dB`; if (live) applyMix(live.graph); };
   box.onchange = () => { mix[t.name].mute = box.checked; if (live) applyMix(live.graph); };
   mixer.appendChild(row);
@@ -221,7 +227,9 @@ if (window.parent !== window) {
 def render_html(score: Score, title: str | None = None) -> str:
     """The page for a score. The score is embedded as JSON data (with '</' escaped so it
     cannot close the script element), never as code."""
-    data = score.model_dump_json().replace("</", "<\\/")
+    # < > & as JSON unicode escapes: the data can never close its <script> element or
+    # start markup, and JSON.parse restores the characters (tests/test_webaudio_page.py)
+    data = score.model_dump_json().replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     name = title or score.source.get("name", "Recreation")
     safe_title = "".join(ch for ch in str(name) if ch.isalnum() or ch in " -_.()")[:80] or "Recreation"
     return TEMPLATE.replace("__TITLE__", safe_title).replace("__SCORE__", data)
