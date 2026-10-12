@@ -42,9 +42,11 @@ DRUM_BANDS = {                    # name: (lo, hi, relative threshold, GM pitch,
 # (piano 0.10 > snares 0.01-0.03), but a snare is NOISE: spectral flatness 1-8 kHz of
 # real snares 0.32-0.40, piano attacks 0.00 -> SNARE_MIN_FLATNESS.
 SNARE_MIN_FLATNESS = 0.2
-# A weak "hat" within 12 ms of a kick is usually the kick's own click; dropped when its
-# strength is below HAT_ON_KICK_Q x the strongest hat (0 = rule off). Chosen on the dev
-# set (evals/tune_p3_drums.py), never on P1-P4.
+# A weak "hat" within 12 ms of a kick may be the kick's own click; dropped when its
+# strength is below HAT_ON_KICK_Q x the strongest hat (0 = rule off). Tried on the
+# separate dev set (evals/tune_p3_drums.py, never on P1-P4): it LOWERED drum F at every
+# setting, so it stays off. Kick thresholds: the best dev setting beat the current one
+# by 0.006 F (noise), so they were not changed either.
 HAT_ON_KICK_Q = 0.0
 
 
@@ -68,8 +70,9 @@ def band_onsets(x: np.ndarray, sr: int, lo: float, hi: float, rel: float,
 def _hat_is_open(env: np.ndarray, esr: float, t: float) -> bool:
     """Open hat = the 7-16 kHz envelope still rings 60-120 ms after the hit."""
     i = int(t * esr)
-    head = env[i:i + int(0.03 * esr)].mean() if i < len(env) else 0.0
-    tail = env[i + int(0.06 * esr): i + int(0.12 * esr)].mean() if i < len(env) else 0.0
+    h, tl = env[i:i + int(0.03 * esr)], env[i + int(0.06 * esr): i + int(0.12 * esr)]
+    head = h.mean() if len(h) else 0.0
+    tail = tl.mean() if len(tl) else 0.0          # a hit at the very end has no tail to measure
     return head > 0 and tail / head > 0.25
 
 
