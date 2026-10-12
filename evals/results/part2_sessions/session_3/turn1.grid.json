@@ -1915,8 +1915,8 @@
   "n_tracked_beats": 294,
   "n_consistent_beats": 292,
   "n_tracked_downbeats": 73,
-  "tracking_s": 11.19,
-  "total_s": 13.94,
+  "tracking_s": 1.95,
+  "total_s": 3.24,
   "derived_from_edits": true
  }
 }
