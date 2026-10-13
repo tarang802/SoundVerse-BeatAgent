@@ -44,8 +44,17 @@ and deciding what ships.
 
 ### What was reviewed line by line
 
-> **To be completed by Tarang before submission** — list the files or functions you
-> read line by line (and anything you deliberately did not), so this section is true.
+The code was not reviewed line by line by Tarang; it was reviewed by use and by
+measurement.
+
+- **By use:** Tarang ran the app on the 12 real hip-hop tracks and the synthetic pack, and
+  reported the problems marked "caught by Tarang" below (tempo octave, the "beat 16-32"
+  refusal, confusing sync defaults), plus the co-author trailer seen on GitHub.
+- **Not read line by line:** the implementation in `beatagent/`, `app/` and `frontend/`,
+  and the eval harnesses in `evals/`. Their correctness rests on the automated tests and
+  evals in section 3. That is a real risk, because several of those checks were themselves
+  AI-written and turned out to be wrong (cases 3, 4 and 7 below). Each one was caught by
+  validating the check against inputs with a known answer.
 
 ### Cases where the AI was wrong or subtly off, and how it was caught
 
@@ -97,4 +106,8 @@ pipeline evaluated on P1–P4 including headless-browser renders.
 used in the consistency evals) and reported issues that automated tests had not caught (tempo octave, the "beat 16-32" refusal, confusing
 sync defaults). Listening notes on the click auditions and sync renders:
 
-> **To be completed by Tarang** — what you listened to and what you heard.
+Tarang listened to the real tracks in the app; that is how the half-time feel of the
+track read at 70 / 140 BPM was noticed. The click auditions and sync renders of the
+synthetic pack were checked by measurement (beat error against the answer key,
+kick-onset offsets between decks), not by ear. Small MP3 copies are in `evals/evidence/`
+so a listener can check them.
