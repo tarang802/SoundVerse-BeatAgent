@@ -6,31 +6,31 @@
    "slug": "12__Seedhe_Maut___Naam_Kaam_Sheher__E",
    "duration_s": 166.3,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 9.7,
-   "tempo_bpm": 140.19,
+   "analysis_s": 6.3,
+   "tempo_bpm": 139.99,
    "time_signature": "4/4",
    "grid_type": "variable",
    "n_bars": 93,
-   "confidence": 0.499,
+   "confidence": 0.488,
    "trimmed": {
     "leading": 0,
     "trailing": 11
    },
-   "first_beat_s": 0.001,
+   "first_beat_s": 0.0,
    "onset_support": {
-    "share_of_beats_with_onset": 0.74,
+    "share_of_beats_with_onset": 0.745,
     "by_position": {
-     "1": 0.763,
-     "2": 0.717,
-     "3": 0.728,
+     "1": 0.742,
+     "2": 0.739,
+     "3": 0.75,
      "4": 0.75
     },
-    "median_offset_ms": 0.1,
-    "p95_abs_offset_ms": 32.34
+    "median_offset_ms": 0.17,
+    "p95_abs_offset_ms": 35.9
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 17.33,
-    "share_over_35ms": 0.404
+    "median": 17.41,
+    "share_over_35ms": 0.42
    },
    "librosa_tempo": 140.62,
    "tempo_check": "agree",
@@ -38,94 +38,94 @@
     "windows": [
      {
       "t": 0.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 140.02,
       "indep_bpm": 140.03,
-      "diff_pct": -0.11,
+      "diff_pct": 0.01,
       "periodicity": 0.146,
       "onset_support": 0.79
      },
      {
       "t": 20.0,
-      "grid_bpm": 139.75,
+      "grid_bpm": 139.98,
       "indep_bpm": 140.22,
-      "diff_pct": 0.34,
+      "diff_pct": 0.18,
       "periodicity": 0.306,
       "onset_support": 1.0
      },
      {
       "t": 40.0,
-      "grid_bpm": 139.75,
+      "grid_bpm": 139.99,
       "indep_bpm": 140.07,
-      "diff_pct": 0.23,
+      "diff_pct": 0.06,
       "periodicity": 0.312,
-      "onset_support": 0.98
+      "onset_support": 1.0
      },
      {
       "t": 60.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 139.98,
       "indep_bpm": 140.03,
-      "diff_pct": -0.11,
+      "diff_pct": 0.03,
       "periodicity": 0.389,
       "onset_support": 1.0
      },
      {
       "t": 80.0,
-      "grid_bpm": 139.97,
+      "grid_bpm": 139.89,
       "indep_bpm": 139.87,
-      "diff_pct": -0.07,
+      "diff_pct": -0.02,
       "periodicity": 0.236,
       "onset_support": 0.94
      },
      {
       "t": 100.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 140.06,
       "indep_bpm": 139.97,
-      "diff_pct": -0.15,
+      "diff_pct": -0.07,
       "periodicity": 0.281,
       "onset_support": 1.0
      },
      {
       "t": 120.0,
-      "grid_bpm": 139.75,
+      "grid_bpm": 140.05,
       "indep_bpm": 140.25,
-      "diff_pct": 0.36,
+      "diff_pct": 0.14,
       "periodicity": 0.13,
-      "onset_support": 0.85
+      "onset_support": 0.87
      },
      {
       "t": 140.0,
-      "grid_bpm": 140.19,
+      "grid_bpm": 141.73,
       "indep_bpm": 140.02,
-      "diff_pct": -0.12,
+      "diff_pct": -1.21,
       "periodicity": 0.434,
-      "onset_support": 0.93
+      "onset_support": 0.9
      }
     ],
     "n_graded_windows": 8,
     "n_windows": 8,
-    "max_abs_diff_pct": 0.36,
+    "max_abs_diff_pct": 1.21,
     "all_within_1_5pct": true
    },
    "downbeat_attack_vs_own_grid": {
-    "n": 71,
-    "median_ms": 0.08,
-    "p10_p90_spread_ms": 24.23
+    "n": 69,
+    "median_ms": 0.86,
+    "p10_p90_spread_ms": 30.53
    },
    "downbeat_lowkick_vs_own_grid": {
     "n": 70,
-    "median_ms": -1.19,
-    "p10_p90_spread_ms": 52.17
+    "median_ms": -0.44,
+    "p10_p90_spread_ms": 50.13
    },
    "n_tracked_beats": 230,
    "n_consistent_beats": 228,
    "tempo_octave": {
-    "tracker_bpm": 140.19,
+    "tracker_bpm": 139.99,
     "factor": 1.0,
     "preferred_range": [
      80.0,
      160.0
     ],
-    "reported_bpm": 140.19
+    "reported_bpm": 139.99
    }
   },
   {
@@ -133,7 +133,7 @@
    "slug": "01__Seedhe_Maut___Nanchaku__E",
    "duration_s": 193.1,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 12.6,
+   "analysis_s": 5.7,
    "tempo_bpm": 140.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -268,7 +268,7 @@
    "slug": "01__Seedhe_Maut___Namastute",
    "duration_s": 120.2,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 8.0,
+   "analysis_s": 3.9,
    "tempo_bpm": 80.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -379,7 +379,7 @@
    "slug": "02__Seedhe_Maut___Toh_Kya__E",
    "duration_s": 180.1,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 8.2,
+   "analysis_s": 7.6,
    "tempo_bpm": 150.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -514,7 +514,7 @@
    "slug": "02___BUN_MASKA___Calm__DL91_ERA__Seedhe",
    "duration_s": 193.7,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 9.8,
+   "analysis_s": 8.1,
    "tempo_bpm": 140.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -649,7 +649,7 @@
    "slug": "03___RINGTONE___Calm__DL91_ERA__Bhaskar",
    "duration_s": 264.5,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 16.7,
+   "analysis_s": 10.0,
    "tempo_bpm": 138.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -816,7 +816,7 @@
    "slug": "01__Seedhe_Maut___11K__E",
    "duration_s": 174.2,
    "format": "44100 Hz PCM_24 2ch",
-   "analysis_s": 7.3,
+   "analysis_s": 6.6,
    "tempo_bpm": 135.0,
    "time_signature": "4/4",
    "grid_type": "constant",

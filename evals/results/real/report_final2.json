@@ -6,7 +6,7 @@
    "slug": "03___Elevator_Music___Encore_ABJ__DL91_E",
    "duration_s": 201.2,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 15.8,
+   "analysis_s": 8.3,
    "tempo_bpm": 105.01,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -149,7 +149,7 @@
    "slug": "04___Kya_Mai_Yaha___Encore_ABJ__DL91_ERA",
    "duration_s": 225.2,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 10.8,
+   "analysis_s": 8.5,
    "tempo_bpm": 130.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -300,31 +300,31 @@
    "slug": "01___ALL_CAPS___Encore_ABJ__DL91_ERA",
    "duration_s": 118.1,
    "format": "44100 Hz PCM_16 2ch",
-   "analysis_s": 3.8,
-   "tempo_bpm": 98.44,
+   "analysis_s": 4.0,
+   "tempo_bpm": 98.23,
    "time_signature": "4/4",
    "grid_type": "variable",
    "n_bars": 49,
-   "confidence": 0.213,
+   "confidence": 0.196,
    "trimmed": {
     "leading": 0,
     "trailing": 0
    },
-   "first_beat_s": 0.28,
+   "first_beat_s": 0.289,
    "onset_support": {
-    "share_of_beats_with_onset": 0.561,
+    "share_of_beats_with_onset": 0.546,
     "by_position": {
-     "1": 0.51,
-     "2": 0.551,
+     "1": 0.469,
+     "2": 0.571,
      "3": 0.592,
-     "4": 0.592
+     "4": 0.551
     },
-    "median_offset_ms": 0.14,
-    "p95_abs_offset_ms": 38.53
+    "median_offset_ms": 5.41,
+    "p95_abs_offset_ms": 38.94
    },
    "grid_vs_raw_tracker_ms": {
-    "median": 19.64,
-    "share_over_35ms": 0.388
+    "median": 22.37,
+    "share_over_35ms": 0.429
    },
    "librosa_tempo": 97.51,
    "tempo_check": "agree",
@@ -332,70 +332,70 @@
     "windows": [
      {
       "t": 0.0,
-      "grid_bpm": 98.36,
+      "grid_bpm": 98.28,
       "indep_bpm": 110.64,
-      "diff_pct": 12.48,
+      "diff_pct": 12.57,
       "periodicity": 0.077,
-      "onset_support": 0.79
+      "onset_support": 0.82
      },
      {
       "t": 20.0,
-      "grid_bpm": 112.81,
+      "grid_bpm": 111.25,
       "indep_bpm": 98.2,
-      "diff_pct": -12.94,
+      "diff_pct": -11.72,
       "periodicity": 0.041,
-      "onset_support": 0.97
+      "onset_support": 1.0
      },
      {
       "t": 40.0,
-      "grid_bpm": 97.62,
+      "grid_bpm": 98.01,
       "indep_bpm": 94.37,
-      "diff_pct": -3.34,
+      "diff_pct": -3.71,
       "periodicity": 0.078,
       "onset_support": 1.0
      },
      {
       "t": 60.0,
-      "grid_bpm": 97.74,
+      "grid_bpm": 97.88,
       "indep_bpm": 98.22,
-      "diff_pct": 0.49,
+      "diff_pct": 0.35,
       "periodicity": 0.109,
       "onset_support": 1.0
      },
      {
       "t": 80.0,
-      "grid_bpm": 98.09,
+      "grid_bpm": 98.52,
       "indep_bpm": 94.45,
-      "diff_pct": -3.71,
+      "diff_pct": -4.14,
       "periodicity": 0.054,
-      "onset_support": 1.0
+      "onset_support": 0.97
      }
     ],
     "n_graded_windows": 1,
     "n_windows": 5,
-    "max_abs_diff_pct": 0.49,
+    "max_abs_diff_pct": 0.35,
     "all_within_1_5pct": true
    },
    "downbeat_attack_vs_own_grid": {
-    "n": 25,
-    "median_ms": 0.3,
-    "p10_p90_spread_ms": 61.68
+    "n": 23,
+    "median_ms": 10.18,
+    "p10_p90_spread_ms": 57.93
    },
    "downbeat_lowkick_vs_own_grid": {
-    "n": 31,
-    "median_ms": -13.39,
-    "p10_p90_spread_ms": 42.63
+    "n": 32,
+    "median_ms": -17.94,
+    "p10_p90_spread_ms": 40.83
    },
    "n_tracked_beats": 234,
    "n_consistent_beats": 215,
    "tempo_octave": {
-    "tracker_bpm": 198.68,
+    "tracker_bpm": 196.57,
     "factor": 0.5,
     "preferred_range": [
      80.0,
      160.0
     ],
-    "reported_bpm": 98.44
+    "reported_bpm": 98.23
    }
   },
   {
@@ -403,7 +403,7 @@
    "slug": "29__Seedhe_Maut___Kavi__E",
    "duration_s": 213.8,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 8.3,
+   "analysis_s": 8.4,
    "tempo_bpm": 110.0,
    "time_signature": "4/4",
    "grid_type": "constant",
@@ -546,7 +546,7 @@
    "slug": "24__Seedhe_Maut___Akatsuki__E",
    "duration_s": 155.8,
    "format": "48000 Hz PCM_24 2ch",
-   "analysis_s": 6.8,
+   "analysis_s": 6.7,
    "tempo_bpm": 156.0,
    "time_signature": "4/4",
    "grid_type": "piecewise_constant",
