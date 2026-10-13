@@ -500,6 +500,118 @@ def _accent_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int 
     return None
 
 
+PW_WIN_S, PW_HOP_S = 8.0, 1.0   # local-tempo windows for the onset-based step detector
+PW_MIN_WINDOWS = 10             # a tempo section stays flat for >= 10 windows (~10 s)
+PW_FLAT = 0.01                  # "flat": within 1 % of the section's median tempo
+PW_MIN_STEP = 0.02              # adjacent sections differ by >= 2 %
+PW_COVER = 0.7                  # flat sections cover >= 70 % of the windows (a ramp never does)
+
+
+def _comb_tempo(flux: np.ndarray, fsr: float, ref_bpm: float, step_bpm: float = 0.25,
+                n_phase: int = 48) -> tuple[np.ndarray, np.ndarray]:
+    """Local tempo straight from the onsets: per window, the BPM (within ref/1.4..ref*1.4,
+    which excludes half/double tempo) whose best-phase pulse train lands on the most
+    onset energy. Autocorrelation was tried first and failed: on a house groove the
+    2-beat lag dominates and the 1-beat lag had no peak at all."""
+    from scipy.ndimage import maximum_filter1d
+    pooled = maximum_filter1d(flux, size=max(1, int(0.01 * fsr)))
+    bpms = np.arange(ref_bpm / 1.4, ref_bpm * 1.4, step_bpm)
+    w, h = int(PW_WIN_S * fsr), int(PW_HOP_S * fsr)
+    ts, out = [], []
+    for s in range(0, len(flux) - w, h):
+        seg = pooled[s:s + w]
+        best, best_bpm = -1.0, np.nan
+        for bpm in bpms:
+            per = 60 * fsr / bpm
+            n = int((w - 1) // per)
+            if n < 4:
+                continue
+            ph = np.linspace(0, per, n_phase, endpoint=False)
+            sc = seg[(ph[:, None] + per * np.arange(n)[None, :]).astype(int)].mean(axis=1).max()
+            if sc > best:
+                best, best_bpm = sc, bpm
+        ts.append((s + w / 2) / fsr)
+        out.append(best_bpm)
+    return np.array(ts), np.array(out)
+
+
+def _line_by_onsets(flux: np.ndarray, fsr: float, t0: float, t1: float, bpm: float) -> tuple[float, float]:
+    """Constant-tempo line (a + b*n) over [t0, t1]: period and phase searched on onset
+    energy around `bpm`, then refined on snapped onsets (as _fit_line does)."""
+    from scipy.ndimage import maximum_filter1d
+    pooled = maximum_filter1d(flux, size=max(1, int(0.01 * fsr)))
+    best = (-1.0, t0, 60.0 / bpm)
+    for per in 60.0 / bpm * (1 + np.linspace(-0.006, 0.006, 25)):
+        n = np.arange(int((t1 - t0) / per) + 1)
+        for ph in np.linspace(0, per, 64, endpoint=False):
+            ts = t0 + ph + per * n
+            ts = ts[ts < t1]
+            sc = pooled[np.clip((ts * fsr).astype(int), 0, len(pooled) - 1)].mean()
+            if sc > best[0]:
+                best = (sc, t0 + ph, per)
+    _, a, b = best
+    k = np.arange(int((t1 - a) / b) + 1)
+    g = a + b * k
+    sn = _snap(g, flux, fsr, win=0.015)
+    moved = np.abs(sn - g) > 1e-9
+    if moved.sum() >= 8:
+        b2, a2 = np.polyfit(k[moved], sn[moved], 1)
+        return float(a2), float(b2)
+    return float(a), float(b)
+
+
+def _piecewise_by_onsets(beats: np.ndarray, flux: np.ndarray, fsr: float):
+    """Abrupt tempo steps the TRACKER cannot follow (a one-beat jump 128 -> 100 BPM:
+    Beat This! emitted 230 beats for 192, local tempo swinging 88-500 BPM, so its beats
+    could not be segmented). Find the steps from the onsets instead: local tempo by
+    pulse-train scoring, flat sections, a line fitted to each section's onsets, the
+    switch beat chosen on onset energy. -> (grid, change_idx, info) or None when the
+    tempo curve is not a clean step function (e.g. a ramp)."""
+    ref = 60.0 / float(np.median(np.diff(beats)))
+    t, bpm = _comb_tempo(flux, fsr, ref)
+    if len(t) < 2 * PW_MIN_WINDOWS or np.isnan(bpm).any():
+        return None
+    groups = []
+    for i in range(len(bpm)):
+        if groups and abs(bpm[i] / np.median(bpm[groups[-1][0]:i]) - 1) < PW_FLAT:
+            groups[-1][1] = i + 1
+        else:
+            groups.append([i, i + 1])
+    long = [g for g in groups if g[1] - g[0] >= PW_MIN_WINDOWS]
+    tempos = [float(np.median(bpm[a:b])) for a, b in long]
+    info = {"section_bpm": [round(x, 2) for x in tempos],
+            "cover": round(sum(b - a for a, b in long) / len(bpm), 3)}
+    if len(long) < 2 or info["cover"] < PW_COVER or \
+            any(abs(tempos[i + 1] / tempos[i] - 1) < PW_MIN_STEP for i in range(len(tempos) - 1)):
+        return None
+    half = PW_WIN_S / 2
+    lines = [_line_by_onsets(flux, fsr, t[a] - half, t[b - 1] + half, tp) for (a, b), tp in zip(long, tempos)]
+    first, last = float(beats[0]), float(beats[-1])
+    bounds = [first - 0.5 * lines[0][1]]
+    # the switch beat is scored on +-10 ms max-pooled onsets: onset peaks are a few ms
+    # wide, so exact-time sampling with ~2 ms line error was noisy and once switched to
+    # 100 BPM two beats early (every later bar line shifted by a beat)
+    from scipy.ndimage import maximum_filter1d
+    pooled = maximum_filter1d(flux, size=max(1, int(0.02 * fsr)))
+    for i in range(len(lines) - 1):
+        guess = 0.5 * ((t[long[i][1] - 1] + half) + (t[long[i + 1][0]] - half))
+        bounds.append(_refine_change(lines[i], lines[i + 1], guess, pooled, fsr))
+    bounds.append(last + 0.5 * lines[-1][1])
+    parts, change_idx = [], []
+    for si, (a, b) in enumerate(lines):
+        lo, hi = bounds[si], bounds[si + 1]
+        if si > 0:
+            lo = lo + 0.5 * b
+            change_idx.append(sum(len(p) for p in parts) - 1)
+        n0, n1 = int(np.ceil((lo - a) / b - 1e-9)), int(np.floor((hi - a) / b + 1e-9))
+        parts.append(a + b * np.arange(n0, n1 + 1))
+    grid = np.concatenate(parts)
+    if len(grid) < 16 or np.any(np.diff(grid) <= 0):
+        return None
+    info["changes_s"] = [round(float(x), 3) for x in bounds[1:-1]]
+    return grid, change_idx, info
+
+
 DRIFT_WINDOW = 25        # beats (~6 bars): long enough to average per-hit jitter
 DRIFT_MS = 5.0           # a beat "drifts" when its smoothed onset offset exceeds this
 DRIFT_SHARE = 0.5        # ...and the line model is wrong when most beats drift
@@ -775,10 +887,22 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
         # and the correction moved them +26 ms the wrong way. Per-beat snap only.)
         grid = _resnap_outliers(_snap(np.array(filled), flux, fsr), flux, fsr)
         constant, change_idx, grid_kind = False, [], "variable"
+        # Abrupt tempo steps the tracker smeared: a piecewise grid built from the
+        # onsets, used only if it is at least as clearly on the beat and lands on hits.
+        pw = _piecewise_by_onsets(beats, flux, fsr) if len(beats) >= 64 else None
+        if pw is not None:
+            pgrid, pchange, pinfo = pw
+            c_var, c_pw = _phase_contrast(grid, flux, fsr), _phase_contrast(pgrid, flux, fsr)
+            s_var, s_pw = _support(grid, flux, fsr), _support(pgrid, flux, fsr)
+            ok = c_pw >= c_var and s_pw >= s_var - 0.05
+            fit_info["piecewise_by_onsets"] = {**pinfo, "phase_contrast": [round(c_var, 3), round(c_pw, 3)],
+                                               "support": [round(s_var, 3), round(s_pw, 3)], "chosen": bool(ok)}
+            if ok:
+                grid, change_idx, grid_kind = pgrid, pchange, "piecewise_constant"
         # Before settling for "variable", test a constant grid with onset-chosen
         # phase: use it if its beats are at least as clearly ON the beat (phase
         # contrast) and it is not much worse at landing on hits (support).
-        if len(beats) >= 64:
+        if len(beats) >= 64 and grid_kind == "variable":
             cgrid, cinfo = _constant_by_onsets(beats, k, flux, fsr)
             c_var, c_const = _phase_contrast(grid, flux, fsr), _phase_contrast(cgrid, flux, fsr)
             s_var, s_const = _support(grid, flux, fsr), _support(cgrid, flux, fsr)

@@ -94,6 +94,24 @@ def main():
     audio2 = render_groove(steady, duration=steady[-1] + 1.5, style="house", seed=6)
     c2, info2 = A._drift_correction(steady, audio2, SR)
     check("steady track: grid left alone", c2 is None and not info2["applied"], str(info2))
+
+    print("abrupt tempo steps (onset-based, the tracker smears them)")
+    from evals.eval_robustness import ramp, steps
+    for bpms in ([120, 128, 100], [96, 112]):
+        audio3, true3, downs3, _ = steps(bpms)
+        g = A.analyze(audio3[:, None], SR)
+        d = drift(g.beats, true3)
+        pw = g.meta["fit"].get("piecewise_by_onsets") or {}
+        check(f"steps {bpms}: piecewise grid, every beat within 10 ms", g.meta["grid_kind"] == "piecewise_constant"
+              and pw.get("chosen") and len(g.beats) == len(true3) and d["within_10ms"] > 0.97,
+              f"{g.meta['grid_kind']}, {len(g.beats)}/{len(true3)} beats, within 10 ms {d['within_10ms']:.3f}")
+        gd = g.beats[g.positions == 1]
+        check(f"steps {bpms}: bar lines survive the tempo changes",
+              len(gd) == len(downs3) and np.max(np.abs(gd - downs3)) < 0.02, f"{len(gd)}/{len(downs3)} downbeats")
+    audio4, true4, *_ = ramp(110, 130)
+    g4 = A.analyze(audio4[:, None], SR)
+    check("a smooth ramp is not mistaken for steps", not (g4.meta["fit"].get("piecewise_by_onsets") or {}).get("chosen"),
+          g4.meta["grid_kind"])
     print(f"\n{'all analyzer rule tests passed' if not FAILS else f'{len(FAILS)} FAILED: {FAILS}'}")
     sys.exit(1 if FAILS else 0)
 
