@@ -139,10 +139,15 @@ clip ─► transcribe.py (HPSS, band onsets, Basic Pitch) ─► score.py (Scor
 app/server.py (FastAPI) serves the API and frontend/dist (React + TypeScript + Vite)
 ```
 
-* `beatagent/` — library code: analysis, grid, sync, edit engine, agent, LLM, Part 3.
+* `beatagent/` — the library, one package per part:
+  * `core/` — audio I/O, onset detection, the beat grid, quality checks (shared)
+  * `beats/` — **Part 1**: analysis (`analyze.py`), click audition, time-stretch, two-track sync
+  * `editing/` — **Part 2**: edit engine (`edl.py`), session + undo, chat agent, LLM interpreter, measured sections
+  * `recreate/` — **Part 3**: score format, transcription, Web Audio page, chat score edits
 * `app/server.py` — HTTP API used by the UI (decks, chat, sync, recreate).
 * `frontend/` — two DJ decks with waveform + grid, chat per deck, SYNC panel, RECREATE panel.
-* `evals/` — every harness and its results (`evals/results/`).
+* `evals/` — harnesses grouped the same way (`part1/`, `part2/`, `part3/`, `common/`), results in
+  `evals/results/`, listening evidence in `evals/evidence/`.
 * `tests/` — deterministic tests (no key, no network).
 
 **What the LLM does and does not do.** It turns one chat message into a structured plan

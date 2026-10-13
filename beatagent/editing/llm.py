@@ -200,6 +200,10 @@ class GeminiInterpreter:
             import hashlib
             key = hashlib.sha256((SYSTEM + "\n" + contents).encode("utf-8")).hexdigest()[:32]
             hit = Path(cache_dir) / f"{key}.json"
+            seed = os.environ.get("BEAT_AGENT_LLM_CACHE_SEED")   # read-only older cache: copy hits over
+            if not hit.exists() and seed and (Path(seed) / f"{key}.json").exists():
+                hit.parent.mkdir(parents=True, exist_ok=True)
+                hit.write_bytes((Path(seed) / f"{key}.json").read_bytes())
             if hit.exists():
                 rec = json.loads(hit.read_text(encoding="utf-8"))
                 self.usage["cache_hits"] = self.usage.get("cache_hits", 0) + 1
