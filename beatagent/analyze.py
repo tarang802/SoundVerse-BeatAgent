@@ -23,7 +23,7 @@ import numpy as np
 
 from .audio_io import to_mono
 from .grid import BeatGrid, tempo_segments_from_beats
-from .onsets import flux_envelope, low_flux
+from .onsets import flux_envelope, low_flux, onsets_near
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
 _MODEL_CACHE: dict = {}
@@ -500,6 +500,44 @@ def _accent_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int 
     return None
 
 
+DRIFT_WINDOW = 25        # beats (~6 bars): long enough to average per-hit jitter
+DRIFT_MS = 5.0           # a beat "drifts" when its smoothed onset offset exceeds this
+DRIFT_SHARE = 0.5        # ...and the line model is wrong when most beats drift
+
+
+def _drift_correction(grid: np.ndarray, mono: np.ndarray, sr: int) -> tuple[np.ndarray | None, dict]:
+    """Live playing (no click): tempo wanders slowly, so straight-line grids miss by
+    15-25 ms over long stretches (synthetic A3: worst beat 108 ms, 86 % within 10 ms).
+
+    Measured in the grid's own frame: each grid beat's offset to the actual onset
+    (+-50 ms), then a running MEDIAN over DRIFT_WINDOW beats (ignores a minority of wrong
+    onsets, e.g. pad swells in a drumless breakdown) and a quadratic smoother. If most
+    beats sit more than DRIFT_MS off, every beat moves by its smoothed offset: the grid
+    follows the drift and averages out per-hit jitter; beat count and bars are unchanged.
+    Steady tracks are left alone (A1's breakdown: 5.6 % of beats over 5 ms; A3: 88 %)."""
+    from scipy.ndimage import median_filter
+    from scipy.signal import savgol_filter
+    info = {"window_beats": DRIFT_WINDOW, "applied": False}
+    if len(grid) < 2 * DRIFT_WINDOW:
+        return None, info
+    on = onsets_near(mono, sr, grid, win=0.05)
+    r = on - grid
+    ok = ~np.isnan(r)
+    if ok.sum() < DRIFT_WINDOW:
+        return None, info
+    ri = np.interp(np.arange(len(r)), np.where(ok)[0], r[ok])
+    sm = savgol_filter(median_filter(ri, size=DRIFT_WINDOW, mode="nearest"), DRIFT_WINDOW, 2)
+    share = float(np.mean(np.abs(sm) > DRIFT_MS / 1000))
+    info.update({"share_beats_over_5ms": round(share, 3), "max_offset_ms": round(float(np.abs(sm).max() * 1000), 2)})
+    if share < DRIFT_SHARE:
+        return None, info
+    new = grid + sm
+    if np.any(np.diff(new) <= 0):
+        return None, info
+    info["applied"] = True
+    return new, info
+
+
 def _compound_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int | None:
     """Compound meters (beats are dotted quarters): 6/8 = 2 beats per bar, 12/8 = 4.
 
@@ -752,6 +790,11 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
             # otherwise 4 beats per bar, the DJ convention.
             force_bpb = 3 if bpb_o % 3 == 0 else 4
     octave["reported_bpm"] = round(float(60 / np.median(np.diff(grid))), 2)
+    if grid_kind in ("constant", "piecewise_constant"):
+        corrected, dinfo = _drift_correction(grid, mono, sr)
+        fit_info["drift_correction"] = dinfo
+        if corrected is not None:
+            grid, constant, grid_kind = corrected, False, "variable"
     if len(grid) > 8 and not _is_compound(grid, flux, fsr):
         acc = _accent_bar_length(grid, *low_flux(mono, sr))
         fit_info["accent_bar_length"] = acc
