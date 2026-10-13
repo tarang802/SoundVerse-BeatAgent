@@ -1260,6 +1260,12 @@
     "phase_shift_ms": -36.08,
     "n_beats_fitted": 195
    },
+   "drift_correction": {
+    "window_beats": 25,
+    "applied": false,
+    "share_beats_over_5ms": 0.0,
+    "max_offset_ms": 0.63
+   },
    "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 92,
@@ -1278,7 +1284,7 @@
   "n_tracked_beats": 256,
   "n_consistent_beats": 256,
   "n_tracked_downbeats": 69,
-  "tracking_s": 1.99,
-  "total_s": 3.29
+  "tracking_s": 3.1,
+  "total_s": 5.39
  }
 }

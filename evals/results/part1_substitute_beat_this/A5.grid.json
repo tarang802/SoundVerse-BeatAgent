@@ -1872,6 +1872,12 @@
     "tracker_split_s": 62.6,
     "refined_s": 64.4983
    },
+   "drift_correction": {
+    "window_beats": 25,
+    "applied": false,
+    "share_beats_over_5ms": 0.0,
+    "max_offset_ms": 0.85
+   },
    "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
@@ -1890,7 +1896,7 @@
   "n_tracked_beats": 294,
   "n_consistent_beats": 292,
   "n_tracked_downbeats": 73,
-  "tracking_s": 3.8,
-  "total_s": 5.42
+  "tracking_s": 3.04,
+  "total_s": 5.3
  }
 }

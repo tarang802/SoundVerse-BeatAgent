@@ -5,7 +5,7 @@
   {
    "clip": "A1",
    "duration_s": 361.5,
-   "analysis_s": 11.74,
+   "analysis_s": 13.05,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 124.0,
@@ -32,7 +32,7 @@
   {
    "clip": "A2",
    "duration_s": 157.4,
-   "analysis_s": 3.98,
+   "analysis_s": 5.0,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 86.0,
@@ -59,36 +59,36 @@
   {
    "clip": "A3",
    "duration_s": 185.2,
-   "analysis_s": 4.61,
+   "analysis_s": 7.52,
    "tracker": "beat_this:small0",
-   "grid_type": "piecewise_constant",
-   "tempo_bpm": 117.997,
+   "grid_type": "variable",
+   "tempo_bpm": 117.982,
    "time_signature": "4/4",
    "confidence": 0.981,
-   "beat_F": 0.9917,
-   "beat_AMLt": 0.9972,
+   "beat_F": 0.9972,
+   "beat_AMLt": 1.0,
    "raw_beat_F": 0.9959,
-   "drift_max_ms": 108.55,
-   "drift_median_ms": 6.47,
-   "within_10ms": 0.8639,
-   "err_first10pct_ms": 13.59,
-   "err_last10pct_ms": 7.68,
+   "drift_max_ms": 88.57,
+   "drift_median_ms": -2.08,
+   "within_10ms": 0.9778,
+   "err_first10pct_ms": 1.46,
+   "err_last10pct_ms": -2.18,
    "raw_drift_max_ms": 52.37,
    "segments": [
     [
      1,
-     112.254
+     112.507
     ],
     [
-     6,
-     117.997
+     7,
+     117.988
     ]
    ]
   },
   {
    "clip": "A4",
    "duration_s": 145.9,
-   "analysis_s": 3.29,
+   "analysis_s": 5.39,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 118.0,
@@ -115,7 +115,7 @@
   {
    "clip": "A5",
    "duration_s": 140.5,
-   "analysis_s": 5.42,
+   "analysis_s": 5.3,
    "tracker": "beat_this:small0",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 128.001,
@@ -146,7 +146,7 @@
   {
    "clip": "A6",
    "duration_s": 114.0,
-   "analysis_s": 3.95,
+   "analysis_s": 4.1,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 68.0,
@@ -173,7 +173,7 @@
   {
    "clip": "A7",
    "duration_s": 183.3,
-   "analysis_s": 6.74,
+   "analysis_s": 7.19,
    "tracker": "beat_this:small0",
    "grid_type": "constant",
    "tempo_bpm": 128.0,

@@ -12,19 +12,19 @@ Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-mea
 | Downbeat F-measure (±70 ms) | ≥ 0.80 | 6/6 clips pass | ✅ |
 | Grid drift, 6-min constant clip | every beat within 10 ms | A1 (362 s): max 1.92 ms, 100% within 10 ms | ✅ |
 | Sync kick offsets | median ≤ 5 ms, max ≤ 15 ms | A7→A1 @ bar 33: median 0.05 ms, max 0.23 ms, 123/123 beats measured | ✅ |
-| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 11.74 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
+| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 13.05 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
 
 ## Beat grid per clip
 
 | clip | duration_s | analysis_s | grid_type | tempo_bpm | time_signature | beat_F | beat_AMLt | downbeat_F | drift_max_ms | within_10ms | raw_beat_F | raw_drift_max_ms | confidence | librosa beat_F |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| A1 | 361.5 | 11.74 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
-| A2 | 157.4 | 3.98 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
-| A3 | 185.2 | 4.61 | piecewise_constant | 117.997 | 4/4 | 0.9917 | 0.9972 | n/a | 108.55 | 0.8639 | 0.9959 | 52.37 | 0.981 | 0.9903 |
-| A4 | 145.9 | 3.29 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
-| A5 | 140.5 | 5.42 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
-| A6 | 114.0 | 3.95 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
-| A7 | 183.3 | 6.74 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
+| A1 | 361.5 | 13.05 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
+| A2 | 157.4 | 5.0 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
+| A3 | 185.2 | 7.52 | variable | 117.982 | 4/4 | 0.9972 | 1.0 | n/a | 88.57 | 0.9778 | 0.9959 | 52.37 | 0.981 | 0.9903 |
+| A4 | 145.9 | 5.39 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
+| A5 | 140.5 | 5.3 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
+| A6 | 114.0 | 4.1 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
+| A7 | 183.3 | 7.19 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
 
 `beat_AMLt` = mir_eval continuity score that also accepts double/half-tempo and off-beat counting (F low + AMLt high = right beats, different counting convention; both low = wrong grid). `raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.
 
@@ -32,7 +32,7 @@ Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-mea
 
 - **A1**: Pass. Confidence is low (≈0.6) only because the tracker drops beats in the 16-bar drumless breakdown; the fitted grid keeps counting through it.
 - **A2**: Pass. No tempo-octave error on the half-time groove (86 BPM, not 43/172).
-- **A3**: Beat F 0.9917; grid type `piecewise_constant` (a 112->118 BPM ramp, then ~118); worst beat 108.55 ms. An earlier variable-grid version had 73 ms worst; the current constant/piecewise tests (needed so real constant-tempo hip-hop is not mislabelled variable) model the drift as two constant sections instead. 12 ms random per-hit jitter is in the clip by design.
+- **A3**: Beat F 0.9972; grid type `variable` (a 112->118 BPM ramp, then ~118); worst beat 88.57 ms. An earlier variable-grid version had 73 ms worst; the current constant/piecewise tests (needed so real constant-tempo hip-hop is not mislabelled variable) model the drift as two constant sections instead. 12 ms random per-hit jitter is in the clip by design.
 - **A4**: Pass after trimming: the tracker invented a 60 BPM pulse over the 47 s pad intro; beats with no onset evidence at the start/end are dropped. Assumption: the reference starts at the drum entry (true for our substitute; unknown for the real pack).
 - **A5**: Pass. The tracker drifts toward the new tempo ~4.5 s early; the change point is re-chosen from onsets (found at bar 33, 64.498 s vs true 64.500 s).
 - **A6**: **Downbeat FAIL (0.67).** 6/8 is reported as 12/8: Beat This! marks a downbeat every 4 dotted-quarter beats, so bars come out twice as long. Not fixed: telling 6/8 from accented 4/4 needs a meter model we did not build; a quick heuristic risked breaking 4/4.

@@ -1,32 +1,33 @@
-  house_124              pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.992 5.08s
-  rock_60                pass  | bpm 120.0 x2.0 constant 4/4 F 0.6667 AMLt 0.9938 dF None drift 1.53 conf 0.952 2.86s
-  rock_90                pass  | bpm 90.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.66 conf 1.0 2.86s
-  halftime_140           pass  | bpm 140.0 x2.0 constant 4/4 F 1.0 AMLt 1.0 dF None drift 1.55 conf 1.0 1.82s
-  dnb_174                pass  | bpm 87.0 x0.5 constant 4/4 F 0.6667 AMLt 1.0 dF None drift 1.42 conf 0.5 2.67s
-  fast_200               pass  | bpm 100.0 x0.5 constant 4/4 F 0.6667 AMLt 1.0 dF None drift 1.4 conf 0.5 1.96s
-  swing_118              pass  | bpm 118.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.89 conf 1.0 2.75s
-  waltz_3-4_120          pass  | bpm 120.0 x0.5 constant 3/4 F 1.0 AMLt 1.0 dF None drift 1.2 conf 0.698 2.61s
-  six8_68                pass  | bpm 68.0 x1.0 constant 6/8 F 1.0 AMLt 1.0 dF 1.0 drift 1.67 conf 1.0 1.88s
-  live_drift_112         pass  | bpm 110.91 x1.0 piecewise_constant 4/4 F 0.9969 AMLt 0.9938 dF 1.0 drift None conf 0.871 3.01s
-  ramp_110-130           pass  | bpm 119.93 x1.0 variable 4/4 F 0.9875 AMLt 1.0 dF 0.975 drift None conf 0.994 3.02s
-  steps_120-128-100      FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type  | bpm 128.0 x1.0 variable 4/4 F 0.7005 AMLt 0.5766 dF 0.6154 drift None conf 0.478 3.67s
-  breakdown_124          pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 2.03 conf 0.677 3.58s
-  fade_in_out            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.87 conf 0.992 2.62s
-  lead_silence_10s       pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.93 conf 0.984 2.69s
-  very_quiet_-40dB       pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 0.96 conf 0.97 2.64s
-  clipped_+12dB          pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 2.52 conf 0.867 2.67s
-  dc_offset              pass  | bpm 124.0 x1.0 constant 4/4 F 0.9961 AMLt 0.9922 dF 1.0 drift 1.73 conf 1.0 2.71s
-  fmt_22k_mono_16        pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 4.73 conf 0.984 2.54s
-  fmt_48k_stereo_24      pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.69 conf 0.992 2.78s
-  fmt_96k_stereo_float   pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 0.69 conf 0.992 3.52s
-  fmt_44k_mono_8bit      pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 1.0 2.59s
-  fmt_flac_16            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.992 3.01s
-  fmt_mp3_48k            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.76 conf 0.992 2.64s
-  long_10min             pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.989 25.33s
-  silence_30s            refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.12s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
-  white_noise_30s        refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.5s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
-  sine_440_30s           refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.44s err=ValueError: Only 1 beats detected; no usable grid (is there a pulse?)
-  clip_2s                refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 0.1s err=ValueError: Only 1 beats detected; no usable grid (is there a pulse?)
-  clip_0.5s              refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 0.07s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
+  house_124              pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.992 5.7s
+  rock_60                pass  | bpm 120.0 x2.0 constant 4/4 F 0.6667 AMLt 0.9938 dF None drift 1.53 conf 0.952 2.73s
+  rock_90                pass  | bpm 90.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.66 conf 1.0 2.73s
+  halftime_140           pass  | bpm 140.0 x2.0 constant 4/4 F 1.0 AMLt 1.0 dF None drift 1.55 conf 1.0 1.73s
+  dnb_174                pass  | bpm 87.0 x0.5 constant 4/4 F 0.6667 AMLt 1.0 dF None drift 1.42 conf 0.5 3.45s
+  fast_200               pass  | bpm 100.0 x0.5 constant 4/4 F 0.6667 AMLt 1.0 dF None drift 1.4 conf 0.5 3.05s
+  swing_118              pass  | bpm 118.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.89 conf 1.0 3.48s
+  waltz_3-4_120          pass  | bpm 120.0 x0.5 constant 3/4 F 1.0 AMLt 1.0 dF None drift 1.2 conf 0.698 5.38s
+  six8_68                pass  | bpm 68.0 x1.0 constant 6/8 F 1.0 AMLt 1.0 dF 1.0 drift 1.67 conf 1.0 4.34s
+  live_drift_112         pass  | bpm 110.88 x1.0 variable 4/4 F 0.9969 AMLt 0.9938 dF 1.0 drift None conf 0.871 6.15s
+  ramp_110-130           pass  | bpm 119.93 x1.0 variable 4/4 F 0.9875 AMLt 1.0 dF 0.975 drift None conf 0.994 4.63s
+  steps_120-128-100      FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type  | bpm 128.0 x1.0 variable 4/4 F 0.7005 AMLt 0.5766 dF 0.6154 drift None conf 0.478 6.1s
+  breakdown_124          pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 2.03 conf 0.677 6.5s
+  fade_in_out            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.87 conf 0.992 5.87s
+  lead_silence_10s       pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.93 conf 0.984 5.26s
+  very_quiet_-40dB       pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 0.96 conf 0.97 5.99s
+  clipped_+12dB          pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 2.52 conf 0.867 5.3s
+  dc_offset              pass  | bpm 124.0 x1.0 constant 4/4 F 0.9961 AMLt 0.9922 dF 1.0 drift 1.73 conf 1.0 5.98s
+  fmt_22k_mono_16        pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 4.73 conf 0.984 3.04s
+  fmt_48k_stereo_24      pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.69 conf 0.992 5.37s
+  fmt_96k_stereo_float   pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 0.69 conf 0.992 7.55s
+  fmt_44k_mono_8bit      pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 1.0 4.27s
+  fmt_flac_16            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.992 4.93s
+  fmt_mp3_48k            pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.76 conf 0.992 5.47s
+  long_10min             pass  | bpm 124.0 x1.0 constant 4/4 F 1.0 AMLt 1.0 dF 1.0 drift 1.91 conf 0.989 39.9s
+  silence_30s            refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.57s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
+  white_noise_30s        refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.69s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
+  sine_440_30s           refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 1.71s err=ValueError: Only 1 beats detected; no usable grid (is there a pulse?)
+  clip_2s                refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 0.12s err=ValueError: Only 1 beats detected; no usable grid (is there a pulse?)
+  clip_0.5s              refused with message  | bpm None xNone None None F None AMLt None dF None drift None conf None 0.08s err=ValueError: Only 0 beats detected; no usable grid (is there a pulse?)
 
 passed 29/30
+exit=0
