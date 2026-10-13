@@ -1,0 +1,13 @@
+# docker compose up  -> tests + Part 1 / Part 3 evals, then the app on http://localhost:8000
+# Your key is read from .env (or the shell) at run time; it is never copied into the image.
+services:
+  beat-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      BEAT_AGENT_LLM: ${BEAT_AGENT_LLM:-}
+    volumes:
+      - ./evals/results:/app/evals/results

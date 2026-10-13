@@ -1,0 +1,16 @@
+.env
+.git
+.venv
+.claude
+__pycache__
+**/__pycache__
+work
+tools
+frontend/node_modules
+data/testpack
+data/substitute/*.wav
+data/p3/*.wav
+data/p3dev/*.wav
+evals/results/**/*.wav
+evals/results/**/*.flac
+models/*.ckpt
