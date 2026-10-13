@@ -1,0 +1,33 @@
+# Builds the Docker image exactly as `docker compose up --build` would, then checks it:
+# the test suites, a Part 3 render in the container's Chromium, and the app answering on :8000.
+name: docker
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the image
+        run: docker compose build
+
+      - name: Test suites inside the container
+        run: docker compose run --rm beat-agent python run.py test
+
+      - name: Part 3 offline render in the container's Chromium
+        run: docker compose run --rm beat-agent sh -c "python run.py p3pack && python -m evals.part3.eval_part3"
+
+      - name: App starts and serves the API
+        run: |
+          docker compose run -d --service-ports --name app beat-agent python run.py app
+          for i in $(seq 1 60); do
+            if curl -fs http://localhost:8000/api/library > /dev/null; then echo "app is up"; exit 0; fi
+            sleep 2
+          done
+          docker logs app
+          exit 1
