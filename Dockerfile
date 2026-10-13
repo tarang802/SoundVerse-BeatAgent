@@ -1,5 +1,6 @@
 # Beat Agent: app + evals in one image (CPU only).
-FROM python:3.11-slim
+# bookworm pinned: Playwright's --with-deps installer targets Debian 12
+FROM python:3.11-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=utf-8 \

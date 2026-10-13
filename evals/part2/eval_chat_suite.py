@@ -39,7 +39,8 @@ from beatagent.editing.session import Session  # noqa: E402
 from evals.part2.eval_sessions import check_turn, grid_truth  # noqa: E402
 
 GRIDS = ROOT / "evals" / "results" / "part1_substitute_beat_this"
-REAL = Path("C:/Users/Gupt Ah/Downloads/Telegram Desktop/12. Seedhe Maut - Naam Kaam Sheher [E].flac")
+# optional copyrighted test song (not in the repo); its two cases are skipped when unset
+REAL = Path(os.environ.get("BEAT_AGENT_REAL_SONG") or "data/real/not-provided.flac")
 OUT = ROOT / "evals" / "results" / "part2_chat_suite"
 
 

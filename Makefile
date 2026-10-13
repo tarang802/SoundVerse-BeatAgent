@@ -1,11 +1,12 @@
 # make demo   -> venv, deps, models, test packs, tests, Part 1 + Part 3 evals, then the app
 # Same steps as `python run.py demo`; this file is for macOS/Linux (Windows: use run.py or Docker).
+PYTHON ?= python3.11
 PY := .venv/bin/python
 
 .PHONY: demo app test e2e chat eval docker setup
 
 $(PY):
-	python3.11 -m venv .venv
+	$(PYTHON) -m venv .venv
 	$(PY) -m pip install -r requirements.txt
 	$(PY) -m pip install --no-deps basic-pitch==0.4.0
 	$(PY) -m playwright install chromium
