@@ -101,6 +101,9 @@ class BeatGrid:
             "time_signature": self.time_signature,
             "beats_per_bar": self.beats_per_bar,
             "grid_type": "constant" if self.constant_tempo else "variable",
+            # the exact tempo model: constant | piecewise_constant (tempo changes, one
+            # line per section, see tempo_segments) | variable (beat-by-beat)
+            "tempo_model": (self.meta or {}).get("grid_kind", "constant" if self.constant_tempo else "variable"),
             "tempo_segments": self.segments,
             "confidence": self.confidence,
             "duration": round(self.duration, 6),
