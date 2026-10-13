@@ -186,7 +186,7 @@ for each way it misbehaved in testing (see `DECISIONS.md` §6).
 
 | Target | Result |
 |---|---|
-| Beat F ≥ 0.90 (steady clips) | 1.00 on A1, A2, A4, A6, A7 (A3 0.99, A5 1.00) |
+| Beat F ≥ 0.90 (steady clips) | 1.00 on A1, A2, A4, A6, A7 (A3 live drift 0.997 with 98 % of beats within 10 ms, A5 1.00) |
 | Downbeat F ≥ 0.80 | 1.00 on A1, A2, A4, A5, A6 (6/8), A7 (A3 has no downbeat reference) |
 | Drift ≤ 10 ms over 6 min (A1) | **1.92 ms** max (raw tracker: 377 ms) |
 | Sync kicks median ≤ 5 / max ≤ 15 ms (A7 → A1 @ bar 33) | **0.05 / 0.23 ms** |
@@ -223,9 +223,9 @@ or their click is heard as a hi-hat; some hats next to snares are labelled snare
 
 ## Known issues (the top ones)
 
-1. **A3-style tempo ramps and abrupt tempo jumps.** A short ramp inside a steady track
-   is approximated by a straight line (worst beat 108 ms, 86 % of beats within 10 ms);
-   a one-beat jump like 128 → 100 BPM is smoothed over by the tracker.
+1. **Abrupt tempo jumps and the hardest live passages.** A one-beat jump like
+   128 → 100 BPM is smoothed over by the tracker. Live drift (A3) is followed by a drift
+   correction (98 % of beats within 10 ms), but its worst single beat is still 89 ms off.
 2. **Real-music sync is not proven to ≤ 5 ms.** The kick detector cannot resolve it on
    hip-hop (it reads 12–17 ms even on a perfect self-sync). Listen to the renders.
 3. **Part 3 on dense mixes.** No source separation, so P4 is weak (drums 0.51, pitched

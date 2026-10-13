@@ -21,9 +21,16 @@ predict).
 case on the 6-minute substitute A1 into 1.92 ms.
 
 **Trade-off.** The tracker smooths over *abrupt* large tempo jumps (e.g. 128 → 100 BPM in
-one beat): the one robustness case that fails. A short tempo ramp inside a steady track
-(substitute A3's opening) is approximated by a line: worst beat 108 ms there. A splice
-of tracked beats into ramps was tried and **reverted** — it made A3 worse overall.
+one beat): the one robustness case that fails.
+
+**Live drift.** A band without a click (substitute A3: tempo wandering 106–118 BPM, 12 ms
+per-hit jitter) is not a straight line, and snapping to individual hits copies the
+jitter. Two attempts failed first: splicing tracked beats into "ramps" (worse) and a
+smoothed-residual statistic that also fired on A1's drumless breakdown. What works: in
+the grid's own frame, a running median of each beat's onset offset over 25 beats, then
+a quadratic smoother; if most beats (≥ 50 %) sit > 5 ms off, the grid follows the
+smoothed offsets. A3: 86 % → 98 % of beats within 10 ms; steady clips and all 12 real
+tracks never trigger it (A1: 5.6 % of beats, real tracks ≤ 35 %).
 
 **Would change my mind.** Real annotated live recordings showing the variable path beats
 the piecewise one; or a tracker that follows abrupt changes.
