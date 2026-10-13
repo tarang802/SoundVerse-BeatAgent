@@ -538,6 +538,29 @@ def _drift_correction(grid: np.ndarray, mono: np.ndarray, sr: int) -> tuple[np.n
     return new, info
 
 
+def _smooth_variable(grid: np.ndarray) -> tuple[np.ndarray, dict]:
+    """A variable grid is tracked beats snapped to the actual hits, so it copies every
+    hit's timing error (a live drummer's ~10 ms jitter) into the grid. Smooth the beat
+    times over DRIFT_WINDOW beats (quadratic, so tempo ramps and drift are followed),
+    replace outliers (> 3 robust SD from the curve: wrong snaps) by the curve, smooth
+    again. 8 new synthetic drifting takes (not A3): 66-77 % -> 78-91 % of beats within
+    10 ms of the true pulse (tests/test_analyze_rules.py)."""
+    from scipy.signal import savgol_filter
+    info = {"window_beats": DRIFT_WINDOW, "applied": False}
+    if len(grid) < 2 * DRIFT_WINDOW:
+        return grid, info
+    s = savgol_filter(grid, DRIFT_WINDOW, 2)
+    r = grid - s
+    mad = float(np.median(np.abs(r - np.median(r))) * 1.4826) + 1e-6
+    bad = np.abs(r) > 3 * mad
+    new = savgol_filter(np.where(bad, s, grid), DRIFT_WINDOW, 2)
+    if np.any(np.diff(new) <= 0):
+        return grid, info
+    info.update({"applied": True, "outliers_replaced": int(bad.sum()),
+                 "mean_shift_ms": round(float(np.mean(np.abs(new - grid)) * 1000), 2)})
+    return new, info
+
+
 def _compound_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int | None:
     """Compound meters (beats are dotted quarters): 6/8 = 2 beats per bar, 12/8 = 4.
 
@@ -552,9 +575,10 @@ def _compound_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> in
     w = int(0.03 * lfsr)
     e = np.array([lflux[max(0, int(t * lfsr) - w): int(t * lfsr) + w + 1].max(initial=0.0) for t in grid])
     m2 = np.array([e[i::2].mean() for i in range(2)])
-    if m2.max() / (m2.mean() + 1e-12) < 1.15:          # no on/off-beat accent pattern at all
-        return None
     m4 = np.array([e[i::4].mean() for i in range(4)])
+    # an accent pattern at either length (a 12/8 accent on beat 1 alone barely shows at 2)
+    if max(m2.max() / (m2.mean() + 1e-12), m4.max() / (m4.mean() + 1e-12)) < 1.15:
+        return None
     top = int(m4.argmax())
     ratio = float(m4[(top + 2) % 4] / (m4[top] + 1e-12))
     if ratio >= 0.85:
@@ -765,6 +789,8 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
                                               "support_variable": round(s_var, 3), "chosen": bool(choose)}
             if choose:
                 grid, constant, grid_kind = cgrid, True, "constant"
+        if grid_kind == "variable":
+            grid, fit_info["variable_smoothing"] = _smooth_variable(grid)
     # Tempo-change points are kept as TIMES while beats are trimmed: as indices
     # they would point at the wrong beats once leading beats are removed.
     change_t = [float(grid[i]) for i in change_idx]
