@@ -69,12 +69,13 @@ LEDGER = ["## Bugs found in the final debugging pass\n",
           "| page safety test (13 Oct) | Generated page built mixer rows with innerHTML from track names (markup injection) and embedded raw `<` in its data | names inserted as text; `< > &` escaped in the JSON | fixed |",
           "| security review (13 Oct) | `/api/open` accepted absolute paths: any client could read audio anywhere on disk | only files inside the project | fixed |",
           "| one-command check (13 Oct) | `run.py demo` into a log lost the test summary (stdout buffered while the app served) | line-buffered output | fixed |",
+          "| A6 review (13 Oct) | \"Dholak in 6/8\" counted 12/8 from the tracker's downbeats (downbeat F 0.67): compound meters skipped the accent-based bar-length check | compound bar length (2 vs 4 dotted beats) from the kick accent | fixed (1.00; other clips unchanged) |",
           "| A3 investigation | 112→118 BPM ramp in the first 15 s: piecewise line misses up to 108 ms there | tried splicing tracked beats into ramps: worse overall (tracker unreliable there) — reverted | **open** |",
           "",
           "## Known limitations (honest)\n",
           "- **Abrupt large tempo steps** (e.g. 128 → 100 BPM in one beat): the tracker smooths over them; the grid is wrong around the step (robustness `steps_120-128-100`).",
           "- **Short tempo ramps inside otherwise steady tracks** (A3's opening): grid is a straight line there; worst beat ~108 ms, 86 % of beats within 10 ms.",
-          "- **6/8 vs 12/8** (A6): both are musically defensible; bar length counted as 12/8 → downbeat F 0.667 against a 6/8 reference.",
+          "- **6/8 vs 12/8** is decided from the kick accent pattern; when that is unclear the tracker's downbeats decide (A6 now 6/8, downbeat F 1.00; it was 12/8 / 0.67 before the accent test).",
           "- **Real music has no answer key here**: real-song numbers are agreement with an independent tempo estimate and onset support, not accuracy.",
           "- **Real-music sync is not proven ≤ 5 ms**: the downbeat-kick detector reports ~20 ms median on real pairs, but it reports 12–17 ms on a self-sync that is perfect by construction (different bars of the same song), so the detector cannot resolve this on hip-hop. Listen to `evals/results/real/sync_*_mix.wav` (generated locally).",
           "- **Click checks on drums are weak by nature**: a beat-aligned splice sits on a kick attack, which masks even a hard cut (to the ear too). The engine's crossfade is proven on drumless material; on drum-heavy splices the 0.0 dB readings mean \"no click above the kick\", nothing more.",
@@ -160,10 +161,11 @@ def main():
         db = [r for r in p1_rows if r.get("downbeat_F") is not None]
         a1 = next(r for r in p1_rows if r["clip"] == "A1")
         a3 = next((r for r in p1_rows if r["clip"] == "A3"), None)
+        misses = ", ".join(r["clip"] + " " + str(r["downbeat_F"]) for r in db if r["downbeat_F"] < 0.8)
         L.append(f"| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | "
                  f"beat F ≥ 0.90 on {sum(r['beat_F'] >= 0.9 for r in p1_rows)}/{len(p1_rows)} clips; "
-                 f"downbeat F ≥ 0.80 on {sum(r['downbeat_F'] >= 0.8 for r in db)}/{len(db)} "
-                 f"({', '.join(r['clip'] + ' ' + str(r['downbeat_F']) for r in db if r['downbeat_F'] < 0.8)} misses); "
+                 f"downbeat F ≥ 0.80 on {sum(r['downbeat_F'] >= 0.8 for r in db)}/{len(db)}"
+                 + (f" ({misses} misses)" if misses else "") + "; "
                  f"A1 (6 min) drift {a1['drift_max_ms']} ms, analysed in {a1['analysis_s']} s"
                  + (f"; A3 ramp worst beat {a3['drift_max_ms']} ms" if a3 else "") + " |")
     L.append(f"| Part 1 robustness (generated, known answers) | tempo 60–200, grooves, meters, tempo changes, "

@@ -30,7 +30,7 @@ Basic Pitch), never from the LLM.
 | 1 | Click audition export | ✅ works |
 | 1 | Two-track sync, 60 s render, pitch preserved, downbeats aligned | ✅ works |
 | 1 | mir_eval accuracy report | ✅ works (synthetic pack) |
-| 1 | Targets | 🟡 4 of 5 met on the synthetic pack; downbeat F misses on A6 (6/8 vs 12/8) — see below |
+| 1 | Targets | ✅ all 5 met on the synthetic pack (real-song sync not proven — see Known issues) |
 | 2 | Typed edit ops (remove, keep only, repeat/loop, move, copy/insert, fade, gain) | ✅ works |
 | 2 | Echo before cut, clean splices, format kept, grid stays true, undo/redo, graceful errors | ✅ works |
 | 2 | Preview player with waveform + grid; variable-tempo edits | ✅ works |
@@ -187,7 +187,7 @@ for each way it misbehaved in testing (see `DECISIONS.md` §6).
 | Target | Result |
 |---|---|
 | Beat F ≥ 0.90 (steady clips) | 1.00 on A1, A2, A4, A6, A7 (A3 0.99, A5 1.00) |
-| Downbeat F ≥ 0.80 | 1.00 on A1, A2, A4, A5, A7; **A6 0.67** (counted 12/8 vs a 6/8 reference) |
+| Downbeat F ≥ 0.80 | 1.00 on A1, A2, A4, A5, A6 (6/8), A7 (A3 has no downbeat reference) |
 | Drift ≤ 10 ms over 6 min (A1) | **1.92 ms** max (raw tracker: 377 ms) |
 | Sync kicks median ≤ 5 / max ≤ 15 ms (A7 → A1 @ bar 33) | **0.05 / 0.23 ms** |
 | 6-minute track < 60 s on CPU | **11–34 s** across runs on the dev laptop (load-dependent; the `run.py demo` run was the slow one) |
@@ -231,7 +231,8 @@ or their click is heard as a hi-hat; some hats next to snares are labelled snare
 3. **Part 3 on dense mixes.** No source separation, so P4 is weak (drums 0.51, pitched
    0.68); drum classes come from band rules, not a trained classifier.
 
-Also: A6 6/8-vs-12/8 counting; the click metric cannot see a click hidden under a kick
+Also: 6/8 vs 12/8 is decided from the kick accent and falls back to the tracker when the
+accent is unclear; the click metric cannot see a click hidden under a kick
 attack (proven clean on drumless material instead); only hip-hop real tracks were
 available; the app's built-in preview pane (in Claude's desktop app) does not run
 scripts in sandboxed iframes, so use Chrome/Edge for the RECREATE panel.

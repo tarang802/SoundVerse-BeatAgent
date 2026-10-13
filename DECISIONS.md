@@ -149,7 +149,10 @@ a small labelled drum dataset to train one.
   start" includes it).
 * "Delete bars 200–210" on a 90-bar track: refuse with the real bar range.
 * "Chop out the boring part": propose the measured drumless/quiet section, wait for yes.
-* A6 is counted in 12/8 (dotted-quarter beats); a 6/8 reference scores downbeat F 0.667.
+* Compound meters: beats are dotted quarters; 6/8 (2 per bar) vs 12/8 (4) is chosen from
+  the kick accent — if the accent two beats after the strongest is as strong, the bar is
+  6/8. A6 was first counted 12/8 from the tracker's downbeats (downbeat F 0.67); the
+  accent test made it 6/8 (1.00) without changing any other clip.
 * "Sync A7 to A1": A1 is the master and is never stretched; overlap 60 s by default.
 
 ## What I chose not to build
