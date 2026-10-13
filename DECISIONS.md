@@ -30,7 +30,10 @@ smoothed-residual statistic that also fired on A1's drumless breakdown. What wor
 the grid's own frame, a running median of each beat's onset offset over 25 beats, then
 a quadratic smoother; if most beats (≥ 50 %) sit > 5 ms off, the grid follows the
 smoothed offsets. A3: 86 % → 98 % of beats within 10 ms; steady clips and all 12 real
-tracks never trigger it (A1: 5.6 % of beats, real tracks ≤ 35 %).
+tracks never trigger it (A1: 5.6 % of beats, real tracks ≤ 35 %). Testing on 8 *new*
+drifting takes showed most of them take the variable path instead, where snapping to
+each hit copied its jitter (66–77 % within 10 ms); those grids are now smoothed the same
+way with outlier rejection (78–91 %; the tempo-ramp case also went to F 1.00).
 
 **Would change my mind.** Real annotated live recordings showing the variable path beats
 the piecewise one; or a tracker that follows abrupt changes.

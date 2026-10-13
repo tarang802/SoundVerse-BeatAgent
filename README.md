@@ -62,7 +62,7 @@ copy .env.example .env            # then put your GEMINI_API_KEY in .env (never 
 TensorFlow 2.15 (~400 MB), but the bundled ONNX model only needs `onnxruntime`.
 
 *Verified:* a fresh virtual environment built from exactly these two install lines (with
-`uv`, which resolved packages from its local cache) passes all 10 test suites, 201
+`uv`, which resolved packages from its local cache) passes all 11 test suites, 217
 checks. A different machine with an empty package cache was not tested.
 
 ### The one command
@@ -82,7 +82,7 @@ Individual steps:
 | Command | What it does |
 |---|---|
 | `python run.py app` | start the web app |
-| `python run.py test` | all 10 deterministic test suites (no API key needed), summarised |
+| `python run.py test` | all 11 deterministic test suites (no API key needed), summarised |
 | `python run.py e2e` | the real app in headless Edge/Chrome, the demo path end to end: load, grid/click downloads, sync, chat edits with pushback + undo, recreate + chat (offline parser, no key; ~3 min) |
 | `python run.py fuzz` | 421 random edits with invariant checks after each (~5 min) |
 | `python run.py eval` / `syncval` | Part 1: mir_eval report on A1–A7 / sync comparison + `PART1_REPORT.md` |

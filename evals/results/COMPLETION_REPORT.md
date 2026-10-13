@@ -6,7 +6,7 @@
 
 | Suite | What it covers | Result |
 |---|---|---|
-| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 6/6; A1 (6 min) drift 1.92 ms, analysed in 13.05 s; A3 live drift 98 % of beats within 10 ms (worst 88.57 ms) |
+| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 6/6; A1 (6 min) drift 1.92 ms, analysed in 14.65 s; A3 live drift 98 % of beats within 10 ms (worst 88.57 ms) |
 | Part 1 robustness (generated, known answers) | tempo 60–200, grooves, meters, tempo changes, arrangement, levels, formats, non-music | 29/30 (97%) |
 | Part 1 sync robustness (ground truth) | ±20 % stretch, octaves, formats, drift, tempo change, refusals, lengths | 19/19 (100%) |
 | Part 1 brief sync (A7→A1 @ bar 33) | kick offset target | median 0.05 ms, max 0.23 ms, pass True |
@@ -21,7 +21,7 @@
 | Part 3 note F (mir_eval onset-only, +-50 ms) | drums / pitched per clip | P1: drums 0.9286, pitched —; P2: drums 0.7071, pitched 0.9048; P3: drums —, pitched 0.9577; P4: drums 0.5093, pitched 0.6838 |
 | Part 3 on real music (8-bar excerpts, no reference MIDI) | pipeline + render rhythm vs original | 3 tracks; pages clean 3/3; render onset F 0.60-0.78 |
 | Part 2 engine fuzz (no LLM) | 421 random edits, invariants after each | 414 applied, 7 refused cleanly, 0 crashes, 0 invariant failures |
-| Unit tests `tests.test_imports` | | 39/39 pass (exit 0) |
+| Unit tests `tests.test_imports` | | 40/40 pass (exit 0) |
 | Unit tests `tests.test_edl` | | 26/26 pass (exit 0) |
 | Unit tests `tests.test_score` | | 7/7 pass (exit 0) |
 | Unit tests `tests.test_ref_formats` | | 15/15 pass (exit 0) |
@@ -31,6 +31,7 @@
 | Unit tests `tests.test_recreate_api` | | 14/14 pass (exit 0) |
 | Unit tests `tests.test_score_chat` | | 20/20 pass (exit 0) |
 | Unit tests `tests.test_webaudio_page` | | 8/8 pass (exit 0) |
+| Unit tests `tests.test_analyze_rules` | | 9/9 pass (exit 0) |
 
 ## Part 1 — beat alignment and sync
 
@@ -51,36 +52,36 @@
 
 | Case | Result | BPM (octave) | meter | grid | beat F | AMLt | downbeats | drift ms | conf | s |
 |---|---|---|---|---|---|---|---|---|---|---|
-| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 9.49 |
-| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 5.27 |
-| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 6.0 |
-| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 4.25 |
-| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 5.46 |
-| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 2.98 |
-| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 4.9 |
-| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 5.85 |
-| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 4.54 |
-| live_drift_112 | pass | 110.88 (x1.0) | 4/4 | variable | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 6.56 |
-| ramp_110-130 | pass | 119.93 (x1.0) | 4/4 | variable | 0.9875 | 1.0 | 0.975 |  | 0.994 | 4.95 |
-| steps_120-128-100 | FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type | 128.0 (x1.0) | 4/4 | variable | 0.7005 | 0.5766 | 0.6154 |  | 0.478 | 7.06 |
-| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 6.75 |
-| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 5.3 |
-| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 4.36 |
-| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 4.01 |
-| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 4.42 |
-| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 5.26 |
-| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 2.88 |
-| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 4.75 |
-| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 9.36 |
-| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 6.84 |
-| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 5.41 |
-| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 4.4 |
-| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 39.9 |
-| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.57 |
-| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.69 |
-| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.71 |
-| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.12 |
-| clip_0.5s | refused with message |  (x) |  |  |  |  |  |  |  | 0.08 |
+| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 4.72 |
+| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 3.27 |
+| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 3.09 |
+| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 2.09 |
+| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 2.88 |
+| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 2.23 |
+| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 3.06 |
+| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 2.92 |
+| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 2.05 |
+| live_drift_112 | pass | 110.88 (x1.0) | 4/4 | variable | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 3.32 |
+| ramp_110-130 | pass | 120.41 (x1.0) | 4/4 | variable | 1.0 | 1.0 | 1.0 |  | 1.0 | 3.07 |
+| steps_120-128-100 | FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type | 128.03 (x1.0) | 4/4 | variable | 0.7343 | 0.5811 | 0.6346 |  | 0.466 | 3.61 |
+| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 3.93 |
+| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 2.84 |
+| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 3.1 |
+| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 2.84 |
+| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 3.03 |
+| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 2.96 |
+| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 2.47 |
+| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 2.98 |
+| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 3.95 |
+| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 2.8 |
+| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 2.85 |
+| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 2.84 |
+| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 24.78 |
+| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 0.97 |
+| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.32 |
+| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.43 |
+| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.09 |
+| clip_0.5s | refused with message |  (x) |  |  |  |  |  |  |  | 0.07 |
 
 ### Sync robustness (ground-truth kick offsets)
 
@@ -96,7 +97,7 @@
 | b_octave_62 | pass | 1.0 (oct x1.0) | 0.75 / 1.75 | 0.57 / 2.94 |
 | b_octave_248 | pass | 1.0 (oct x1.0) | 0.63 / 1.54 | 0.04 / 2.65 |
 | b_48k_stereo | pass | 1.03226 (oct x1.0) | 0.1 / 2.08 | 0.27 / 0.92 |
-| b_drifting | pass | 0.90113 (oct x1.0) | 0.55 / 1.34 | 0.21 / 2.58 |
+| b_drifting | pass | 0.90133 (oct x1.0) | 0.55 / 1.34 | 0.21 / 2.58 |
 | a_tempo_change_in_overlap | pass | 0.96874 (oct x1.0) | 0.15 / 2.25 | 37.91 / 0.91 |
 | b_bar_5 | pass | 1.03227 (oct x1.0) | 0.2 / 2.13 | 0.26 / 1.07 |
 | a_bar_near_end_refuse | pass — refused: A only has 12.1s after bar 55; a 60s overlap doesn't fit. | | | |
@@ -283,6 +284,8 @@ SYNTHETIC substitute clips (the brief's P1-P4 were not provided); details in `ev
 | security review (13 Oct) | `/api/open` accepted absolute paths: any client could read audio anywhere on disk | only files inside the project | fixed |
 | one-command check (13 Oct) | `run.py demo` into a log lost the test summary (stdout buffered while the app served) | line-buffered output | fixed |
 | A6 review (13 Oct) | "Dholak in 6/8" counted 12/8 from the tracker's downbeats (downbeat F 0.67): compound meters skipped the accent-based bar-length check | compound bar length (2 vs 4 dotted beats) from the kick accent | fixed (1.00; other clips unchanged) |
+| analyzer rule tests (13 Oct) | On 8 new drifting takes, 7 used the variable path, whose onset-snapped beats copied each hit's jitter (66-77 % within 10 ms) | robust quadratic smoothing of variable grids | fixed (78-91 %; ramp case F 1.00; no regressions) |
+| analyzer rule tests (13 Oct) | 6/8-vs-12/8 rule returned 'unknown' for a 12/8 accent on beat 1 only | accent pattern accepted at either bar length | fixed |
 | A3 investigation | Live drift (106-118 BPM random walk, 12 ms jitter): straight-line grid missed by up to 108 ms, 86 % of beats within 10 ms | splicing tracked beats: reverted (worse); then a median-smoothed onset-offset drift correction that only fires when most beats drift | fixed: 98 % within 10 ms (worst beat still 89 ms); steady and real tracks untouched |
 
 ## Known limitations (honest)

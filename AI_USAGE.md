@@ -87,7 +87,7 @@ and deciding what ships.
 
 ## 3. Testing: automated vs manual
 
-**Automated** (re-runnable, see README): 10 deterministic test suites (`python run.py
+**Automated** (re-runnable, see README): 11 deterministic test suites (`python run.py
 test`), a 421-edit fuzz test, Part 1 evals on the synthetic pack plus 30 robustness and
 19 sync cases with exact answers, a 59-case chat suite and the brief's six sessions
 against the live LLM (answers recorded so they replay without quota), and the Part 3
