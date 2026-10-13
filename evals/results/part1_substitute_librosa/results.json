@@ -5,13 +5,14 @@
   {
    "clip": "A1",
    "duration_s": 361.5,
-   "analysis_s": 42.99,
+   "analysis_s": 21.25,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 124.0,
    "time_signature": "4/4",
    "confidence": 0.924,
    "beat_F": 0.0,
+   "beat_AMLt": 0.7752,
    "raw_beat_F": 0.0,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,
@@ -31,15 +32,16 @@
   {
    "clip": "A2",
    "duration_s": 157.4,
-   "analysis_s": 18.01,
+   "analysis_s": 7.11,
    "tracker": "librosa",
    "grid_type": "constant",
-   "tempo_bpm": 172.0,
+   "tempo_bpm": 86.0,
    "time_signature": "4/4",
-   "confidence": 1.0,
-   "beat_F": 0.6677,
+   "confidence": 0.5,
+   "beat_F": 1.0,
+   "beat_AMLt": 1.0,
    "raw_beat_F": 0.6677,
-   "downbeat_F": 0.6667,
+   "downbeat_F": 1.0,
    "raw_downbeat_F": 0.6667,
    "drift_max_ms": 1.0,
    "drift_median_ms": -0.98,
@@ -50,48 +52,50 @@
    "segments": [
     [
      1,
-     172.0
+     86.0
     ]
    ]
   },
   {
    "clip": "A3",
    "duration_s": 185.2,
-   "analysis_s": 5.63,
+   "analysis_s": 7.69,
    "tracker": "librosa",
-   "grid_type": "piecewise_constant",
-   "tempo_bpm": 117.997,
+   "grid_type": "variable",
+   "tempo_bpm": 117.988,
    "time_signature": "4/4",
    "confidence": 0.989,
-   "beat_F": 0.9903,
+   "beat_F": 0.993,
+   "beat_AMLt": 0.9944,
    "raw_beat_F": 0.9986,
-   "drift_max_ms": 545.05,
-   "drift_median_ms": 7.67,
-   "within_10ms": 0.8694,
-   "err_first10pct_ms": 12.82,
-   "err_last10pct_ms": 9.01,
+   "drift_max_ms": 523.5,
+   "drift_median_ms": -2.17,
+   "within_10ms": 0.9583,
+   "err_first10pct_ms": -4.02,
+   "err_last10pct_ms": -2.17,
    "raw_drift_max_ms": 537.78,
    "segments": [
     [
      1,
-     112.545
+     112.435
     ],
     [
      5,
-     117.997
+     117.993
     ]
    ]
   },
   {
    "clip": "A4",
    "duration_s": 145.9,
-   "analysis_s": 5.04,
+   "analysis_s": 6.12,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 118.0,
    "time_signature": "4/4",
    "confidence": 1.0,
    "beat_F": 0.0,
+   "beat_AMLt": 0.9738,
    "raw_beat_F": 0.0,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,
@@ -111,13 +115,14 @@
   {
    "clip": "A5",
    "duration_s": 140.5,
-   "analysis_s": 4.44,
+   "analysis_s": 5.52,
    "tracker": "librosa",
    "grid_type": "piecewise_constant",
    "tempo_bpm": 128.004,
    "time_signature": "4/4",
    "confidence": 1.0,
    "beat_F": 0.0,
+   "beat_AMLt": 0.9826,
    "raw_beat_F": 0.0,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,
@@ -133,7 +138,7 @@
      120.002
     ],
     [
-     33,
+     32,
      128.004
     ]
    ]
@@ -141,13 +146,14 @@
   {
    "clip": "A6",
    "duration_s": 114.0,
-   "analysis_s": 3.55,
+   "analysis_s": 4.62,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 68.0,
-   "time_signature": "12/8",
+   "time_signature": "6/8",
    "confidence": 1.0,
    "beat_F": 0.9961,
+   "beat_AMLt": 0.9922,
    "raw_beat_F": 0.9961,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,
@@ -167,13 +173,14 @@
   {
    "clip": "A7",
    "duration_s": 183.3,
-   "analysis_s": 5.85,
+   "analysis_s": 7.64,
    "tracker": "librosa",
    "grid_type": "constant",
    "tempo_bpm": 128.0,
    "time_signature": "4/4",
    "confidence": 1.0,
    "beat_F": 0.0,
+   "beat_AMLt": 0.9922,
    "raw_beat_F": 0.0,
    "downbeat_F": 0.0,
    "raw_downbeat_F": 0.0,

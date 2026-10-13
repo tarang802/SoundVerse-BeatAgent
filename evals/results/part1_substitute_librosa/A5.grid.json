@@ -11,21 +11,22 @@
  "time_signature": "4/4",
  "beats_per_bar": 4,
  "grid_type": "variable",
+ "tempo_model": "piecewise_constant",
  "tempo_segments": [
   {
    "start_beat": 0,
-   "end_beat": 127,
+   "end_beat": 126,
    "start_bar": 1,
    "end_bar": 32,
    "start_time": 0.751,
    "bpm": 120.002
   },
   {
-   "start_beat": 128,
+   "start_beat": 127,
    "end_beat": 281,
-   "start_bar": 33,
+   "start_bar": 32,
    "end_bar": 71,
-   "start_time": 64.7349,
+   "start_time": 64.25,
    "bpm": 128.004
   }
  ],
@@ -1835,15 +1836,31 @@
     "tracker_split_s": 64.755,
     "refined_s": 64.25
    },
+   "drift_correction": {
+    "window_beats": 25,
+    "applied": false,
+    "share_beats_over_5ms": 0.472,
+    "max_offset_ms": 12.95
+   },
+   "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 0
+   },
+   "tempo_octave": {
+    "tracker_bpm": 128.0,
+    "factor": 1.0,
+    "preferred_range": [
+     80.0,
+     160.0
+    ],
+    "reported_bpm": 128.0
    }
   },
   "n_tracked_beats": 282,
   "n_consistent_beats": 282,
   "n_tracked_downbeats": 71,
-  "tracking_s": 3.42,
-  "total_s": 4.44
+  "tracking_s": 3.28,
+  "total_s": 5.52
  }
 }

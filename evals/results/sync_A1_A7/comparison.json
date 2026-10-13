@@ -9,7 +9,7 @@
   "downbeat_kicks": "30/30 med 7.1 max 13.84",
   "join_click_max_db": "n/a",
   "pitch_cents": -0.0,
-  "render_s": 4.7
+  "render_s": 2.7
  },
  {
   "method": "beats",
@@ -21,7 +21,7 @@
   "downbeat_kicks": "30/30 med 2.38 max 6.42",
   "join_click_max_db": 22.8,
   "pitch_cents": 10.92,
-  "render_s": 10.5
+  "render_s": 4.3
  },
  {
   "method": "beats_attack",
@@ -33,7 +33,7 @@
   "downbeat_kicks": "30/30 med 2.34 max 5.26",
   "join_click_max_db": 13.9,
   "pitch_cents": 10.92,
-  "render_s": 4.7
+  "render_s": 4.3
  },
  {
   "method": "constant_attack",
@@ -45,6 +45,6 @@
   "downbeat_kicks": "30/30 med 0.23 max 0.79",
   "join_click_max_db": 1.2,
   "pitch_cents": -0.01,
-  "render_s": 4.5
+  "render_s": 4.4
  }
 ]

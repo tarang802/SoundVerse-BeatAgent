@@ -11,6 +11,7 @@
  "time_signature": "6/8",
  "beats_per_bar": 2,
  "grid_type": "constant",
+ "tempo_model": "constant",
  "tempo_segments": [
   {
    "start_beat": 0,
@@ -905,7 +906,7 @@
   "n_tracked_beats": 129,
   "n_consistent_beats": 129,
   "n_tracked_downbeats": 14,
-  "tracking_s": 2.71,
-  "total_s": 4.88
+  "tracking_s": 3.4,
+  "total_s": 5.73
  }
 }

@@ -2,7 +2,7 @@
  "session": 6,
  "track": "A1",
  "partner": "A7",
- "elapsed_s": 17.3,
+ "elapsed_s": 19.3,
  "turns": [
   {
    "turn": 1,
@@ -71,8 +71,8 @@
   }
  ],
  "llm_tokens": {
-  "calls": 1,
-  "input_tokens": 2192,
-  "output_tokens": 97
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0
  }
 }

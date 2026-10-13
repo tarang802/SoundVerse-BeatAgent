@@ -4,16 +4,16 @@
  "subtype": "PCM_24",
  "history": [
   "original",
-  "remove beats 0-8 [0, 8) (8 beats, bar 1.1 to bar 3.1); the 0.602 s before beat 0 is kept (say 'from the start' to include it) = 0.602-4.878 s (4.276 s)"
+  "remove beats 0-8 [0, 8) (8 beats, bar 1.1 to bar 3.1); the 0.607 s before beat 0 is kept (say 'from the start' to include it) = 0.607-4.870 s (4.263 s)"
  ],
  "pieces": [
   {
    "src_start": 0,
-   "src_end": 26556,
+   "src_end": 26789,
    "envs": []
   },
   {
-   "src_start": 215129,
+   "src_start": 214769,
    "src_end": 8166026,
    "envs": []
   }

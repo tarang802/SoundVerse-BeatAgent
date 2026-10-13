@@ -8,15 +8,16 @@
   "times": "seconds from the start of this audio file"
  },
  "tempo_bpm": 68.0,
- "time_signature": "12/8",
- "beats_per_bar": 4,
+ "time_signature": "6/8",
+ "beats_per_bar": 2,
  "grid_type": "constant",
+ "tempo_model": "constant",
  "tempo_segments": [
   {
    "start_beat": 0,
    "end_beat": 126,
    "start_bar": 1,
-   "end_bar": 32,
+   "end_bar": 64,
    "start_time": 1.2808,
    "bpm": 68.0
   }
@@ -29,40 +30,72 @@
  },
  "duration": 113.958821,
  "n_beats": 127,
- "n_bars": 32,
+ "n_bars": 64,
  "downbeats": [
   1.28078,
+  3.045481,
   4.810183,
+  6.574884,
   8.339586,
+  10.104287,
   11.868988,
+  13.63369,
   15.398391,
+  17.163093,
   18.927794,
+  20.692496,
   22.457197,
+  24.221899,
   25.9866,
+  27.751302,
   29.516003,
+  31.280705,
   33.045406,
+  34.810108,
   36.574809,
+  38.339511,
   40.104212,
+  41.868914,
   43.633615,
+  45.398317,
   47.163018,
+  48.92772,
   50.692421,
+  52.457123,
   54.221824,
+  55.986526,
   57.751227,
+  59.515929,
   61.28063,
+  63.045332,
   64.810033,
+  66.574735,
   68.339436,
+  70.104138,
   71.868839,
+  73.633541,
   75.398242,
+  77.162944,
   78.927645,
+  80.692346,
   82.457048,
+  84.221749,
   85.986451,
+  87.751152,
   89.515854,
+  91.280555,
   93.045257,
+  94.809958,
   96.57466,
+  98.339361,
   100.104063,
+  101.868764,
   103.633466,
+  105.398167,
   107.162869,
-  110.692272
+  108.92757,
+  110.692272,
+  112.456973
  ],
  "beats": [
   {
@@ -80,752 +113,752 @@
   {
    "index": 2,
    "time": 3.045481,
-   "bar": 1,
-   "position": 3
+   "bar": 2,
+   "position": 1
   },
   {
    "index": 3,
    "time": 3.927832,
-   "bar": 1,
-   "position": 4
+   "bar": 2,
+   "position": 2
   },
   {
    "index": 4,
    "time": 4.810183,
-   "bar": 2,
+   "bar": 3,
    "position": 1
   },
   {
    "index": 5,
    "time": 5.692533,
-   "bar": 2,
+   "bar": 3,
    "position": 2
   },
   {
    "index": 6,
    "time": 6.574884,
-   "bar": 2,
-   "position": 3
+   "bar": 4,
+   "position": 1
   },
   {
    "index": 7,
    "time": 7.457235,
-   "bar": 2,
-   "position": 4
+   "bar": 4,
+   "position": 2
   },
   {
    "index": 8,
    "time": 8.339586,
-   "bar": 3,
+   "bar": 5,
    "position": 1
   },
   {
    "index": 9,
    "time": 9.221936,
-   "bar": 3,
+   "bar": 5,
    "position": 2
   },
   {
    "index": 10,
    "time": 10.104287,
-   "bar": 3,
-   "position": 3
+   "bar": 6,
+   "position": 1
   },
   {
    "index": 11,
    "time": 10.986638,
-   "bar": 3,
-   "position": 4
+   "bar": 6,
+   "position": 2
   },
   {
    "index": 12,
    "time": 11.868988,
-   "bar": 4,
+   "bar": 7,
    "position": 1
   },
   {
    "index": 13,
    "time": 12.751339,
-   "bar": 4,
+   "bar": 7,
    "position": 2
   },
   {
    "index": 14,
    "time": 13.63369,
-   "bar": 4,
-   "position": 3
+   "bar": 8,
+   "position": 1
   },
   {
    "index": 15,
    "time": 14.516041,
-   "bar": 4,
-   "position": 4
+   "bar": 8,
+   "position": 2
   },
   {
    "index": 16,
    "time": 15.398391,
-   "bar": 5,
+   "bar": 9,
    "position": 1
   },
   {
    "index": 17,
    "time": 16.280742,
-   "bar": 5,
+   "bar": 9,
    "position": 2
   },
   {
    "index": 18,
    "time": 17.163093,
-   "bar": 5,
-   "position": 3
+   "bar": 10,
+   "position": 1
   },
   {
    "index": 19,
    "time": 18.045444,
-   "bar": 5,
-   "position": 4
+   "bar": 10,
+   "position": 2
   },
   {
    "index": 20,
    "time": 18.927794,
-   "bar": 6,
+   "bar": 11,
    "position": 1
   },
   {
    "index": 21,
    "time": 19.810145,
-   "bar": 6,
+   "bar": 11,
    "position": 2
   },
   {
    "index": 22,
    "time": 20.692496,
-   "bar": 6,
-   "position": 3
+   "bar": 12,
+   "position": 1
   },
   {
    "index": 23,
    "time": 21.574847,
-   "bar": 6,
-   "position": 4
+   "bar": 12,
+   "position": 2
   },
   {
    "index": 24,
    "time": 22.457197,
-   "bar": 7,
+   "bar": 13,
    "position": 1
   },
   {
    "index": 25,
    "time": 23.339548,
-   "bar": 7,
+   "bar": 13,
    "position": 2
   },
   {
    "index": 26,
    "time": 24.221899,
-   "bar": 7,
-   "position": 3
+   "bar": 14,
+   "position": 1
   },
   {
    "index": 27,
    "time": 25.10425,
-   "bar": 7,
-   "position": 4
+   "bar": 14,
+   "position": 2
   },
   {
    "index": 28,
    "time": 25.9866,
-   "bar": 8,
+   "bar": 15,
    "position": 1
   },
   {
    "index": 29,
    "time": 26.868951,
-   "bar": 8,
+   "bar": 15,
    "position": 2
   },
   {
    "index": 30,
    "time": 27.751302,
-   "bar": 8,
-   "position": 3
+   "bar": 16,
+   "position": 1
   },
   {
    "index": 31,
    "time": 28.633653,
-   "bar": 8,
-   "position": 4
+   "bar": 16,
+   "position": 2
   },
   {
    "index": 32,
    "time": 29.516003,
-   "bar": 9,
+   "bar": 17,
    "position": 1
   },
   {
    "index": 33,
    "time": 30.398354,
-   "bar": 9,
+   "bar": 17,
    "position": 2
   },
   {
    "index": 34,
    "time": 31.280705,
-   "bar": 9,
-   "position": 3
+   "bar": 18,
+   "position": 1
   },
   {
    "index": 35,
    "time": 32.163056,
-   "bar": 9,
-   "position": 4
+   "bar": 18,
+   "position": 2
   },
   {
    "index": 36,
    "time": 33.045406,
-   "bar": 10,
+   "bar": 19,
    "position": 1
   },
   {
    "index": 37,
    "time": 33.927757,
-   "bar": 10,
+   "bar": 19,
    "position": 2
   },
   {
    "index": 38,
    "time": 34.810108,
-   "bar": 10,
-   "position": 3
+   "bar": 20,
+   "position": 1
   },
   {
    "index": 39,
    "time": 35.692459,
-   "bar": 10,
-   "position": 4
+   "bar": 20,
+   "position": 2
   },
   {
    "index": 40,
    "time": 36.574809,
-   "bar": 11,
+   "bar": 21,
    "position": 1
   },
   {
    "index": 41,
    "time": 37.45716,
-   "bar": 11,
+   "bar": 21,
    "position": 2
   },
   {
    "index": 42,
    "time": 38.339511,
-   "bar": 11,
-   "position": 3
+   "bar": 22,
+   "position": 1
   },
   {
    "index": 43,
    "time": 39.221862,
-   "bar": 11,
-   "position": 4
+   "bar": 22,
+   "position": 2
   },
   {
    "index": 44,
    "time": 40.104212,
-   "bar": 12,
+   "bar": 23,
    "position": 1
   },
   {
    "index": 45,
    "time": 40.986563,
-   "bar": 12,
+   "bar": 23,
    "position": 2
   },
   {
    "index": 46,
    "time": 41.868914,
-   "bar": 12,
-   "position": 3
+   "bar": 24,
+   "position": 1
   },
   {
    "index": 47,
    "time": 42.751265,
-   "bar": 12,
-   "position": 4
+   "bar": 24,
+   "position": 2
   },
   {
    "index": 48,
    "time": 43.633615,
-   "bar": 13,
+   "bar": 25,
    "position": 1
   },
   {
    "index": 49,
    "time": 44.515966,
-   "bar": 13,
+   "bar": 25,
    "position": 2
   },
   {
    "index": 50,
    "time": 45.398317,
-   "bar": 13,
-   "position": 3
+   "bar": 26,
+   "position": 1
   },
   {
    "index": 51,
    "time": 46.280667,
-   "bar": 13,
-   "position": 4
+   "bar": 26,
+   "position": 2
   },
   {
    "index": 52,
    "time": 47.163018,
-   "bar": 14,
+   "bar": 27,
    "position": 1
   },
   {
    "index": 53,
    "time": 48.045369,
-   "bar": 14,
+   "bar": 27,
    "position": 2
   },
   {
    "index": 54,
    "time": 48.92772,
-   "bar": 14,
-   "position": 3
+   "bar": 28,
+   "position": 1
   },
   {
    "index": 55,
    "time": 49.81007,
-   "bar": 14,
-   "position": 4
+   "bar": 28,
+   "position": 2
   },
   {
    "index": 56,
    "time": 50.692421,
-   "bar": 15,
+   "bar": 29,
    "position": 1
   },
   {
    "index": 57,
    "time": 51.574772,
-   "bar": 15,
+   "bar": 29,
    "position": 2
   },
   {
    "index": 58,
    "time": 52.457123,
-   "bar": 15,
-   "position": 3
+   "bar": 30,
+   "position": 1
   },
   {
    "index": 59,
    "time": 53.339473,
-   "bar": 15,
-   "position": 4
+   "bar": 30,
+   "position": 2
   },
   {
    "index": 60,
    "time": 54.221824,
-   "bar": 16,
+   "bar": 31,
    "position": 1
   },
   {
    "index": 61,
    "time": 55.104175,
-   "bar": 16,
+   "bar": 31,
    "position": 2
   },
   {
    "index": 62,
    "time": 55.986526,
-   "bar": 16,
-   "position": 3
+   "bar": 32,
+   "position": 1
   },
   {
    "index": 63,
    "time": 56.868876,
-   "bar": 16,
-   "position": 4
+   "bar": 32,
+   "position": 2
   },
   {
    "index": 64,
    "time": 57.751227,
-   "bar": 17,
+   "bar": 33,
    "position": 1
   },
   {
    "index": 65,
    "time": 58.633578,
-   "bar": 17,
+   "bar": 33,
    "position": 2
   },
   {
    "index": 66,
    "time": 59.515929,
-   "bar": 17,
-   "position": 3
+   "bar": 34,
+   "position": 1
   },
   {
    "index": 67,
    "time": 60.398279,
-   "bar": 17,
-   "position": 4
+   "bar": 34,
+   "position": 2
   },
   {
    "index": 68,
    "time": 61.28063,
-   "bar": 18,
+   "bar": 35,
    "position": 1
   },
   {
    "index": 69,
    "time": 62.162981,
-   "bar": 18,
+   "bar": 35,
    "position": 2
   },
   {
    "index": 70,
    "time": 63.045332,
-   "bar": 18,
-   "position": 3
+   "bar": 36,
+   "position": 1
   },
   {
    "index": 71,
    "time": 63.927682,
-   "bar": 18,
-   "position": 4
+   "bar": 36,
+   "position": 2
   },
   {
    "index": 72,
    "time": 64.810033,
-   "bar": 19,
+   "bar": 37,
    "position": 1
   },
   {
    "index": 73,
    "time": 65.692384,
-   "bar": 19,
+   "bar": 37,
    "position": 2
   },
   {
    "index": 74,
    "time": 66.574735,
-   "bar": 19,
-   "position": 3
+   "bar": 38,
+   "position": 1
   },
   {
    "index": 75,
    "time": 67.457085,
-   "bar": 19,
-   "position": 4
+   "bar": 38,
+   "position": 2
   },
   {
    "index": 76,
    "time": 68.339436,
-   "bar": 20,
+   "bar": 39,
    "position": 1
   },
   {
    "index": 77,
    "time": 69.221787,
-   "bar": 20,
+   "bar": 39,
    "position": 2
   },
   {
    "index": 78,
    "time": 70.104138,
-   "bar": 20,
-   "position": 3
+   "bar": 40,
+   "position": 1
   },
   {
    "index": 79,
    "time": 70.986488,
-   "bar": 20,
-   "position": 4
+   "bar": 40,
+   "position": 2
   },
   {
    "index": 80,
    "time": 71.868839,
-   "bar": 21,
+   "bar": 41,
    "position": 1
   },
   {
    "index": 81,
    "time": 72.75119,
-   "bar": 21,
+   "bar": 41,
    "position": 2
   },
   {
    "index": 82,
    "time": 73.633541,
-   "bar": 21,
-   "position": 3
+   "bar": 42,
+   "position": 1
   },
   {
    "index": 83,
    "time": 74.515891,
-   "bar": 21,
-   "position": 4
+   "bar": 42,
+   "position": 2
   },
   {
    "index": 84,
    "time": 75.398242,
-   "bar": 22,
+   "bar": 43,
    "position": 1
   },
   {
    "index": 85,
    "time": 76.280593,
-   "bar": 22,
+   "bar": 43,
    "position": 2
   },
   {
    "index": 86,
    "time": 77.162944,
-   "bar": 22,
-   "position": 3
+   "bar": 44,
+   "position": 1
   },
   {
    "index": 87,
    "time": 78.045294,
-   "bar": 22,
-   "position": 4
+   "bar": 44,
+   "position": 2
   },
   {
    "index": 88,
    "time": 78.927645,
-   "bar": 23,
+   "bar": 45,
    "position": 1
   },
   {
    "index": 89,
    "time": 79.809996,
-   "bar": 23,
+   "bar": 45,
    "position": 2
   },
   {
    "index": 90,
    "time": 80.692346,
-   "bar": 23,
-   "position": 3
+   "bar": 46,
+   "position": 1
   },
   {
    "index": 91,
    "time": 81.574697,
-   "bar": 23,
-   "position": 4
+   "bar": 46,
+   "position": 2
   },
   {
    "index": 92,
    "time": 82.457048,
-   "bar": 24,
+   "bar": 47,
    "position": 1
   },
   {
    "index": 93,
    "time": 83.339399,
-   "bar": 24,
+   "bar": 47,
    "position": 2
   },
   {
    "index": 94,
    "time": 84.221749,
-   "bar": 24,
-   "position": 3
+   "bar": 48,
+   "position": 1
   },
   {
    "index": 95,
    "time": 85.1041,
-   "bar": 24,
-   "position": 4
+   "bar": 48,
+   "position": 2
   },
   {
    "index": 96,
    "time": 85.986451,
-   "bar": 25,
+   "bar": 49,
    "position": 1
   },
   {
    "index": 97,
    "time": 86.868802,
-   "bar": 25,
+   "bar": 49,
    "position": 2
   },
   {
    "index": 98,
    "time": 87.751152,
-   "bar": 25,
-   "position": 3
+   "bar": 50,
+   "position": 1
   },
   {
    "index": 99,
    "time": 88.633503,
-   "bar": 25,
-   "position": 4
+   "bar": 50,
+   "position": 2
   },
   {
    "index": 100,
    "time": 89.515854,
-   "bar": 26,
+   "bar": 51,
    "position": 1
   },
   {
    "index": 101,
    "time": 90.398205,
-   "bar": 26,
+   "bar": 51,
    "position": 2
   },
   {
    "index": 102,
    "time": 91.280555,
-   "bar": 26,
-   "position": 3
+   "bar": 52,
+   "position": 1
   },
   {
    "index": 103,
    "time": 92.162906,
-   "bar": 26,
-   "position": 4
+   "bar": 52,
+   "position": 2
   },
   {
    "index": 104,
    "time": 93.045257,
-   "bar": 27,
+   "bar": 53,
    "position": 1
   },
   {
    "index": 105,
    "time": 93.927608,
-   "bar": 27,
+   "bar": 53,
    "position": 2
   },
   {
    "index": 106,
    "time": 94.809958,
-   "bar": 27,
-   "position": 3
+   "bar": 54,
+   "position": 1
   },
   {
    "index": 107,
    "time": 95.692309,
-   "bar": 27,
-   "position": 4
+   "bar": 54,
+   "position": 2
   },
   {
    "index": 108,
    "time": 96.57466,
-   "bar": 28,
+   "bar": 55,
    "position": 1
   },
   {
    "index": 109,
    "time": 97.457011,
-   "bar": 28,
+   "bar": 55,
    "position": 2
   },
   {
    "index": 110,
    "time": 98.339361,
-   "bar": 28,
-   "position": 3
+   "bar": 56,
+   "position": 1
   },
   {
    "index": 111,
    "time": 99.221712,
-   "bar": 28,
-   "position": 4
+   "bar": 56,
+   "position": 2
   },
   {
    "index": 112,
    "time": 100.104063,
-   "bar": 29,
+   "bar": 57,
    "position": 1
   },
   {
    "index": 113,
    "time": 100.986414,
-   "bar": 29,
+   "bar": 57,
    "position": 2
   },
   {
    "index": 114,
    "time": 101.868764,
-   "bar": 29,
-   "position": 3
+   "bar": 58,
+   "position": 1
   },
   {
    "index": 115,
    "time": 102.751115,
-   "bar": 29,
-   "position": 4
+   "bar": 58,
+   "position": 2
   },
   {
    "index": 116,
    "time": 103.633466,
-   "bar": 30,
+   "bar": 59,
    "position": 1
   },
   {
    "index": 117,
    "time": 104.515817,
-   "bar": 30,
+   "bar": 59,
    "position": 2
   },
   {
    "index": 118,
    "time": 105.398167,
-   "bar": 30,
-   "position": 3
+   "bar": 60,
+   "position": 1
   },
   {
    "index": 119,
    "time": 106.280518,
-   "bar": 30,
-   "position": 4
+   "bar": 60,
+   "position": 2
   },
   {
    "index": 120,
    "time": 107.162869,
-   "bar": 31,
+   "bar": 61,
    "position": 1
   },
   {
    "index": 121,
    "time": 108.04522,
-   "bar": 31,
+   "bar": 61,
    "position": 2
   },
   {
    "index": 122,
    "time": 108.92757,
-   "bar": 31,
-   "position": 3
+   "bar": 62,
+   "position": 1
   },
   {
    "index": 123,
    "time": 109.809921,
-   "bar": 31,
-   "position": 4
+   "bar": 62,
+   "position": 2
   },
   {
    "index": 124,
    "time": 110.692272,
-   "bar": 32,
+   "bar": 63,
    "position": 1
   },
   {
    "index": 125,
    "time": 111.574623,
-   "bar": 32,
+   "bar": 63,
    "position": 2
   },
   {
    "index": 126,
    "time": 112.456973,
-   "bar": 32,
-   "position": 3
+   "bar": 64,
+   "position": 1
   }
  ],
  "meta": {
@@ -843,15 +876,31 @@
     "phase_shift_ms": -14.82,
     "n_beats_fitted": 127
    },
+   "drift_correction": {
+    "window_beats": 25,
+    "applied": false,
+    "share_beats_over_5ms": 0.0,
+    "max_offset_ms": 0.81
+   },
+   "compound_bar_length": 2,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 0
+   },
+   "tempo_octave": {
+    "tracker_bpm": 68.0,
+    "factor": 1.0,
+    "preferred_range": [
+     80.0,
+     160.0
+    ],
+    "reported_bpm": 68.0
    }
   },
   "n_tracked_beats": 127,
   "n_consistent_beats": 127,
   "n_tracked_downbeats": 32,
-  "tracking_s": 2.79,
-  "total_s": 3.55
+  "tracking_s": 2.91,
+  "total_s": 4.62
  }
 }

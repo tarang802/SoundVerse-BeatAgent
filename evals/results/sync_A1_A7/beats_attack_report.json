@@ -3,7 +3,7 @@
  "a": "A1",
  "b": "A7",
  "method": "beat_anchored_attack30ms",
- "render_s": 4.66,
+ "render_s": 4.33,
  "plan": {
   "a_bar": 33,
   "b_bar": 1,

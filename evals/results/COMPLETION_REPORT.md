@@ -6,8 +6,8 @@
 
 | Suite | What it covers | Result |
 |---|---|---|
-| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 6/6; A1 (6 min) drift 1.92 ms, analysed in 14.65 s; A3 live drift 98 % of beats within 10 ms (worst 88.57 ms) |
-| Part 1 robustness (generated, known answers) | tempo 60–200, grooves, meters, tempo changes, arrangement, levels, formats, non-music | 29/30 (97%) |
+| Part 1 brief targets (synthetic A1–A7) | beat F, downbeat F, drift, speed | beat F ≥ 0.90 on 7/7 clips; downbeat F ≥ 0.80 on 6/6; A1 (6 min) drift 1.92 ms, analysed in 16.39 s; A3 live drift 98 % of beats within 10 ms (worst 88.57 ms) |
+| Part 1 robustness (generated, known answers) | tempo 60–200, grooves, meters, tempo changes, arrangement, levels, formats, non-music | 30/30 (100%) |
 | Part 1 sync robustness (ground truth) | ±20 % stretch, octaves, formats, drift, tempo change, refusals, lengths | 19/19 (100%) |
 | Part 1 brief sync (A7→A1 @ bar 33) | kick offset target | median 0.05 ms, max 0.23 ms, pass True |
 | Part 1 real music (no answer key) | independent tempo agreement in every graded window | 11/12 (92%) |
@@ -31,7 +31,7 @@
 | Unit tests `tests.test_recreate_api` | | 14/14 pass (exit 0) |
 | Unit tests `tests.test_score_chat` | | 20/20 pass (exit 0) |
 | Unit tests `tests.test_webaudio_page` | | 8/8 pass (exit 0) |
-| Unit tests `tests.test_analyze_rules` | | 9/9 pass (exit 0) |
+| Unit tests `tests.test_analyze_rules` | | 14/14 pass (exit 0) |
 
 ## Part 1 — beat alignment and sync
 
@@ -48,39 +48,39 @@
 | short | 2/2 (100%) |
 | speed | 1/1 (100%) |
 | tempo | 6/6 (100%) |
-| tempo-var | 2/3 (67%) |
+| tempo-var | 3/3 (100%) |
 
 | Case | Result | BPM (octave) | meter | grid | beat F | AMLt | downbeats | drift ms | conf | s |
 |---|---|---|---|---|---|---|---|---|---|---|
-| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 4.72 |
-| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 3.27 |
-| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 3.09 |
-| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 2.09 |
-| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 2.88 |
-| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 2.23 |
-| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 3.06 |
-| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 2.92 |
-| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 2.05 |
-| live_drift_112 | pass | 110.88 (x1.0) | 4/4 | variable | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 3.32 |
-| ramp_110-130 | pass | 120.41 (x1.0) | 4/4 | variable | 1.0 | 1.0 | 1.0 |  | 1.0 | 3.07 |
-| steps_120-128-100 | FAIL: beats_AMLt>=0.9, downbeat_F>=0.8, grid_type | 128.03 (x1.0) | 4/4 | variable | 0.7343 | 0.5811 | 0.6346 |  | 0.466 | 3.61 |
-| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 3.93 |
-| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 2.84 |
-| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 3.1 |
-| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 2.84 |
-| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 3.03 |
-| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 2.96 |
-| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 2.47 |
-| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 2.98 |
-| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 3.95 |
-| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 2.8 |
-| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 2.85 |
-| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 2.84 |
-| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 24.78 |
-| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 0.97 |
-| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.32 |
-| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.43 |
-| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.09 |
+| house_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 6.17 |
+| rock_60 | pass | 120.0 (x2.0) | 4/4 | constant | 0.6667 | 0.9938 | 1.0 | 1.53 | 0.952 | 2.6 |
+| rock_90 | pass | 90.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.66 | 1.0 | 2.6 |
+| halftime_140 | pass | 140.0 (x2.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.55 | 1.0 | 1.7 |
+| dnb_174 | pass | 87.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.42 | 0.5 | 2.34 |
+| fast_200 | pass | 100.0 (x0.5) | 4/4 | constant | 0.6667 | 1.0 | 1.0 | 1.4 | 0.5 | 2.1 |
+| swing_118 | pass | 118.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.89 | 1.0 | 3.33 |
+| waltz_3-4_120 | pass | 120.0 (x0.5) | 3/4 | constant | 1.0 | 1.0 | 1.0 | 1.2 | 0.698 | 3.47 |
+| six8_68 | pass | 68.0 (x1.0) | 6/8 | constant | 1.0 | 1.0 | 1.0 | 1.67 | 1.0 | 2.41 |
+| live_drift_112 | pass | 110.88 (x1.0) | 4/4 | variable | 0.9969 | 0.9938 | 1.0 |  | 0.871 | 3.88 |
+| ramp_110-130 | pass | 120.41 (x1.0) | 4/4 | variable | 1.0 | 1.0 | 1.0 |  | 1.0 | 3.69 |
+| steps_120-128-100 | pass | 120.0 (x1.0) | 4/4 | piecewise_constant | 1.0 | 1.0 | 1.0 |  | 0.631 | 5.64 |
+| breakdown_124 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.03 | 0.677 | 4.24 |
+| fade_in_out | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.87 | 0.992 | 3.21 |
+| lead_silence_10s | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.93 | 0.984 | 3.34 |
+| very_quiet_-40dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.96 | 0.97 | 3.41 |
+| clipped_+12dB | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 2.52 | 0.867 | 3.18 |
+| dc_offset | pass | 124.0 (x1.0) | 4/4 | constant | 0.9961 | 0.9922 | 1.0 | 1.73 | 1.0 | 3.29 |
+| fmt_22k_mono_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 4.73 | 0.984 | 2.84 |
+| fmt_48k_stereo_24 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.69 | 0.992 | 3.36 |
+| fmt_96k_stereo_float | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 0.69 | 0.992 | 4.45 |
+| fmt_44k_mono_8bit | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 1.0 | 3.24 |
+| fmt_flac_16 | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.992 | 3.3 |
+| fmt_mp3_48k | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.76 | 0.992 | 3.79 |
+| long_10min | pass | 124.0 (x1.0) | 4/4 | constant | 1.0 | 1.0 | 1.0 | 1.91 | 0.989 | 27.74 |
+| silence_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.86 |
+| white_noise_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.76 |
+| sine_440_30s | refused with message |  (x) |  |  |  |  |  |  |  | 1.81 |
+| clip_2s | refused with message |  (x) |  |  |  |  |  |  |  | 0.11 |
 | clip_0.5s | refused with message |  (x) |  |  |  |  |  |  |  | 0.07 |
 
 ### Sync robustness (ground-truth kick offsets)
@@ -186,12 +186,12 @@
 | i3 | how long is the track? | answer | pass | The track is 361.5 seconds long (about 6 minutes). |
 | v1 | remove the first bar after the tempo change | edit | pass | Applied: remove bar 33 (1 bar, 4 beats) = 64.498-66.373 s (1.875 s) |
 | v2 | loop the last bar before the tempo change twice | edit | pass | Applied: repeat bar 32 (1 bar, 4 beats) = 62.498-64.498 s (2.000 s) so it plays 2x in total (1 extra copy inse |
-| v3 | remove bars 10-12 | edit | pass | Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.438-25.539 s (6.102 s) |
+| v3 | remove bars 10-12 | edit | pass | Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.421-25.522 s (6.101 s) |
 | y1 | bring the other track in at bar 17 | sync | pass | Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.0 |
 | y2 | beatmatch the other deck to this from bar 9 for 30 seconds | sync | pass | Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.0 |
 | y3 | sync the other track at bar 9 | answer | pass | A second track must be loaded to use the sync feature, but no partner track is currently present in the contex |
-| n1 | remove bar 8 | edit | pass | Applied: remove bar 8 (1 bar, 4 beats) = 11.999-13.715 s (1.716 s) |
-| n2 | loop the first 2 bars 4 times | edit | pass | Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.001-3.420 s (3.419 s) so it plays 4x in total (3 extr |
+| n1 | remove bar 8 | edit | pass | Applied: remove bar 8 (1 bar, 4 beats) = 12.003-13.706 s (1.703 s) |
+| n2 | loop the first 2 bars 4 times | edit | pass | Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.000-3.430 s (3.430 s) so it plays 4x in total (3 extr |
 
 ### Brief sessions
 
@@ -204,7 +204,7 @@
 | 2 (A2) | 1 | Loop the first 4 bars four times, then let the track play on. | edit | repeat bars 1-4 inclusive (4 bars, 16 beats) = 0.299-11.462 s (11.163 s) so it plays 4x in total (3 extra copies inserte |
 | 3 (A5) | 1 | Repeat the last bar before the tempo change twice. | edit | repeat bar 32 (1 bar, 4 beats) = 62.498-64.498 s (2.000 s) so it plays 2x in total (1 extra copy inserted right after it |
 | 4 (A1) | 1 | Chop out the boring part. | clarify | remove bars 81-96 inclusive (16 bars, 64 beats) = 155.317-186.285 s (30.968 s) |
-| 5 (A3) | 1 | Cut beat 0 to beat 8. | edit | remove beats 0-8 [0, 8) (8 beats, bar 1.1 to bar 3.1); the 0.602 s before beat 0 is kept (say 'from the start' to includ |
+| 5 (A3) | 1 | Cut beat 0 to beat 8. | edit | remove beats 0-8 [0, 8) (8 beats, bar 1.1 to bar 3.1); the 0.607 s before beat 0 is kept (say 'from the start' to includ |
 | 5 (A3) | 2 | Delete bars 200–210. | edit | I didn't change anything: Bar range 200-210 is out of range: this track has bars 1-88. |
 | 6 (A1) | 1 | Sync A7 to A1, starting the overlap at A1's bar 33. | sync | Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.00 BPM. |
 

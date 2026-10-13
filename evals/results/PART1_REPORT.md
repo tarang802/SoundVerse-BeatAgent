@@ -12,19 +12,19 @@ Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-mea
 | Downbeat F-measure (±70 ms) | ≥ 0.80 | 6/6 clips pass | ✅ |
 | Grid drift, 6-min constant clip | every beat within 10 ms | A1 (362 s): max 1.92 ms, 100% within 10 ms | ✅ |
 | Sync kick offsets | median ≤ 5 ms, max ≤ 15 ms | A7→A1 @ bar 33: median 0.05 ms, max 0.23 ms, 123/123 beats measured | ✅ |
-| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 14.52 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
+| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 16.39 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
 
 ## Beat grid per clip
 
 | clip | duration_s | analysis_s | grid_type | tempo_bpm | time_signature | beat_F | beat_AMLt | downbeat_F | drift_max_ms | within_10ms | raw_beat_F | raw_drift_max_ms | confidence | librosa beat_F |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| A1 | 361.5 | 14.52 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
-| A2 | 157.4 | 7.04 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
-| A3 | 185.2 | 7.83 | variable | 117.982 | 4/4 | 0.9972 | 1.0 | n/a | 88.57 | 0.9778 | 0.9959 | 52.37 | 0.981 | 0.9903 |
-| A4 | 145.9 | 5.78 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
-| A5 | 140.5 | 5.7 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
-| A6 | 114.0 | 4.88 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
-| A7 | 183.3 | 8.06 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
+| A1 | 361.5 | 16.39 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
+| A2 | 157.4 | 7.19 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 1.0 |
+| A3 | 185.2 | 8.59 | variable | 117.982 | 4/4 | 0.9972 | 1.0 | n/a | 88.57 | 0.9778 | 0.9959 | 52.37 | 0.981 | 0.993 |
+| A4 | 145.9 | 6.3 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
+| A5 | 140.5 | 6.98 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
+| A6 | 114.0 | 5.73 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
+| A7 | 183.3 | 9.22 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
 
 `beat_AMLt` = mir_eval continuity score that also accepts double/half-tempo and off-beat counting (F low + AMLt high = right beats, different counting convention; both low = wrong grid). `raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.
 
@@ -44,10 +44,10 @@ Four render methods were measured; the app uses `constant_attack`.
 
 | method | measured | median_abs_ms | p95_abs_ms | max_abs_ms | pass | downbeat_kicks | join_click_max_db | pitch_cents | render_s |
 |---|---|---|---|---|---|---|---|---|---|
-| constant | 62/123 | 4.4 | 12.18 | 18.01 | False | 30/30 med 7.1 max 13.84 | n/a | -0.0 | 4.7 |
-| beats | 62/123 | 0.11 | 0.17 | 0.25 | True | 30/30 med 2.38 max 6.42 | 22.8 | 10.92 | 10.5 |
-| beats_attack | 87/123 | 0.11 | 0.61 | 1.05 | True | 30/30 med 2.34 max 5.26 | 13.9 | 10.92 | 4.7 |
-| constant_attack | 123/123 | 0.05 | 0.17 | 0.23 | True | 30/30 med 0.23 max 0.79 | 1.2 | -0.01 | 4.5 |
+| constant | 62/123 | 4.4 | 12.18 | 18.01 | False | 30/30 med 7.1 max 13.84 | n/a | -0.0 | 2.7 |
+| beats | 62/123 | 0.11 | 0.17 | 0.25 | True | 30/30 med 2.38 max 6.42 | 22.8 | 10.92 | 4.3 |
+| beats_attack | 87/123 | 0.11 | 0.61 | 1.05 | True | 30/30 med 2.34 max 5.26 | 13.9 | 10.92 | 4.3 |
+| constant_attack | 123/123 | 0.05 | 0.17 | 0.23 | True | 30/30 med 0.23 max 0.79 | 1.2 | -0.01 | 4.4 |
 
 - `constant`: one Rubber Band R3 stretch. Pitch exact, but R3 smears kick transients: downbeat kicks ~30 ms early. **Note the trap**: with the strict detector only 62/124 beats are measurable and their stats look nearly fine — the unmeasured ones are the worst.
 - `beats` / `beats_attack`: per-beat slices. Kicks perfect, but R3 on 0.5 s slices **detuned a sustained 110 Hz tone by +11–12 cents** (measured inside single slices) → fails "pitch preserved".

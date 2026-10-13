@@ -11,6 +11,7 @@
  "time_signature": "4/4",
  "beats_per_bar": 4,
  "grid_type": "constant",
+ "tempo_model": "constant",
  "tempo_segments": [
   {
    "start_beat": 0,
@@ -1212,15 +1213,31 @@
     "phase_shift_ms": -20.08,
     "n_beats_fitted": 186
    },
+   "drift_correction": {
+    "window_beats": 25,
+    "applied": false,
+    "share_beats_over_5ms": 0.0,
+    "max_offset_ms": 0.17
+   },
+   "accent_bar_length": null,
    "trimmed_unsupported_beats": {
     "leading": 0,
     "trailing": 0
+   },
+   "tempo_octave": {
+    "tracker_bpm": 118.0,
+    "factor": 1.0,
+    "preferred_range": [
+     80.0,
+     160.0
+    ],
+    "reported_bpm": 118.0
    }
   },
   "n_tracked_beats": 186,
   "n_consistent_beats": 186,
   "n_tracked_downbeats": 47,
-  "tracking_s": 3.98,
-  "total_s": 5.04
+  "tracking_s": 3.56,
+  "total_s": 6.12
  }
 }
