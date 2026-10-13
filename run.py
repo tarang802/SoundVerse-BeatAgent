@@ -62,6 +62,8 @@ TESTS = ["tests.test_imports", "tests.test_edl", "tests.test_score", "tests.test
 
 def run_tests() -> bool:
     """Every deterministic suite, all run even if one fails; summary at the end."""
+    if not (ROOT / "data" / "substitute" / "A1.wav").exists():
+        mod("evals.part1.make_testpack")                   # test_audio_paths / test_recreate_api open A1
     if not (ROOT / "data" / "p3" / "P1.wav").exists():
         mod("evals.part3.make_p3pack")                     # test_recreate_api needs the clips
     results = []
