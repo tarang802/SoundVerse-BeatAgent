@@ -28,19 +28,35 @@ export function App() {
     <div className="app">
       <header className="top">
         <div className="brand">
-          <span className="logo">SOUNDVERSE</span>
-          <span className="product">BEAT AGENT</span>
+          <svg className="mark" viewBox="0 0 32 32" aria-hidden="true">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#8b7cff" /><stop offset="1" stopColor="#ff7ab6" /></linearGradient></defs>
+            <rect width="32" height="32" rx="9" fill="url(#g)" />
+            {[7, 11, 15, 19, 23].map((x, i) => (
+              <rect key={x} x={x - 1} y={16 - [4, 8, 11, 7, 3][i]} width="2" height={[8, 16, 22, 14, 6][i]} rx="1" fill="#0b0a10" />
+            ))}
+          </svg>
+          <div className="brand-text">
+            <span className="logo">Soundverse</span>
+            <span className="product">Beat Agent</span>
+          </div>
         </div>
+        <nav className="caps" aria-label="What it does">
+          <span className="cap"><i>1</i>Beat grid &amp; sync</span>
+          <span className="cap"><i>2</i>Chat editing</span>
+          <span className="cap"><i>3</i>Recreate as Web Audio</span>
+        </nav>
         <div className="top-info">
-          {libError ? <span className="warn">API unreachable: {libError}</span>
-            : synthetic ? <span className="warn">Library = SYNTHETIC substitute tracks (the assignment test pack was not provided). Upload real music to try it on real audio.</span>
-            : <span>{library.length} tracks</span>}
+          {libError ? <span className="pill warn">API unreachable: {libError}</span>
+            : synthetic ? <span className="pill" title="The assignment test pack was not provided. Upload real music to try it on real audio.">
+                Library: synthetic substitute tracks · upload real music anytime</span>
+            : <span className="pill">{library.length} tracks</span>}
         </div>
       </header>
       <main className="decks">
-        <Deck key={`A${swapGen}`} name="A" role="TEMPO MASTER · unchanged" color="#00e5ff" library={library} state={a}
+        <Deck key={`A${swapGen}`} name="A" role="TEMPO MASTER · unchanged" color="#8b7cff" library={library} state={a}
               onState={setA} markerAtBar={aBar} onPlayheadBar={setAPlayBar} partnerSid={b?.sid} />
-        <Deck key={`B${swapGen}`} name="B" role="FOLLOWS A · stretched, pitch kept" color="#ff2bd6" library={library}
+        <Deck key={`B${swapGen}`} name="B" role="FOLLOWS A · stretched, pitch kept" color="#ff7ab6" library={library}
               state={b} onState={setB} onPlayheadBar={setBPlayBar} partnerSid={a?.sid} />
       </main>
       <SyncPanel a={a} b={b} aBar={aBar} onABar={setABar} aPlayBar={aPlayBar} bPlayBar={bPlayBar} onSwap={swap} />

@@ -43,7 +43,7 @@ export function Waveform({ peaks, duration, beats, positions, time, color, mode,
     const mid = H / 2;
 
     // centre line
-    ctx.fillStyle = "#1c1c20";
+    ctx.fillStyle = "#17151f";
     ctx.fillRect(0, mid, W, Math.max(1, dpr));
 
     // waveform: one min/max bar per device pixel
@@ -65,7 +65,7 @@ export function Waveform({ peaks, duration, beats, positions, time, color, mode,
       const yHi = mid - (hi / 127) * (mid - 2 * dpr);
       const yLo = mid - (lo / 127) * (mid - 2 * dpr);
       const played = mode === "overview" && ta < time;
-      ctx.fillStyle = played ? color : mode === "overview" ? "#3a3a42" : color;
+      ctx.fillStyle = played ? color : mode === "overview" ? "#34303f" : color;
       ctx.globalAlpha = mode === "zoom" ? 0.85 : 1;
       ctx.fillRect(x, yHi, 1, Math.max(dpr, yLo - yHi));
     }
@@ -82,18 +82,18 @@ export function Waveform({ peaks, duration, beats, positions, time, color, mode,
       if (t < t0 || t > t1) continue;
       const x = Math.round(xOf(t)) + 0.5;
       if (mode === "zoom") {
-        ctx.strokeStyle = down ? "#ff3b30" : "rgba(255,255,255,0.28)";
+        ctx.strokeStyle = down ? "#ff5d6c" : "rgba(255,255,255,0.28)";
         ctx.lineWidth = (down ? 2 : 1) * dpr;
         ctx.beginPath();
         ctx.moveTo(x, down ? 0 : H * 0.15);
         ctx.lineTo(x, down ? H : H * 0.85);
         ctx.stroke();
         if (down) {
-          ctx.fillStyle = "#ff3b30";
+          ctx.fillStyle = "#ff5d6c";
           ctx.fillText(String(bar), x + 3 * dpr, 11 * dpr);
         }
       } else if (down && (bar - 1) % barEvery === 0) {
-        ctx.strokeStyle = "rgba(255,59,48,0.55)";
+        ctx.strokeStyle = "rgba(255,93,108,0.55)";
         ctx.lineWidth = dpr;
         ctx.beginPath();
         ctx.moveTo(x, 0);

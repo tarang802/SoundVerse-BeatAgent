@@ -116,10 +116,10 @@ export function SyncPanel({ a, b, aBar, onABar, aPlayBar, bPlayBar, onSwap }: Pr
           </div>
 
           <Waveform peaks={peaks} duration={res.plan.duration} beats={res.beats} positions={res.positions}
-                    time={time} color={src === "b" ? "#ff2bd6" : src === "a" ? "#00e5ff" : "#f5f5f7"}
+                    time={time} color={src === "b" ? "#ff7ab6" : src === "a" ? "#8b7cff" : "#f5f5f7"}
                     mode="zoom" height={110} onSeek={(t) => { if (audio) audio.currentTime = t; }} />
           <Waveform peaks={peaks} duration={res.plan.duration} beats={res.beats} positions={res.positions}
-                    time={time} color={src === "b" ? "#ff2bd6" : src === "a" ? "#00e5ff" : "#f5f5f7"}
+                    time={time} color={src === "b" ? "#ff7ab6" : src === "a" ? "#8b7cff" : "#f5f5f7"}
                     mode="overview" height={36} onSeek={(t) => { if (audio) audio.currentTime = t; }} />
 
           <div className="transport">

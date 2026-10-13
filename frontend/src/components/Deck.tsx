@@ -122,7 +122,7 @@ export function Deck({ name, role, color, library, state, onState, markerAtBar, 
   const conf = state?.confidence.overall ?? 0;
   const markerT = state && markerAtBar && markerAtBar >= 1 && markerAtBar <= bars[bars.length - 1]
     ? state.beats[bars.indexOf(markerAtBar)] : undefined;
-  const markers = markerT !== undefined ? [{ t: markerT, label: `SYNC ${markerAtBar}`, color: "#ffd60a" }] : [];
+  const markers = markerT !== undefined ? [{ t: markerT, label: `SYNC ${markerAtBar}`, color: "#f5c26b" }] : [];
 
   return (
     <section className="deck" style={{ ["--accent" as string]: color }}>
