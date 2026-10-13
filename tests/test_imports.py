@@ -9,15 +9,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-MODULES = ["beatagent.audio_io", "beatagent.grid", "beatagent.onsets", "beatagent.analyze", "beatagent.click",
-           "beatagent.stretch", "beatagent.sync", "beatagent.edl", "beatagent.session", "beatagent.llm",
-           "beatagent.agent", "beatagent.qc", "app.server", "evals.eval_beats", "evals.eval_sync",
-           "evals.eval_real", "evals.part1_report", "evals.make_testpack", "evals.smoke_test_guard",
-           "beatagent.sections", "evals.eval_sessions", "evals.eval_robustness", "evals.eval_sync_robust",
-           "evals.eval_chat_suite", "evals.completion_report", "beatagent.score", "beatagent.transcribe",
-           "beatagent.webaudio", "evals.make_p3pack", "evals.eval_part3", "evals.part3_render",
-           "evals.eval_real_selfsync", "evals.llm_check_report", "beatagent.score_chat", "evals.export_evidence",
-           "evals.eval_part3_real", "evals.make_p3dev", "evals.tune_p3_drums", "tests.test_analyze_rules"]
+MODULES = ["beatagent.core.audio_io", "beatagent.core.grid", "beatagent.core.onsets", "beatagent.beats.analyze", "beatagent.beats.click",
+           "beatagent.beats.stretch", "beatagent.beats.sync", "beatagent.editing.edl", "beatagent.editing.session", "beatagent.editing.llm",
+           "beatagent.editing.agent", "beatagent.core.qc", "app.server", "evals.part1.eval_beats", "evals.part1.eval_sync",
+           "evals.part1.eval_real", "evals.part1.part1_report", "evals.part1.make_testpack", "evals.smoke_test_guard",
+           "beatagent.editing.sections", "evals.part2.eval_sessions", "evals.part1.eval_robustness", "evals.part1.eval_sync_robust",
+           "evals.part2.eval_chat_suite", "evals.completion_report", "beatagent.recreate.score", "beatagent.recreate.transcribe",
+           "beatagent.recreate.webaudio", "evals.part3.make_p3pack", "evals.part3.eval_part3", "evals.part3.part3_render",
+           "evals.part1.eval_real_selfsync", "evals.part2.llm_check_report", "beatagent.recreate.score_chat", "evals.export_evidence",
+           "evals.part3.eval_part3_real", "evals.part3.make_p3dev", "evals.part3.tune_p3_drums", "tests.test_analyze_rules"]
 
 
 def control_chars():

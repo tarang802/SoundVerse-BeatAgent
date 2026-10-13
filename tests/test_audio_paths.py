@@ -7,7 +7,7 @@ quotes and non-Latin titles. Checks: the loader decodes WAV (16/24-bit, float),
 FLAC and MP3 under such names; a whole session (analyse, edit, export) works on a
 Unicode path; uploads with such names -- including characters Windows forbids in
 file names and a path-traversal attempt -- are accepted safely; a corrupt file
-gives a readable error. SYNTHETIC audio (evals/synth.fixture_120).
+gives a readable error. SYNTHETIC audio (evals/common/synth.py fixture_120).
 """
 from __future__ import annotations
 
@@ -21,8 +21,8 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.audio_io import load  # noqa: E402
-from evals.synth import SR, fixture_120  # noqa: E402
+from beatagent.core.audio_io import load  # noqa: E402
+from evals.common.synth import SR, fixture_120  # noqa: E402
 
 WORK = ROOT / "work" / "test_audio_paths"
 FAILS: list[str] = []
@@ -62,8 +62,8 @@ def test_loader(x):
 
 def test_session(x):
     print("session on a unicode path: analyse -> edit -> export")
-    from beatagent.edl import Range, Remove
-    from beatagent.session import Session
+    from beatagent.editing.edl import Range, Remove
+    from beatagent.editing.session import Session
     p = WORK / "lib" / "ünïcødé 日本語 музыка" / "session [E] & co.flac"
     p.parent.mkdir(parents=True, exist_ok=True)
     sf.write(str(p), x, SR, subtype="PCM_24", format="FLAC")

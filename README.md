@@ -19,7 +19,7 @@ Basic Pitch), never from the LLM.
 > brief's descriptions, with exact answer keys. They are labelled as such everywhere and
 > are never presented as the official pack. Drop the real pack into `data/testpack/`
 > and `python run.py eval --pack testpack` scores it (common annotation layouts accepted);
-> for Part 3, `python -m evals.eval_part3 --pack <folder>` takes clips with optional
+> for Part 3, `python -m evals.part3.eval_part3 --pack <folder>` takes clips with optional
 > `<clip>.mid` references (no `pack.json` needed; clips without MIDI get render-only results).
 
 ## Status
@@ -98,9 +98,9 @@ next to them; P1–P4 audio with `.mid` files), then:
 
 ```bash
 python run.py eval --pack testpack
-python -m evals.eval_sync --pack testpack
-python -m evals.eval_sessions --pack testpack --llm gemini
-python -m evals.eval_part3 --pack data/testpack
+python -m evals.part1.eval_sync --pack testpack
+python -m evals.part2.eval_sessions --pack testpack --llm gemini
+python -m evals.part3.eval_part3 --pack data/testpack
 ```
 
 Results go to `evals/results/part1_testpack_*`, `sync_*`, `part2_sessions/` and
@@ -121,7 +121,7 @@ Start with `python run.py app`, open http://localhost:8000 in Chrome or Edge.
    then "yes").
 4. **Recreation** — RECREATE panel: `P2` → RECREATE; play the original, then Play in the
    generated page next to it; chat "mute the drums", "play it at 140".
-5. **Code tour** — `beatagent/analyze.py` (grid), `edl.py` (edits), `agent.py` + `llm.py`
+5. **Code tour** — `beatagent/beats/analyze.py` (grid), `edl.py` (edits), `agent.py` + `llm.py`
    (the LLM boundary and its guards), `transcribe.py` → `score.py` → `webaudio.py`;
    `tests/` and `evals/`.
 6. **Top three known problems** — see Known issues below.
@@ -129,13 +129,13 @@ Start with `python run.py app`, open http://localhost:8000 in Chrome or Edge.
 ## Architecture
 
 ```
-audio ─► beatagent/analyze.py ─► BeatGrid (grid.py) ──► click.py      (audition)
+audio ─► beatagent/beats/analyze.py ─► BeatGrid (grid.py) ──► click.py      (audition)
           Beat This! + grid fit                     ├─► sync.py       (Rubber Band R3 + kick patches)
                                                     └─► session.py ◄─ edl.py (typed ops, pieces, crossfades)
 chat ─► agent.py ─► llm.py (Gemini → Plan) ─► validators ─► session.apply ─► echo / undo / redo
                     └ offline rule parser (labelled) when the LLM is unavailable
 clip ─► transcribe.py (HPSS, band onsets, Basic Pitch) ─► score.py (Score JSON)
-        ─► webaudio.py (fixed template) ─► page.html ─► evals/part3_render.py (Edge, OfflineAudioContext)
+        ─► webaudio.py (fixed template) ─► page.html ─► evals/part3/part3_render.py (Edge, OfflineAudioContext)
 app/server.py (FastAPI) serves the API and frontend/dist (React + TypeScript + Vite)
 ```
 

@@ -22,7 +22,7 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.audio_io import load, to_mono  # noqa: E402
+from beatagent.core.audio_io import load, to_mono  # noqa: E402
 
 RES = ROOT / "evals" / "results"
 OUT = ROOT / "evals" / "evidence"

@@ -1,6 +1,6 @@
 # Part 1 — beat alignment and sync: results
 
-> **Everything below is measured on the SYNTHETIC SUBSTITUTE pack** (`data/substitute`, built by `evals/make_testpack.py`). The assignment's test pack (A1–A7 with reference annotations) was not provided, so **no assignment benchmark number is claimed**. Synthetic clips have clean transients and no mix/master, so these numbers are an upper bound on real-music performance.
+> **Everything below is measured on the SYNTHETIC SUBSTITUTE pack** (`data/substitute`, built by `evals/part1/make_testpack.py`). The assignment's test pack (A1–A7 with reference annotations) was not provided, so **no assignment benchmark number is claimed**. Synthetic clips have clean transients and no mix/master, so these numbers are an upper bound on real-music performance.
 
 Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-measures are computed on the full clip (mir_eval's default 5 s trim is NOT applied).
 
@@ -99,9 +99,9 @@ Four render methods were measured; the app uses `constant_attack`.
 ## Reproduce
 
 ```
-python -m evals.make_testpack
-python -m evals.eval_beats
-python -m evals.eval_beats --tracker librosa
-python -m evals.eval_sync
-python -m evals.part1_report
+python -m evals.part1.make_testpack
+python -m evals.part1.eval_beats
+python -m evals.part1.eval_beats --tracker librosa
+python -m evals.part1.eval_sync
+python -m evals.part1.part1_report
 ```

@@ -21,8 +21,8 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.onsets import onset_times, match_offsets  # noqa: E402
-from evals.synth import SR, fixture_120  # noqa: E402
+from beatagent.core.onsets import onset_times, match_offsets  # noqa: E402
+from evals.common.synth import SR, fixture_120  # noqa: E402
 
 OUT = ROOT / "evals" / "results" / "smoke"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -114,7 +114,7 @@ print(f"  f_measure expected 0.5 got {f}")
 section("Rubber Band (pylibrb) time-stretch")
 rb = {}
 try:
-    from beatagent.stretch import stretch
+    from beatagent.beats.stretch import stretch
     # pitch preservation: 440 Hz sine stretched by 1.25 must stay 440 Hz
     t = np.arange(SR * 2) / SR
     sine = (0.5 * np.sin(2 * np.pi * 440 * t)).astype(np.float32)[:, None]

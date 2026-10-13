@@ -40,13 +40,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 load_dotenv(ROOT / ".env")
 
-from beatagent import sync as syncmod  # noqa: E402
-from beatagent.agent import BeatAgent  # noqa: E402
-from beatagent.audio_io import load, save  # noqa: E402
-from beatagent.click import audition  # noqa: E402
-from beatagent.llm import make_interpreter  # noqa: E402
-from beatagent.edl import EditError  # noqa: E402
-from beatagent.session import Session  # noqa: E402
+from beatagent.beats import sync as syncmod  # noqa: E402
+from beatagent.editing.agent import BeatAgent  # noqa: E402
+from beatagent.core.audio_io import load, save  # noqa: E402
+from beatagent.beats.click import audition  # noqa: E402
+from beatagent.editing.llm import make_interpreter  # noqa: E402
+from beatagent.editing.edl import EditError  # noqa: E402
+from beatagent.editing.session import Session  # noqa: E402
 
 WORK = ROOT / "work"
 WORK.mkdir(exist_ok=True)
@@ -328,8 +328,8 @@ class RecreateReq(BaseModel):
 
 @app.post("/api/recreate")
 def recreate(req: RecreateReq):
-    from beatagent.transcribe import transcribe
-    from beatagent.webaudio import write_page
+    from beatagent.recreate.transcribe import transcribe
+    from beatagent.recreate.webaudio import write_page
     if req.sid:
         s = _agent(req.sid).s
         audio, sr, name = s.render(), s.sr, f"{s.path.stem} (deck v{s.pos})"
@@ -375,9 +375,9 @@ class ScoreChatReq(BaseModel):
 def recreate_chat(rid: str, req: ScoreChatReq):
     """Chat changes to a recreation ("mute the drums", "play it at 140"): typed score ops,
     validated and applied by code; the page is regenerated from the new score."""
-    from beatagent.score import Score
-    from beatagent.score_chat import ScoreChat
-    from beatagent.webaudio import write_page
+    from beatagent.recreate.score import Score
+    from beatagent.recreate.score_chat import ScoreChat
+    from beatagent.recreate.webaudio import write_page
     d = RECREATES.get(rid)
     if d is None:
         raise HTTPException(404, "Unknown recreation.")

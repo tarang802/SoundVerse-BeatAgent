@@ -1,4 +1,4 @@
-"""Part 3 chat changes to a recreation (beatagent/score_chat.py), without an API key.
+"""Part 3 chat changes to a recreation (beatagent/recreate/score_chat.py), without an API key.
 
     python -m tests.test_score_chat
 """
@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.score import Note, Score, Track, default_patch  # noqa: E402
-from beatagent.score_chat import (RuleScoreInterpreter, ScoreChat, ScoreEditError, ScoreOp,  # noqa: E402
+from beatagent.recreate.score import Note, Score, Track, default_patch  # noqa: E402
+from beatagent.recreate.score_chat import (RuleScoreInterpreter, ScoreChat, ScoreEditError, ScoreOp,  # noqa: E402
                                   ScorePlan, apply_ops)
 
 FAILS: list[str] = []

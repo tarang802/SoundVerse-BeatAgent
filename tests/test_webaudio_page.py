@@ -1,4 +1,4 @@
-"""The generated Part 3 page is safe and self-contained (beatagent/webaudio.py).
+"""The generated Part 3 page is safe and self-contained (beatagent/recreate/webaudio.py).
 
     python -m tests.test_webaudio_page
 
@@ -16,9 +16,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.score import Note, Score, Track, default_patch  # noqa: E402
-from beatagent.webaudio import render_html  # noqa: E402
-from evals.part3_render import static_checks  # noqa: E402
+from beatagent.recreate.score import Note, Score, Track, default_patch  # noqa: E402
+from beatagent.recreate.webaudio import render_html  # noqa: E402
+from evals.part3.part3_render import static_checks  # noqa: E402
 
 FAILS: list[str] = []
 EVIL = '</script><script>alert(1)</script><img src=x onerror=alert(2)>'

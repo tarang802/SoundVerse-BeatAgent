@@ -7,7 +7,7 @@ records what the agent asked), and a fake google-genai client stands in for the
 network (it raises 404 / 429 / 503 the way the real API does). Everything else is
 the real code: BeatAgent, Session, the edit engine, the offline rule parser, the
 model fallback chain and the record/replay cache. What this cannot test is how
-well Gemini itself reads English -- that is the job of evals/eval_chat_suite.py.
+well Gemini itself reads English -- that is the job of evals/part2/eval_chat_suite.py.
 """
 from __future__ import annotations
 
@@ -23,13 +23,13 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent import llm  # noqa: E402
-from beatagent.agent import BeatAgent  # noqa: E402
-from beatagent.audio_io import save  # noqa: E402
-from beatagent.grid import BeatGrid  # noqa: E402
-from beatagent.llm import Plan, POp, PRange  # noqa: E402
-from beatagent.session import Session  # noqa: E402
-from evals.synth import SR, fixture_120  # noqa: E402
+from beatagent.editing import llm  # noqa: E402
+from beatagent.editing.agent import BeatAgent  # noqa: E402
+from beatagent.core.audio_io import save  # noqa: E402
+from beatagent.core.grid import BeatGrid  # noqa: E402
+from beatagent.editing.llm import Plan, POp, PRange  # noqa: E402
+from beatagent.editing.session import Session  # noqa: E402
+from evals.common.synth import SR, fixture_120  # noqa: E402
 
 WORK = ROOT / "work" / "test_agent_llm"
 FAILS: list[str] = []

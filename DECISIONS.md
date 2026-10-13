@@ -119,15 +119,15 @@ a drum hit starts is masked — to the ear as well.
 
 ## 8. Part 3: score in beats, transcription from models, page from a fixed template
 
-* **Score** (`beatagent/score.py`): tempo, meter, bars, tracks, notes with start/duration
+* **Score** (`beatagent/recreate/score.py`): tempo, meter, bars, tracks, notes with start/duration
   in **beats**, pitch, velocity. Beats make "play it at 140" one number and keep analysis
   separate from playback.
-* **Analysis** (`beatagent/transcribe.py`): tempo from Part 1 on the loop repeated to
+* **Analysis** (`beatagent/recreate/transcribe.py`): tempo from Part 1 on the loop repeated to
   ≥ 20 s (a 2-bar loop is too short to track) and from the clip's exact length when it is
   whole bars; drums from per-band onsets on the HPSS percussive part (absolute level and
   spectral-flatness gates); pitched notes from **Basic Pitch** (ONNX, no TensorFlow) on
   the harmonic part, with overtone ghosts and drum body tones removed.
-* **Page** (`beatagent/webaudio.py`): **code fills a fixed, reviewed template**; the LLM
+* **Page** (`beatagent/recreate/webaudio.py`): **code fills a fixed, reviewed template**; the LLM
   never writes JavaScript (generated code running in a user's browser could do
   anything). Score embedded as inert JSON; `Content-Security-Policy: default-src 'none'`;
   sample-exact loop scheduling; per-track mixer and tempo.
@@ -141,7 +141,7 @@ a drum hit starts is masked — to the ear as well.
 HPSS is weak on dense mixes (P4).
 
 **Tuning without touching the test clips.** Drum thresholds were checked on a separate
-synthetic development set (`evals/make_p3dev.py`: 12 loops with other tempos, patterns
+synthetic development set (`evals/part3/make_p3dev.py`: 12 loops with other tempos, patterns
 and bass levels, two piano-only), never on P1–P4. The best alternative raised dev drum F
 by only 0.006 (noise) and a "hat on a kick" rule lowered it, so nothing changed
 (`evals/results/part3/drum_tuning_dev.json`). The remaining drum errors — kicks under a
@@ -151,7 +151,7 @@ a small labelled drum dataset to train one.
 ## Assumptions where the brief or a command was unclear
 
 * **Test pack not provided.** All brief-target numbers are on **synthetic substitutes**
-  built to the brief's descriptions (`evals/make_testpack.py`, `evals/make_p3pack.py`),
+  built to the brief's descriptions (`evals/part1/make_testpack.py`, `evals/part3/make_p3pack.py`),
   never presented as the official pack. The scorer accepts common annotation layouts so
   the real pack can be dropped in (`tests/test_ref_formats.py`).
 * "Cut beat 16–32 and repeat it twice" = take beats 16–32 and play them twice in place.

@@ -1,4 +1,4 @@
-"""Reference annotation layouts the Part 1 scorer accepts (evals/eval_beats.py).
+"""Reference annotation layouts the Part 1 scorer accepts (evals/part1/eval_beats.py).
 
     python -m tests.test_ref_formats
 
@@ -16,7 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from evals.eval_beats import find_reference, load_ref  # noqa: E402
+from evals.part1.eval_beats import find_reference, load_ref  # noqa: E402
 
 WORK = ROOT / "work" / "test_ref_formats"
 FAILS: list[str] = []

@@ -27,13 +27,14 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent import edl, qc  # noqa: E402
-from beatagent.edl import (Copy, EditError, Fade, Gain, KeepOnly, Move, Position, Range,  # noqa: E402
+from beatagent.editing import edl  # noqa: E402
+from beatagent.core import qc  # noqa: E402
+from beatagent.editing.edl import (Copy, EditError, Fade, Gain, KeepOnly, Move, Position, Range,  # noqa: E402
                            Remove, Repeat)
-from beatagent.grid import BeatGrid  # noqa: E402
-from beatagent.onsets import onsets_near  # noqa: E402
-from beatagent.session import Session  # noqa: E402
-from evals.synth import SR, beat_times_constant, render_groove  # noqa: E402
+from beatagent.core.grid import BeatGrid  # noqa: E402
+from beatagent.core.onsets import onsets_near  # noqa: E402
+from beatagent.editing.session import Session  # noqa: E402
+from evals.common.synth import SR, beat_times_constant, render_groove  # noqa: E402
 
 
 def make_fixture(tmp: Path):

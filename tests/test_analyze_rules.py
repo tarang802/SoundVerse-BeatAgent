@@ -1,5 +1,5 @@
 """Unit tests for two analyzer rules: compound bar length (6/8 vs 12/8) and the
-live-drift correction (beatagent/analyze.py).
+live-drift correction (beatagent/beats/analyze.py).
 
     python -m tests.test_analyze_rules
 
@@ -15,8 +15,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent import analyze as A  # noqa: E402
-from evals.synth import SR, beat_times_constant, render_groove  # noqa: E402
+from beatagent.beats import analyze as A  # noqa: E402
+from evals.common.synth import SR, beat_times_constant, render_groove  # noqa: E402
 
 FAILS: list[str] = []
 
@@ -45,7 +45,7 @@ def main():
     check("too short -> None", A._compound_bar_length(grid[:20], *accent_signal(grid[:20], [1.0, 0.6])) is None)
 
     print("live-drift correction (end to end, a NEW drifting take -- not A3's seed)")
-    from evals.eval_beats import drift
+    from evals.part1.eval_beats import drift
     applied, worse = [], []
     for seed in range(70, 78):                                # 8 new takes, none of them A3's
         rng = np.random.default_rng(seed)
@@ -96,7 +96,7 @@ def main():
     check("steady track: grid left alone", c2 is None and not info2["applied"], str(info2))
 
     print("abrupt tempo steps (onset-based, the tracker smears them)")
-    from evals.eval_robustness import ramp, steps
+    from evals.part1.eval_robustness import ramp, steps
     for bpms in ([120, 128, 100], [96, 112]):
         audio3, true3, downs3, _ = steps(bpms)
         g = A.analyze(audio3[:, None], SR)

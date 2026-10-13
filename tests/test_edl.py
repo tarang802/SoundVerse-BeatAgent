@@ -11,11 +11,12 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from beatagent import edl, qc  # noqa: E402
-from beatagent.edl import (Copy, EditError, EditState, Fade, Gain, KeepOnly, Move, Piece,  # noqa: E402
+from beatagent.editing import edl  # noqa: E402
+from beatagent.core import qc  # noqa: E402
+from beatagent.editing.edl import (Copy, EditError, EditState, Fade, Gain, KeepOnly, Move, Piece,  # noqa: E402
                            Position, Range, Remove, Repeat)
-from beatagent.grid import BeatGrid  # noqa: E402
-from evals.synth import SR, fixture_120  # noqa: E402
+from beatagent.core.grid import BeatGrid  # noqa: E402
+from evals.common.synth import SR, fixture_120  # noqa: E402
 
 audio, ref_beats, _ = fixture_120()
 src = audio[:, None]

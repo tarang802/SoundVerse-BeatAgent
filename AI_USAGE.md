@@ -7,7 +7,7 @@ AI **used to build it**.
 
 | Component | What it is | What it is trusted with |
 |---|---|---|
-| **Beat This!** (CPJKU, `small0` checkpoint, CPU) | neural beat + downbeat tracker | raw beat/downbeat times — then fitted, cleaned and checked by our code (`beatagent/analyze.py`) |
+| **Beat This!** (CPJKU, `small0` checkpoint, CPU) | neural beat + downbeat tracker | raw beat/downbeat times — then fitted, cleaned and checked by our code (`beatagent/beats/analyze.py`) |
 | **Basic Pitch** (Spotify, 0.4, ONNX model) | neural note transcription | pitched notes for Part 3 — then filtered (overtone ghosts, drum body tones) by our code |
 | **Gemini** (`gemini-3.5-flash`, falling back to other Flash / Flash-Lite models on quota) | LLM, structured output | **interpreting one chat message into a plan**: typed edit ops for the track (Part 2), or typed score ops for a recreation (Part 3: tempo, mute, solo, level, brightness, transpose, oscillator). Nothing else. |
 

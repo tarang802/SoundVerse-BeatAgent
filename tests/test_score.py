@@ -12,7 +12,7 @@ from pydantic import ValidationError
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent.score import Note, Score, Track, default_patch  # noqa: E402
+from beatagent.recreate.score import Note, Score, Track, default_patch  # noqa: E402
 
 FAILS: list[str] = []
 

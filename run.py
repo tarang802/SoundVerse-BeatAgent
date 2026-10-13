@@ -58,7 +58,7 @@ TESTS = ["tests.test_imports", "tests.test_edl", "tests.test_score", "tests.test
 def run_tests() -> bool:
     """Every deterministic suite, all run even if one fails; summary at the end."""
     if not (ROOT / "data" / "p3" / "P1.wav").exists():
-        mod("evals.make_p3pack")                     # test_recreate_api needs the clips
+        mod("evals.part3.make_p3pack")                     # test_recreate_api needs the clips
     results = []
     for m in TESTS:
         r = subprocess.run([PY, "-m", m], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -89,18 +89,18 @@ def main():
     elif cmd == "fuzz":
         mod("tests.test_fuzz_edits", "--seqs", "60", "--ops", "8", "--seed", "1")
     elif cmd == "testpack":
-        mod("evals.make_testpack")
+        mod("evals.part1.make_testpack")
     elif cmd == "p3pack":
-        mod("evals.make_p3pack")
+        mod("evals.part3.make_p3pack")
     elif cmd == "p3eval":
-        mod("evals.eval_part3")
+        mod("evals.part3.eval_part3")
     elif cmd == "chat":
-        mod("evals.eval_chat_suite")
-        mod("evals.eval_sessions", "--llm", "gemini")
+        mod("evals.part2.eval_chat_suite")
+        mod("evals.part2.eval_sessions", "--llm", "gemini")
     elif cmd == "report":
         mod("evals.completion_report")
     elif cmd == "eval":
-        mod("evals.eval_beats", *sys.argv[2:])
+        mod("evals.part1.eval_beats", *sys.argv[2:])
     elif cmd == "app":
         mod("app.server")
     elif cmd == "ui":
@@ -108,17 +108,17 @@ def main():
         subprocess.run([npm, "install", "--no-audit", "--no-fund"], cwd=ROOT / "frontend", check=True)
         subprocess.run([npm, "run", "build"], cwd=ROOT / "frontend", check=True)
     elif cmd == "syncval":
-        mod("evals.eval_sync")
-        mod("evals.part1_report")
+        mod("evals.part1.eval_sync")
+        mod("evals.part1.part1_report")
     elif cmd == "demo":
         models()
-        mod("evals.make_testpack")
-        mod("evals.make_p3pack")
+        mod("evals.part1.make_testpack")
+        mod("evals.part3.make_p3pack")
         run_tests()
-        mod("evals.eval_beats")
-        mod("evals.eval_sync")
-        mod("evals.part1_report")
-        mod("evals.eval_part3")
+        mod("evals.part1.eval_beats")
+        mod("evals.part1.eval_sync")
+        mod("evals.part1.part1_report")
+        mod("evals.part3.eval_part3")
         mod("app.server")
     else:
         print(__doc__)

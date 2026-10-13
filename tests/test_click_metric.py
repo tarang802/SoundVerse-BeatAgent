@@ -1,4 +1,4 @@
-"""Does the splice-click metric (beatagent.qc.splice_click_db) actually catch clicks?
+"""Does the splice-click metric (beatagent.core.qc.splice_click_db) actually catch clicks?
 
     python -m tests.test_click_metric
 
@@ -23,10 +23,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from beatagent import edl, qc  # noqa: E402
-from beatagent.edl import EditState, Piece, Range, Remove  # noqa: E402
-from beatagent.grid import BeatGrid  # noqa: E402
-from evals.synth import SR, fixture_120  # noqa: E402
+from beatagent.editing import edl  # noqa: E402
+from beatagent.core import qc  # noqa: E402
+from beatagent.editing.edl import EditState, Piece, Range, Remove  # noqa: E402
+from beatagent.core.grid import BeatGrid  # noqa: E402
+from evals.common.synth import SR, fixture_120  # noqa: E402
 
 FAILS: list[str] = []
 

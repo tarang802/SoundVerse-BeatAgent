@@ -2,7 +2,7 @@
 
     python -m tests.test_recreate_api
 
-SYNTHETIC clips (data/p3, regenerate with `python -m evals.make_p3pack`).
+SYNTHETIC clips (data/p3, regenerate with `python -m evals.part3.make_p3pack`).
 """
 from __future__ import annotations
 
@@ -44,8 +44,8 @@ def main():
         check("original served for side-by-side listening", orig.status_code == 200 and len(orig.content) > 1000)
         check("unknown file refused", c.get(f"/api/recreate/{rid}/secret.txt").status_code == 404)
         # chat changes, with the offline parser pinned (deterministic, no API quota)
-        from beatagent.score import Score
-        from beatagent.score_chat import RuleScoreInterpreter, ScoreChat
+        from beatagent.recreate.score import Score
+        from beatagent.recreate.score_chat import RuleScoreInterpreter, ScoreChat
         server.RECREATE_CHATS[rid] = ScoreChat(Score.load(server.RECREATES[rid] / "score.json"), RuleScoreInterpreter())
         m = c.post(f"/api/recreate/{rid}/chat", json={"text": "mute the drums"}).json()
         page2 = c.get(f"/api/recreate/{rid}/page.html").text
