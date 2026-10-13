@@ -57,6 +57,9 @@ tried at ×1, ×2 and ×0.5, and the smallest stretch wins.
 - "Repeat it twice" means two plays in total (the original plus one copy). The agent
   states this reading in its reply.
 
+*Would revisit if:* Soundverse's tools already count bars or beats differently; matching
+the product matters more than my preference.
+
 ## 4. Two-track sync: Rubber Band R3 plus pasted kicks
 
 Stretching B beat by beat (Rubber Band R2) gave tight kicks but a noticeably detuned bass.
@@ -75,6 +78,9 @@ What this doesn't prove is sync on real hip-hop. There, my kick detector reads a
 20 ms, but it reads 12–17 ms even when a track is synced with itself, which is perfect by
 construction. So the detector can't settle it, and those renders have to be judged by ear.
 
+*Would revisit if:* listening on real pairs showed artefacts around the pasted kicks; then
+I'd try shorter patches or per-beat stretching with formant preservation.
+
 ## 5. Edit engine: an edit list over the source
 
 Edits are typed operations (`remove`, `keep_only`, `repeat`, `move`, `copy`, `fade`,
@@ -87,6 +93,9 @@ bit depth.
 Splices use an 8 ms crossfade that ends 2 ms before the beat, so the next transient plays
 untouched. On a drumless passage, a hard cut at the same point measures 25–32 dB above
 the source, while the engine's splice measures 0.0–0.1 dB.
+
+*Would revisit if:* users needed edits off the grid (free time ranges); the engine would
+need a time-based addressing mode alongside bars and beats.
 
 ## 6. The LLM interprets; code does everything else
 
@@ -113,6 +122,9 @@ Free-tier quotas are per model per day, so the client falls back through several
 models and then to a deliberately narrow offline rule parser. Every reply says which one
 answered.
 
+*Would revisit if:* a model returned valid plans reliably enough that the repair rounds
+never fired. The validators would stay either way.
+
 ## 7. Measuring clicks
 
 My first click metric compared the output peak around a splice with the loudest moment
@@ -121,6 +133,8 @@ bass note scored −4.7 dB, which reads as clean. I replaced it with position-ma
 windows, scaled by the edit's own gain, and tested it against splices of known quality
 (`tests/test_click_metric.py`). One limit remains: a click at the exact moment a drum hit
 starts is masked, and it's masked to the ear too.
+
+*Would revisit if:* a listening panel disagreed with the metric on real edits.
 
 ## 8. Part 3: score in beats, models for transcription, a fixed page template
 
@@ -153,6 +167,9 @@ The best alternative only raised dev drum F by 0.006, and a "hat on a kick" rule
 worse, so I left the thresholds alone (`evals/results/part3/drum_tuning_dev.json`). The
 remaining drum errors are mostly kicks under a loud bass line. Fixing those needs a
 trained drum classifier, not better thresholds.
+
+*Would revisit if:* I had a small labelled drum dataset to train that classifier, or a
+CPU budget for Demucs-style separation before transcription.
 
 ## Assumptions
 

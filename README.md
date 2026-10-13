@@ -16,6 +16,23 @@ The rule I kept throughout: the LLM only interprets what the user typed. Tempo, 
 times, notes and offsets all come from signal processing and models (Beat This!, Basic
 Pitch), never from the LLM.
 
+## Status
+
+| Part | Requirement | Status |
+|---|---|---|
+| 1 | Beat grid JSON: tempo, every beat with index / bar / position, downbeats, meter, confidence, tempo model | Works |
+| 1 | Click audition export | Works |
+| 1 | Two-track sync: 60 s render, pitch preserved, downbeats aligned | Works. Exact on synthetic pairs; on real music it's unproven to 5 ms (see Known issues) |
+| 1 | `mir_eval` accuracy report and the five targets | Works. All five targets met on the synthetic pack |
+| 2 | Typed edit ops: remove, keep only, repeat / loop, move, copy / insert, fade, gain | Works |
+| 2 | Echo before cutting, clean splices, format kept, grid stays true, undo / redo, clear refusals | Works |
+| 2 | Preview player with waveform and grid; edits on variable-tempo tracks | Works |
+| 3 | Score JSON; one-file page with play / stop / loop, synthesis only, no network | Works |
+| 3 | Drums and a pitched part; offline render in a headless browser; note F against MIDI | Works on clean loops. Partial on dense mixes (P4: drums 0.51, pitched 0.68) |
+| 3 | Per-track mixer; chat changes ("mute the drums", "play it at 140") | Works |
+| — | Official test pack results | Missing. The pack wasn't provided, so results are on synthetic stand-ins |
+| — | Public deployment | Not built (optional) |
+
 ## A note on test data
 
 The A1–A7 and P1–P4 test pack wasn't included with the brief, so I built synthetic
