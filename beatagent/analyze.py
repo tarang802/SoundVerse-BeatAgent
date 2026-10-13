@@ -500,6 +500,32 @@ def _accent_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int 
     return None
 
 
+def _compound_bar_length(grid: np.ndarray, lflux: np.ndarray, lfsr: float) -> int | None:
+    """Compound meters (beats are dotted quarters): 6/8 = 2 beats per bar, 12/8 = 4.
+
+    The same low-end accent evidence as _accent_bar_length, asked the compound
+    question: in a 4-beat hypothesis, is the accent two beats after the strongest one
+    as strong as the strongest? Then the pattern repeats every 2 beats and the bar is
+    6/8. Seen on the substitute A6 ("dholak in 6/8"): per-position accents
+    [1.00, 0.60, 1.00, 0.60] were being counted as 12/8 from the tracker's downbeats,
+    which halved downbeat recall. Weak or unclear evidence -> None (keep the tracker)."""
+    if len(grid) < 24:
+        return None
+    w = int(0.03 * lfsr)
+    e = np.array([lflux[max(0, int(t * lfsr) - w): int(t * lfsr) + w + 1].max(initial=0.0) for t in grid])
+    m2 = np.array([e[i::2].mean() for i in range(2)])
+    if m2.max() / (m2.mean() + 1e-12) < 1.15:          # no on/off-beat accent pattern at all
+        return None
+    m4 = np.array([e[i::4].mean() for i in range(4)])
+    top = int(m4.argmax())
+    ratio = float(m4[(top + 2) % 4] / (m4[top] + 1e-12))
+    if ratio >= 0.85:
+        return 2
+    if ratio <= 0.70:
+        return 4
+    return None
+
+
 def _double(grid: np.ndarray) -> np.ndarray:
     """Twice the tempo: insert the midpoint between consecutive beats."""
     mids = (grid[:-1] + grid[1:]) / 2
@@ -729,6 +755,11 @@ def analyze(audio: np.ndarray, sr: int, tracker: str = "beat_this") -> BeatGrid:
     if len(grid) > 8 and not _is_compound(grid, flux, fsr):
         acc = _accent_bar_length(grid, *low_flux(mono, sr))
         fit_info["accent_bar_length"] = acc
+        if acc:
+            force_bpb = acc
+    elif len(grid) > 8:
+        acc = _compound_bar_length(grid, *low_flux(mono, sr))
+        fit_info["compound_bar_length"] = acc
         if acc:
             force_bpb = acc
     change_idx = [int(np.searchsorted(grid, t - 1e-6)) for t in change_t if grid[0] < t <= grid[-1]]
