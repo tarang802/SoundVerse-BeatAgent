@@ -262,3 +262,6 @@ scripts in sandboxed iframes, so use Chrome/Edge for the RECREATE panel.
 * [`AI_USAGE.md`](AI_USAGE.md) — AI at runtime and in development, and where it was wrong.
 * [`evals/results/COMPLETION_REPORT.md`](evals/results/COMPLETION_REPORT.md) — every
   suite, every case, the bug ledger.
+* [`docs/IMPLEMENTATION_REPORT.md`](docs/IMPLEMENTATION_REPORT.md) — every requirement in
+  the brief, how complete it is, and the evidence.
+* [`docs/LOOM_GUIDE.md`](docs/LOOM_GUIDE.md) — the demo, click by click.
