@@ -17,7 +17,14 @@ jobs:
         run: docker compose build
 
       - name: Test suites inside the container
-        run: docker compose run --rm beat-agent python run.py test
+        run: |
+          set +e
+          docker compose run --rm beat-agent python run.py test > test.log 2>&1
+          status=$?
+          cat test.log
+          # failing lines as annotations, so they are readable without signing in
+          grep -E "^FAIL|\[FAIL\]|Error" test.log | head -40 | sed 's/^/::error::/'
+          exit $status
 
       - name: Part 3 offline render in the container's Chromium
         run: docker compose run --rm beat-agent sh -c "python run.py p3pack && python -m evals.part3.eval_part3"
