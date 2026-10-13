@@ -18,6 +18,7 @@
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import urllib.request
@@ -46,8 +47,12 @@ def models():
         print(f"{name}: done ({p.stat().st_size} bytes)")
 
 
+# children print non-ASCII (arrows, en dashes); a Windows pipe defaults to cp1252
+ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+
+
 def mod(m, *a):
-    subprocess.run([PY, "-m", m, *a], cwd=ROOT, check=True)
+    subprocess.run([PY, "-m", m, *a], cwd=ROOT, check=True, env=ENV)
 
 
 TESTS = ["tests.test_imports", "tests.test_edl", "tests.test_score", "tests.test_ref_formats",
@@ -61,7 +66,8 @@ def run_tests() -> bool:
         mod("evals.part3.make_p3pack")                     # test_recreate_api needs the clips
     results = []
     for m in TESTS:
-        r = subprocess.run([PY, "-m", m], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        r = subprocess.run([PY, "-m", m], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           env=ENV)
         out = r.stdout + r.stderr
         results.append((m, r.returncode, out.count("[PASS]"), out.count("[FAIL]")))
         print(f"{'ok  ' if r.returncode == 0 else 'FAIL'} {m}: {out.count('[PASS]')} passed, {out.count('[FAIL]')} failed")
@@ -76,7 +82,7 @@ def run_tests() -> bool:
 def main():
     # line-buffered: when output goes to a log, the test summary must appear before the
     # app starts serving (it was lost in a buffer when `demo` ran into a file)
-    sys.stdout.reconfigure(line_buffering=True)
+    sys.stdout.reconfigure(line_buffering=True, encoding="utf-8", errors="replace")
     cmd = sys.argv[1] if len(sys.argv) > 1 else "demo"
     if cmd == "models":
         models()
