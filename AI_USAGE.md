@@ -82,7 +82,7 @@ and deciding what ships.
    safety test written afterwards (`tests/test_webaudio_page.py`); names are now inserted
    as text and `< > &` are escaped.
 8. **Ignoring a standing instruction.** The AI added a `Co-Authored-By` trailer to
-   commits although Tarang had asked for commits under his name only; Tarang caught it
+   commits although Tarang had asked for commits under Tarang's own name only; Tarang caught it
    on GitHub and the affected commits were rewritten.
 
 ## 3. Testing: automated vs manual
