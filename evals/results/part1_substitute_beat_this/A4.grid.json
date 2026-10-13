@@ -1284,7 +1284,7 @@
   "n_tracked_beats": 256,
   "n_consistent_beats": 256,
   "n_tracked_downbeats": 69,
-  "tracking_s": 3.1,
-  "total_s": 5.39
+  "tracking_s": 3.33,
+  "total_s": 5.61
  }
 }

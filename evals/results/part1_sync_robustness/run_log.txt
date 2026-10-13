@@ -1,0 +1,21 @@
+  same_tempo                   pass  ratio 1.0000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.13 max 2.06 | (detectors: all 123/123 max 0.25; dbk max 0.76)
+  b_+2pct                      pass  ratio 1.0200 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.07 max 2.06 | (detectors: all 123/123 max 0.24; dbk max 1.06)
+  b_+10pct                     pass  ratio 1.1000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.08 max 2.06 | (detectors: all 116/123 max 0.67; dbk max 1.39)
+  b_+20pct                     pass  ratio 1.2000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.49 max 2.06 | (detectors: all 67/123 max 1.0; dbk max 1.04)
+  b_-10pct                     pass  ratio 0.9000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.07 max 2.06 | (detectors: all 123/123 max 0.24; dbk max 0.93)
+  b_-20pct                     pass  ratio 0.8000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.06 max 2.06 | (detectors: all 123/123 max 0.27; dbk max 1.4)
+  b_+30pct_refuse              refused (pass): B would need stretching by -35.0% (80.60 -> 124.00 BPM); beyond +-25% it sounds bad. Also tried matching B at 
+  b_octave_62                  pass  ratio 1.0000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.75 max 1.75 | (detectors: all 123/123 max 0.57; dbk max 2.94)
+  b_octave_248                 pass  ratio 1.0000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.63 max 1.54 | (detectors: all 123/123 max 0.04; dbk max 2.65)
+  b_48k_stereo                 pass  ratio 1.0323 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.1 max 2.08 | (detectors: all 123/123 max 0.27; dbk max 0.92)
+  b_drifting                   pass  ratio 0.9013 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.55 max 1.34 | (detectors: all 123/123 max 0.21; dbk max 2.58)
+  a_tempo_change_in_overlap    pass  ratio 0.9687 oct x1.0 4/4/4/4 | TRUTH n=126 med 0.15 max 2.25 | (detectors: all 125/125 max 37.91; dbk max 0.91)
+  b_bar_5                      pass  ratio 1.0323 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.2 max 2.13 | (detectors: all 123/123 max 0.26; dbk max 1.07)
+  a_bar_near_end_refuse        refused (pass): A only has 12.1s after bar 55; a 60s overlap doesn't fit.
+  b_too_short_refuse           refused (pass): After stretching, B from bar 1 only covers 39.3s, less than the 60s requested. Also tried matching B at double
+  meter_mismatch_refuse        refused (pass): A is in 4/4 (4 beats/bar) but B is in 3/4 (3 beats/bar); their downbeats can't stay aligned bar by bar.
+  overlap_30s                  pass  ratio 1.0323 oct x1.0 4/4/4/4 | TRUTH n=62 med 0.14 max 2.06 | (detectors: all 61/61 max 0.23; dbk max 0.94)
+  overlap_120s                 pass  ratio 1.0323 oct x1.0 4/4/4/4 | TRUTH n=248 med 0.15 max 2.08 | (detectors: all 247/247 max 0.26; dbk max 1.04)
+  self_sync                    pass  ratio 1.0000 oct x1.0 4/4/4/4 | TRUTH n=124 med 0.05 max 2.04 | (detectors: all 123/123 max 0.25; dbk max 0.18)
+
+passed 19/19

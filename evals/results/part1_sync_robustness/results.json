@@ -29,7 +29,7 @@
    "median_abs_ms": 0.21,
    "max_abs_ms": 0.76
   },
-  "elapsed_s": 49.4,
+  "elapsed_s": 15.0,
   "pass": true
  },
  {
@@ -62,7 +62,7 @@
    "median_abs_ms": 0.2,
    "max_abs_ms": 1.06
   },
-  "elapsed_s": 31.6,
+  "elapsed_s": 12.4,
   "pass": true
  },
  {
@@ -95,7 +95,7 @@
    "median_abs_ms": 0.39,
    "max_abs_ms": 1.39
   },
-  "elapsed_s": 33.4,
+  "elapsed_s": 13.4,
   "pass": true
  },
  {
@@ -128,7 +128,7 @@
    "median_abs_ms": 0.14,
    "max_abs_ms": 1.04
   },
-  "elapsed_s": 35.7,
+  "elapsed_s": 13.8,
   "pass": true
  },
  {
@@ -161,7 +161,7 @@
    "median_abs_ms": 0.61,
    "max_abs_ms": 0.93
   },
-  "elapsed_s": 38.3,
+  "elapsed_s": 15.5,
   "pass": true
  },
  {
@@ -194,7 +194,7 @@
    "median_abs_ms": 1.11,
    "max_abs_ms": 1.4
   },
-  "elapsed_s": 34.0,
+  "elapsed_s": 15.8,
   "pass": true
  },
  {
@@ -240,7 +240,7 @@
    "median_abs_ms": 2.09,
    "max_abs_ms": 2.94
   },
-  "elapsed_s": 36.5,
+  "elapsed_s": 15.1,
   "pass": true
  },
  {
@@ -273,7 +273,7 @@
    "median_abs_ms": 1.03,
    "max_abs_ms": 2.65
   },
-  "elapsed_s": 35.8,
+  "elapsed_s": 14.2,
   "pass": true
  },
  {
@@ -306,20 +306,20 @@
    "median_abs_ms": 0.28,
    "max_abs_ms": 0.92
   },
-  "elapsed_s": 20.1,
+  "elapsed_s": 13.1,
   "pass": true
  },
  {
   "pair": "b_drifting",
   "expect": "ok",
   "a_bpm": 124.0,
-  "b_bpm": 112.65,
+  "b_bpm": 112.8,
   "a_meter": "4/4",
   "b_meter": "4/4",
   "a_grid": "constant",
   "b_grid": "variable",
   "result": "rendered",
-  "ratio": 0.90113,
+  "ratio": 0.90133,
   "b_octave": 1.0,
   "render_len_s": 60.0,
   "ground_truth": {
@@ -339,7 +339,7 @@
    "median_abs_ms": 2.07,
    "max_abs_ms": 2.58
   },
-  "elapsed_s": 23.2,
+  "elapsed_s": 12.6,
   "pass": true
  },
  {
@@ -372,7 +372,7 @@
    "median_abs_ms": 0.35,
    "max_abs_ms": 0.91
   },
-  "elapsed_s": 20.4,
+  "elapsed_s": 13.7,
   "pass": true
  },
  {
@@ -405,7 +405,7 @@
    "median_abs_ms": 0.23,
    "max_abs_ms": 1.07
   },
-  "elapsed_s": 20.5,
+  "elapsed_s": 12.6,
   "pass": true
  },
  {
@@ -477,7 +477,7 @@
    "median_abs_ms": 0.24,
    "max_abs_ms": 0.94
   },
-  "elapsed_s": 16.0,
+  "elapsed_s": 10.7,
   "pass": true
  },
  {
@@ -510,7 +510,7 @@
    "median_abs_ms": 0.31,
    "max_abs_ms": 1.04
   },
-  "elapsed_s": 31.5,
+  "elapsed_s": 20.1,
   "pass": true
  },
  {
@@ -543,7 +543,7 @@
    "median_abs_ms": 0.12,
    "max_abs_ms": 0.18
   },
-  "elapsed_s": 17.3,
+  "elapsed_s": 9.6,
   "pass": true
  }
 ]

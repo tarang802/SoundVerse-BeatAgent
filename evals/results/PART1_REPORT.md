@@ -12,19 +12,19 @@ Machine: this laptop's CPU (no GPU). Tracker: `beat_this:small0`. mir_eval F-mea
 | Downbeat F-measure (±70 ms) | ≥ 0.80 | 6/6 clips pass | ✅ |
 | Grid drift, 6-min constant clip | every beat within 10 ms | A1 (362 s): max 1.92 ms, 100% within 10 ms | ✅ |
 | Sync kick offsets | median ≤ 5 ms, max ≤ 15 ms | A7→A1 @ bar 33: median 0.05 ms, max 0.23 ms, 123/123 beats measured | ✅ |
-| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 13.05 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
+| Speed | 6-min track < 60 s on laptop CPU | A1 (362 s): 14.65 s (this eval run, first clip so includes model load). Measured by hand on 2026-10-12 on this i7-13620H: 10.3 / 25.7 / 19.4 s in repeated runs; app with both decks analysing at once: 70-80 s each | ✅ (single track) |
 
 ## Beat grid per clip
 
 | clip | duration_s | analysis_s | grid_type | tempo_bpm | time_signature | beat_F | beat_AMLt | downbeat_F | drift_max_ms | within_10ms | raw_beat_F | raw_drift_max_ms | confidence | librosa beat_F |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| A1 | 361.5 | 13.05 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
-| A2 | 157.4 | 5.0 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
-| A3 | 185.2 | 7.52 | variable | 117.982 | 4/4 | 0.9972 | 1.0 | n/a | 88.57 | 0.9778 | 0.9959 | 52.37 | 0.981 | 0.9903 |
-| A4 | 145.9 | 5.39 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
-| A5 | 140.5 | 5.3 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
-| A6 | 114.0 | 4.1 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
-| A7 | 183.3 | 7.19 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
+| A1 | 361.5 | 14.65 | constant | 124.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.92 | 1.0 | 0.9738 | 377.42 | 0.615 | 0.0 |
+| A2 | 157.4 | 6.61 | constant | 86.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.12 | 1.0 | 0.9956 | 33.02 | 0.966 | 0.6677 |
+| A3 | 185.2 | 7.25 | variable | 117.982 | 4/4 | 0.9972 | 1.0 | n/a | 88.57 | 0.9778 | 0.9959 | 52.37 | 0.981 | 0.9903 |
+| A4 | 145.9 | 5.62 | constant | 118.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.63 | 1.0 | 0.8571 | 56.95 | 0.938 | 0.0 |
+| A5 | 140.5 | 5.47 | piecewise_constant | 128.001 | 4/4 | 1.0 | 1.0 | 1.0 | 2.08 | 1.0 | 0.9725 | 100.0 | 0.969 | 0.0 |
+| A6 | 114.0 | 4.37 | constant | 68.0 | 6/8 | 1.0 | 1.0 | 1.0 | 1.83 | 1.0 | 0.9961 | 22.35 | 1.0 | 0.9961 |
+| A7 | 183.3 | 7.49 | constant | 128.0 | 4/4 | 1.0 | 1.0 | 1.0 | 1.88 | 1.0 | 0.9961 | 67.5 | 0.995 | 0.0 |
 
 `beat_AMLt` = mir_eval continuity score that also accepts double/half-tempo and off-beat counting (F low + AMLt high = right beats, different counting convention; both low = wrong grid). `raw_*` = Beat This! output before our grid fitting; `drift_*` = |grid − reference| per reference beat. A3 is variable-tempo by design, so the 10 ms drift target does not apply to it.
 
@@ -64,18 +64,18 @@ Four render methods were measured; the app uses `constant_attack`.
 
 | track | BPM | grid | conf | indep tempo max diff (graded windows) | librosa tempo | downbeat attack spread | downbeat low-kick spread | analysis s |
 |---|---|---|---|---|---|---|---|---|
-| 12. Seedhe Maut - Naam Kaam Sheher [E].flac | 140.19 | variable | 0.499 | 0.36% (8/8) | 140.62 (agree) | 24.23 ms | 52.17 ms | 20.8 |
-| 01. Seedhe Maut - Nanchaku [E].flac | 140.0 | constant | 0.51 | 0.38% (9/9) | 139.67 (agree) | 25.86 ms | 49.91 ms | 16.2 |
-| 01. Seedhe Maut - Namastute.flac | 80.0 | constant | 0.955 | 0.36% (6/6) | 161.5 (librosa says DOUBLE) | 4.88 ms | 33.76 ms | 6.3 |
-| 02. Seedhe Maut - Toh Kya [E].flac | 150.0 | constant | 1.0 | 0.15% (9/9) | 152.0 (agree) | 10.54 ms | 32.08 ms | 10.2 |
-| 02 - BUN MASKA - Calm, DL91 ERA, Seedhe Maut.flac | 140.0 | constant | 0.355 | 0.07% (7/9) | 139.67 (agree) | 16.15 ms | 52.45 ms | 6.7 |
-| 03 - RINGTONE - Calm, DL91 ERA, Bhaskar.flac | 138.0 | constant | 0.899 | 0.11% (12/13) | 139.67 (agree) | 1.04 ms | 54.56 ms | 9.5 |
-| 01. Seedhe Maut - 11K [E].flac | 135.0 | constant | 0.695 | 0.1% (7/8) | 136.0 (agree) | 16.7 ms | 45.69 ms | 14.0 |
-| 03 - Elevator Music - Encore ABJ, DL91 ERA.flac | 105.01 | constant | 0.533 | 2.26% (9/10) | 105.47 (agree) | 33.64 ms | 68.0 ms | 19.7 |
-| 04 - Kya Mai Yaha - Encore ABJ, DL91 ERA.flac | 130.0 | constant | 0.867 | 0.06% (11/11) | 129.2 (agree) | 44.09 ms | 6.45 ms | 17.9 |
-| 01 - ALL CAPS - Encore ABJ, DL91 ERA.flac | 98.44 | variable | 0.213 | 0.49% (1/5) | 97.51 (agree) | 61.68 ms | 42.63 ms | 6.1 |
-| 29. Seedhe Maut - Kavi [E].flac | 110.0 | constant | 0.842 | 0.77% (8/10) | 110.29 (agree) | 12.65 ms | 17.59 ms | 6.3 |
-| 24. Seedhe Maut - Akatsuki [E].flac | 156.0 | piecewise_constant | 0.811 | 0.11% (6/7) | 156.25 (agree) | 55.06 ms | 43.91 ms | 5.2 |
+| 12. Seedhe Maut - Naam Kaam Sheher [E].flac | 140.19 | variable | 0.499 | 0.36% (8/8) | 140.62 (agree) | 24.23 ms | 52.17 ms | 9.7 |
+| 01. Seedhe Maut - Nanchaku [E].flac | 140.0 | constant | 0.51 | 0.38% (9/9) | 139.67 (agree) | 25.86 ms | 49.91 ms | 12.6 |
+| 01. Seedhe Maut - Namastute.flac | 80.0 | constant | 0.955 | 0.36% (6/6) | 161.5 (librosa says DOUBLE) | 4.88 ms | 33.76 ms | 8.0 |
+| 02. Seedhe Maut - Toh Kya [E].flac | 150.0 | constant | 1.0 | 0.15% (9/9) | 152.0 (agree) | 10.54 ms | 32.08 ms | 8.2 |
+| 02 - BUN MASKA - Calm, DL91 ERA, Seedhe Maut.flac | 140.0 | constant | 0.355 | 0.07% (7/9) | 139.67 (agree) | 16.15 ms | 52.45 ms | 9.8 |
+| 03 - RINGTONE - Calm, DL91 ERA, Bhaskar.flac | 138.0 | constant | 0.899 | 0.11% (12/13) | 139.67 (agree) | 1.04 ms | 54.56 ms | 16.7 |
+| 01. Seedhe Maut - 11K [E].flac | 135.0 | constant | 0.695 | 0.1% (7/8) | 136.0 (agree) | 16.7 ms | 45.69 ms | 7.3 |
+| 03 - Elevator Music - Encore ABJ, DL91 ERA.flac | 105.01 | constant | 0.533 | 2.26% (9/10) | 105.47 (agree) | 33.64 ms | 68.0 ms | 15.8 |
+| 04 - Kya Mai Yaha - Encore ABJ, DL91 ERA.flac | 130.0 | constant | 0.867 | 0.06% (11/11) | 129.2 (agree) | 44.09 ms | 6.45 ms | 10.8 |
+| 01 - ALL CAPS - Encore ABJ, DL91 ERA.flac | 98.44 | variable | 0.213 | 0.49% (1/5) | 97.51 (agree) | 61.68 ms | 42.63 ms | 3.8 |
+| 29. Seedhe Maut - Kavi [E].flac | 110.0 | constant | 0.842 | 0.77% (8/10) | 110.29 (agree) | 12.65 ms | 17.59 ms | 8.3 |
+| 24. Seedhe Maut - Akatsuki [E].flac | 156.0 | piecewise_constant | 0.811 | 0.11% (6/7) | 156.25 (agree) | 55.06 ms | 43.91 ms | 6.8 |
 
 ### Real-music sync (A bar 9, B bar 1, 60 s)
 
