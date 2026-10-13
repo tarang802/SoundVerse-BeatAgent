@@ -30,7 +30,9 @@ def setup_text(setup) -> str:
         else:
             ops = st if isinstance(st, list) else [st]
             parts.append("after " + ", ".join(
-                f"{type(o).__name__.lower()} {o.range.unit} {o.range.start}–{o.range.end}" for o in ops))
+                f"“{o}”" if isinstance(o, str) else
+                f"{type(o).__name__.lower()} {o.range.unit} {o.range.start}–{o.range.end}" if hasattr(o, "range") else
+                type(o).__name__.lower() for o in ops))
     return "; ".join(parts)
 
 

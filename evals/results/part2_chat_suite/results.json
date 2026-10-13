@@ -44,7 +44,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.7
+  "elapsed_s": 8.8
  },
  {
   "id": "r2",
@@ -91,7 +91,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.9
+  "elapsed_s": 8.6
  },
  {
   "id": "r3",
@@ -138,7 +138,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.4
  },
  {
   "id": "r4",
@@ -185,7 +185,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.6
+  "elapsed_s": 8.1
  },
  {
   "id": "r5",
@@ -231,7 +231,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.1
+  "elapsed_s": 7.8
  },
  {
   "id": "r6",
@@ -278,7 +278,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.9
+  "elapsed_s": 8.2
  },
  {
   "id": "k1",
@@ -325,7 +325,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.8
+  "elapsed_s": 5.6
  },
  {
   "id": "k2",
@@ -372,7 +372,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.2
+  "elapsed_s": 5.5
  },
  {
   "id": "k3",
@@ -419,7 +419,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.8
+  "elapsed_s": 5.5
  },
  {
   "id": "p1",
@@ -467,7 +467,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.4
+  "elapsed_s": 8.4
  },
  {
   "id": "p2",
@@ -515,7 +515,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.9
+  "elapsed_s": 8.3
  },
  {
   "id": "p3",
@@ -563,7 +563,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.6
  },
  {
   "id": "p5",
@@ -611,7 +611,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 4.2
+  "elapsed_s": 4.1
  },
  {
   "id": "p4",
@@ -659,7 +659,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.6
  },
  {
   "id": "m1",
@@ -710,7 +710,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.6
+  "elapsed_s": 8.7
  },
  {
   "id": "m2",
@@ -811,7 +811,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.8
+  "elapsed_s": 8.7
  },
  {
   "id": "c2",
@@ -862,7 +862,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.8
+  "elapsed_s": 8.4
  },
  {
   "id": "f1",
@@ -910,7 +910,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.9
  },
  {
   "id": "f2",
@@ -957,7 +957,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 10.3
+  "elapsed_s": 8.8
  },
  {
   "id": "f3",
@@ -1005,7 +1005,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 11.1
+  "elapsed_s": 8.6
  },
  {
   "id": "g1",
@@ -1053,7 +1053,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.8
  },
  {
   "id": "g2",
@@ -1099,7 +1099,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 8.4
  },
  {
   "id": "g3",
@@ -1147,7 +1147,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.9
+  "elapsed_s": 8.5
  },
  {
   "id": "x1",
@@ -1203,7 +1203,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.4
+  "elapsed_s": 8.9
  },
  {
   "id": "x2",
@@ -1259,7 +1259,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.3
+  "elapsed_s": 8.9
  },
  {
   "id": "s1",
@@ -1306,7 +1306,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.7
+  "elapsed_s": 16.7
  },
  {
   "id": "s2",
@@ -1353,7 +1353,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 8.8
+  "elapsed_s": 18.6
  },
  {
   "id": "u1",
@@ -1391,7 +1391,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.2
+  "elapsed_s": 18.5
  },
  {
   "id": "u2",
@@ -1429,7 +1429,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.4
+  "elapsed_s": 16.9
  },
  {
   "id": "u3",
@@ -1456,7 +1456,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.7
+  "elapsed_s": 10.6
  },
  {
   "id": "u4",
@@ -1494,7 +1494,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.1
+  "elapsed_s": 17.1
  },
  {
   "id": "b1",
@@ -1530,7 +1530,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.9
+  "elapsed_s": 11.1
  },
  {
   "id": "b2",
@@ -1565,7 +1565,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.1
+  "elapsed_s": 11.3
  },
  {
   "id": "b3",
@@ -1592,7 +1592,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.2
+  "elapsed_s": 11.4
  },
  {
   "id": "b4",
@@ -1619,7 +1619,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.0
+  "elapsed_s": 11.0
  },
  {
   "id": "b5",
@@ -1646,7 +1646,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.9
+  "elapsed_s": 11.5
  },
  {
   "id": "b6",
@@ -1682,7 +1682,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.9
+  "elapsed_s": 9.2
  },
  {
   "id": "b7",
@@ -1719,7 +1719,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.0
+  "elapsed_s": 9.2
  },
  {
   "id": "b8",
@@ -1746,7 +1746,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.3
+  "elapsed_s": 10.1
  },
  {
   "id": "b9",
@@ -1773,7 +1773,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.4
+  "elapsed_s": 5.9
  },
  {
   "id": "b10",
@@ -1800,7 +1800,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.4
+  "elapsed_s": 9.3
  },
  {
   "id": "b11",
@@ -1822,7 +1822,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 3.0
+  "elapsed_s": 3.1
  },
  {
   "id": "b12",
@@ -1844,7 +1844,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 2.7
+  "elapsed_s": 3.9
  },
  {
   "id": "q1",
@@ -1881,7 +1881,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 5.9
+  "elapsed_s": 7.3
  },
  {
   "id": "q2",
@@ -1919,7 +1919,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 15.7
+  "elapsed_s": 14.7
  },
  {
   "id": "q3",
@@ -1954,7 +1954,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 11.2
+  "elapsed_s": 7.6
  },
  {
   "id": "q4",
@@ -1981,7 +1981,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 11.2
+  "elapsed_s": 6.2
  },
  {
   "id": "i1",
@@ -2009,7 +2009,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 10.6
+  "elapsed_s": 6.6
  },
  {
   "id": "i2",
@@ -2037,7 +2037,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 11.3
+  "elapsed_s": 6.6
  },
  {
   "id": "i3",
@@ -2065,7 +2065,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 11.0
+  "elapsed_s": 5.4
  },
  {
   "id": "v1",
@@ -2112,7 +2112,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 6.8
+  "elapsed_s": 3.4
  },
  {
   "id": "v2",
@@ -2160,7 +2160,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 7.2
+  "elapsed_s": 3.7
  },
  {
   "id": "v3",
@@ -2170,10 +2170,10 @@
   "action": "edit",
   "ok": true,
   "changed": true,
-  "reply": "Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.438-25.539 s (6.102 s)\n185.171 s -> 179.069 s. Track now 179.069 s, 348 beats, 87 bars (variable grid, 118.00 BPM median).",
-  "interpretation": "Bars are 1-based inclusive ranges. Removing bars 10 to 12 means dropping bar 10, 11, and 12.",
-  "backend": "gemini:gemini-3.5-flash",
-  "llm_model": "gemini-3.5-flash-lite",
+  "reply": "Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.421-25.522 s (6.101 s)\n185.171 s -> 179.070 s. Track now 179.070 s, 348 beats, 87 bars (variable grid, 117.98 BPM median).\nNote: gemini-3.5-flash is unavailable (busy); answered by gemini-3.8-flash instead.",
+  "interpretation": "Remove bars 10 through 12 inclusive.",
+  "backend": "gemini:gemini-3.8-flash",
+  "llm_model": "gemini-3.8-flash",
   "repair_round": null,
   "plan": {
    "action": "edit",
@@ -2187,11 +2187,11 @@
      }
     }
    ],
-   "interpretation": "Bars are 1-based inclusive ranges. Removing bars 10 to 12 means dropping bar 10, 11, and 12.",
+   "interpretation": "Remove bars 10 through 12 inclusive.",
    "message": ""
   },
   "audio_checks": {
-   "max_click_db": -0.5,
+   "max_click_db": -34.3,
    "format": {
     "sr": 44100,
     "subtype": "PCM_24",
@@ -2199,7 +2199,7 @@
     "expected_subtype": "PCM_24",
     "ok": true
    },
-   "grid_edited_median_ms": 11.38
+   "grid_edited_median_ms": 8.61
   },
   "checks": {
    "edit_matches_intent": true,
@@ -2207,7 +2207,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.0
+  "elapsed_s": 101.7
  },
  {
   "id": "y1",
@@ -2219,7 +2219,7 @@
   "changed": false,
   "reply": "Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.00 BPM.\nB bar 1 (0.348 s) lands on A bar 17 (31.446 s); offset 31.086 s; 60 s rendered to sync_A-bar17_A7/mix.wav.\nMeasured onset offset B-A: median 0.05 ms, max 0.22 ms over 123/123 beats.\nNote: B's audio before its bar 1 downbeat (0.348s) is not used.",
   "interpretation": "Bring the partner track in at bar 17 of this track, using the default 60 second duration and starting from bar 1 of the partner track, following the sync action convention.",
-  "backend": "gemini:gemini-3.5-flash",
+  "backend": "gemini:gemini-3.8-flash",
   "llm_model": "gemini-3.5-flash-lite",
   "repair_round": null,
   "plan": {
@@ -2239,7 +2239,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 20.9
+  "elapsed_s": 11.7
  },
  {
   "id": "y2",
@@ -2251,7 +2251,7 @@
   "changed": false,
   "reply": "Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 128.00 -> 124.00 BPM.\nB bar 1 (0.348 s) lands on A bar 9 (15.962 s); offset 15.603 s; 30 s rendered to sync_A-bar9_A7/mix.wav.\nMeasured onset offset B-A: median 0.04 ms, max 0.23 ms over 61/61 beats.\nNote: B's audio before its bar 1 downbeat (0.348s) is not used.",
   "interpretation": "Beat-matching the partner track (B) to this track (A) starting at bar 9 for a duration of 30 seconds.",
-  "backend": "gemini:gemini-3.5-flash",
+  "backend": "gemini:gemini-3.8-flash",
   "llm_model": "gemini-3.5-flash-lite",
   "repair_round": null,
   "plan": {
@@ -2272,7 +2272,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 16.8
+  "elapsed_s": 12.0
  },
  {
   "id": "y3",
@@ -2284,7 +2284,7 @@
   "changed": false,
   "reply": "A second track must be loaded to use the sync feature, but no partner track is currently present in the context.",
   "interpretation": "",
-  "backend": "gemini:gemini-3.5-flash",
+  "backend": "gemini:gemini-3.8-flash",
   "llm_model": "gemini-3.5-flash-lite",
   "repair_round": null,
   "plan": {
@@ -2299,7 +2299,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 9.9
+  "elapsed_s": 15.6
  },
  {
   "id": "n1",
@@ -2309,10 +2309,10 @@
   "action": "edit",
   "ok": true,
   "changed": true,
-  "reply": "Applied: remove bar 8 (1 bar, 4 beats) = 11.999-13.715 s (1.716 s)\n166.286 s -> 164.570 s. Track now 164.570 s, 365 beats, 92 bars (variable grid, 140.19 BPM median).",
-  "interpretation": "Bar ranges are inclusive, so bar 8 to 8 represents bar 8 alone. Removing bar 8 based on the user's explicit command.",
-  "backend": "gemini:gemini-3.5-flash",
-  "llm_model": "gemini-3.5-flash-lite",
+  "reply": "Applied: remove bar 8 (1 bar, 4 beats) = 12.003-13.706 s (1.703 s)\n166.286 s -> 164.583 s. Track now 164.583 s, 365 beats, 92 bars (variable grid, 139.99 BPM median).",
+  "interpretation": "Remove bar 8 (inclusive range bars 8 to 8).",
+  "backend": "gemini:gemini-3.8-flash",
+  "llm_model": "gemini-3.8-flash",
   "repair_round": null,
   "plan": {
    "action": "edit",
@@ -2326,11 +2326,11 @@
      }
     }
    ],
-   "interpretation": "Bar ranges are inclusive, so bar 8 to 8 represents bar 8 alone. Removing bar 8 based on the user's explicit command.",
+   "interpretation": "Remove bar 8 (inclusive range bars 8 to 8).",
    "message": ""
   },
   "audio_checks": {
-   "max_click_db": 0.0,
+   "max_click_db": -1.3,
    "format": {
     "sr": 48000,
     "subtype": "PCM_24",
@@ -2338,7 +2338,7 @@
     "expected_subtype": "PCM_24",
     "ok": true
    },
-   "grid_edited_median_ms": 0.34
+   "grid_edited_median_ms": 2.3
   },
   "checks": {
    "edit_matches_intent": true,
@@ -2346,7 +2346,7 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 10.2
+  "elapsed_s": 11.9
  },
  {
   "id": "n2",
@@ -2356,9 +2356,9 @@
   "action": "edit",
   "ok": true,
   "changed": true,
-  "reply": "Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.001-3.420 s (3.419 s) so it plays 4x in total (3 extra copies inserted right after it, +10.256 s); the rest of the track follows\n166.286 s -> 176.542 s. Track now 176.542 s, 393 beats, 99 bars (variable grid, 140.19 BPM median).",
-  "interpretation": "Repeats bars 1 to 2 for a total of 4 plays based on the user request, following the bar range convention (inclusive of bars 1 and 2).",
-  "backend": "gemini:gemini-3.5-flash",
+  "reply": "Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.000-3.430 s (3.430 s) so it plays 4x in total (3 extra copies inserted right after it, +10.289 s); the rest of the track follows\n166.286 s -> 176.575 s. Track now 176.575 s, 393 beats, 99 bars (variable grid, 139.98 BPM median).\nNote: gemini-3.8-flash is unavailable (out of free-tier quota); answered by gemini-3.5-flash-lite instead.",
+  "interpretation": "Bars 1-2 define the first two bars. 'Loop it 4 times' means 4 plays in total, inserted in place while the rest of the track follows.",
+  "backend": "gemini:gemini-3.5-flash-lite",
   "llm_model": "gemini-3.5-flash-lite",
   "repair_round": null,
   "plan": {
@@ -2374,11 +2374,11 @@
      "total_plays": 4
     }
    ],
-   "interpretation": "Repeats bars 1 to 2 for a total of 4 plays based on the user request, following the bar range convention (inclusive of bars 1 and 2).",
+   "interpretation": "Bars 1-2 define the first two bars. 'Loop it 4 times' means 4 plays in total, inserted in place while the rest of the track follows.",
    "message": ""
   },
   "audio_checks": {
-   "max_click_db": 0.0,
+   "max_click_db": -0.6,
    "format": {
     "sr": 48000,
     "subtype": "PCM_24",
@@ -2386,7 +2386,7 @@
     "expected_subtype": "PCM_24",
     "ok": true
    },
-   "grid_edited_median_ms": 0.35
+   "grid_edited_median_ms": 2.26
   },
   "checks": {
    "edit_matches_intent": true,
@@ -2394,6 +2394,6 @@
   },
   "pass": true,
   "offline_fallback": false,
-  "elapsed_s": 10.7
+  "elapsed_s": 24.4
  }
 ]

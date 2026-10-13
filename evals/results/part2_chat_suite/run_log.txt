@@ -51,12 +51,12 @@
   i3   question      PASS  'how long is the track?' -> [answer] The track is 361.5 seconds long (about 6 minutes).
   v1   tempo-change  PASS  'remove the first bar after the tempo change' -> [edit] Applied: remove bar 33 (1 bar, 4 beats) = 64.498-66.373 s (1.875 s)
   v2   tempo-change  PASS  'loop the last bar before the tempo change twice' -> [edit] Applied: repeat bar 32 (1 bar, 4 beats) = 62.498-64.498 s (2.000 s) so it plays 2x in total (1 
-  v3   variable-grid PASS  'remove bars 10-12' -> [edit] Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.438-25.539 s (6.102 s)
+  v3   variable-grid PASS  'remove bars 10-12' -> [edit] Applied: remove bars 10-12 inclusive (3 bars, 12 beats) = 19.421-25.522 s (6.101 s)
   y1   sync          PASS  'bring the other track in at bar 17' -> [sync] Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 
   y2   sync          PASS  'beatmatch the other deck to this from bar 9 for 30 seconds' -> [sync] Synced A7.wav (B) onto A1.wav (A, unchanged): B stretched x1.032258 (+3.23%, pitch preserved), 
   y3   sync          PASS  'sync the other track at bar 9' -> [answer] A second track must be loaded to use the sync feature, but no partner track is currently presen
-  n1   real-song     PASS  'remove bar 8' -> [edit] Applied: remove bar 8 (1 bar, 4 beats) = 11.999-13.715 s (1.716 s)
-  n2   real-song     PASS  'loop the first 2 bars 4 times' -> [edit] Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.001-3.420 s (3.419 s) so it plays 4x i
+  n1   real-song     PASS  'remove bar 8' -> [edit] Applied: remove bar 8 (1 bar, 4 beats) = 12.003-13.706 s (1.703 s)
+  n2   real-song     PASS  'loop the first 2 bars 4 times' -> [edit] Applied: repeat bars 1-2 inclusive (2 bars, 8 beats) = 0.000-3.430 s (3.430 s) so it plays 4x i
 
 passed 59/59  (answered by LLM: 59, passed 59; offline fallback: 0)
-LLM usage: {'calls': 0, 'input_tokens': 0, 'output_tokens': 0, 'cache_hits': 63}
+LLM usage: {'calls': 3, 'input_tokens': 5912, 'output_tokens': 288, 'cache_hits': 60}
